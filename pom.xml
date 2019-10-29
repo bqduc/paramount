@@ -52,6 +52,13 @@
         <module>msp-admin</module>
     </modules>
 	
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -69,14 +76,6 @@
           </additionalConfig>
         </configuration>
       </plugin>
-			
-        <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>             
-            <configuration>    
-                <mainClass>com.github.adminfaces.starter.AdminBootMain</mainClass>
-            </configuration>
-        </plugin>			
     </plugins>
   </build> 
 </project>
