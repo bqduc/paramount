@@ -46,34 +46,6 @@
 		<joinfaces.version>4.0.9</joinfaces.version>
 		
 	</properties>
-
-	<dependencyManagement>
-    	<dependencies>
-			<dependency>
-				<groupId>org.joinfaces</groupId>
-				<artifactId>joinfaces-dependencies</artifactId>
-				<version>${joinfaces.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-	  
-			<dependency>
-				<groupId>com.github.adminfaces</groupId>
-				<artifactId>admin-template</artifactId>
-				<version>1.0.2</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.adminfaces</groupId>
-				<artifactId>admin-theme</artifactId>
-				<version>1.0.2</version>
-			</dependency>
-			<dependency>
-				<groupId>org.primefaces</groupId>
-				<artifactId>primefaces</artifactId>
-				<version>7.0</version>
-			</dependency>			
-		</dependencies>
-	</dependencyManagement>
  
     <modules>
         <module>msp-common</module>
