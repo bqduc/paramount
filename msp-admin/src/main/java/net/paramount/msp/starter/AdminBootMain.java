@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.paramount.msp;
+package net.paramount.msp.starter;
 
 import org.springframework.boot.SpringApplication;
 

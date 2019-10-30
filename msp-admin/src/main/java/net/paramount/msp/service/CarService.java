@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.github.adminfaces.template.util.Assert.has;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CarService implements Serializable {
 
-    @Inject
+    //@Inject
     List<Car> allCars;
 
     public List<Car> listByModel(String model) {
@@ -37,7 +38,17 @@ public class CarService implements Serializable {
 
     }
 
+    private Car create(int i) {
+        return new Car(i).model("model " + i).name("name" + i).price(Double.valueOf(i));
+    }
+
     public List<Car> paginate(Filter<Car> filter) {
+    	if (null==allCars) {
+    		allCars = new ArrayList<>();
+            IntStream.rangeClosed(1, 150)
+                    .forEach(i -> allCars.add(create(i)));
+    	}
+
         List<Car> pagedCars = new ArrayList<>();
         if(has(filter.getSortOrder()) && !SortOrder.UNSORTED.equals(filter.getSortOrder())) {
                 pagedCars = allCars.stream().
