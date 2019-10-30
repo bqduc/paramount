@@ -43,7 +43,7 @@ public class UtilsImpl implements Utils, Serializable {
     }
 
     private Car create(int i) {
-        return new Car(i).model("model " + i).name("name" + i).price(Double.valueOf(i));
+        return new Car(i);//.setBrand("model " + i).name("name" + i).price(Double.valueOf(i));
     }
 
     public void addDetailMessage(String message) {

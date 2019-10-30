@@ -22,7 +22,7 @@ import net.paramount.msp.util.Utils;
 /**
  * Created by rmpestano on 12/02/17.
  */
-@Named
+/*@Named
 @ViewScoped
 public class CarListMB implements Serializable {
 
@@ -140,4 +140,4 @@ public class CarListMB implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-}
+}*/

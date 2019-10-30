@@ -24,7 +24,7 @@ import net.paramount.msp.util.Utils;
 /**
  * @author rmpestano
  */
-@Named
+/*@Named
 @ViewScoped
 public class CarFormMB implements Serializable {
 
@@ -101,4 +101,4 @@ public class CarFormMB implements Serializable {
     }
 
 
-}
+}*/
