@@ -49,6 +49,8 @@
  
     <modules>
         <module>msp-common</module>
+        <module>msp-core</module>
+				<module>msp-auth</module>
         <module>msp-admin</module>
     </modules>
 	
