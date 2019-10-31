@@ -10,7 +10,6 @@
 
     <artifactId>msp-auth</artifactId>
     <packaging>jar</packaging>
-    <version>0.1</version>
     <name>PMSP - Authentication and authorization</name>
     <description>Module that contains all services for clinical trial and data management in the project. </description>
 

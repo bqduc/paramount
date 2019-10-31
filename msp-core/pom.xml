@@ -10,7 +10,6 @@
 
     <artifactId>msp-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.1</version>
     <name>PMSP - Core</name>
     <description>Module that contains core to be used in the project. </description>
 
