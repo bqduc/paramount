@@ -20,6 +20,7 @@
         <mojarra.version>2.3.4</mojarra.version>
 	    <joinfaces.version>3.3.0-rc2</joinfaces.version>
     </properties>
+	<!-- 
 	<dependencyManagement>
     	<dependencies>
 			<dependency>
@@ -53,8 +54,22 @@
         </dependency>	  
     </dependencies>
   </dependencyManagement>
-    
+     -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.joinfaces</groupId>
+                <artifactId>joinfaces-dependencies</artifactId>
+                <version>${joinfaces.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+     
     <dependencies>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>msp-common</artifactId>

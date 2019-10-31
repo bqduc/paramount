@@ -505,14 +505,17 @@ public class ChartMB implements Serializable {
     
     private BubbleChartModel initBubbleModel(){
         BubbleChartModel model = new BubbleChartModel();
-        
-        model.add(new BubbleChartSeries("Acura", 70, 183,55));
-        model.add(new BubbleChartSeries("Alfa Romeo", 45, 92, 36));
-        model.add(new BubbleChartSeries("AM General", 24, 104, 40));
-        model.add(new BubbleChartSeries("Bugatti", 50, 123, 60));
-        model.add(new BubbleChartSeries("BMW", 15, 89, 25));
-        model.add(new BubbleChartSeries("Audi", 40, 180, 80));
-        model.add(new BubbleChartSeries("Aston Martin", 70, 70, 48));
+        try {
+            model.add(new BubbleChartSeries("Acura", 70, 183,55));
+            model.add(new BubbleChartSeries("Alfa Romeo", 45, 92, 36));
+            model.add(new BubbleChartSeries("AM General", 24, 104, 40));
+            model.add(new BubbleChartSeries("Bugatti", 50, 123, 60));
+            model.add(new BubbleChartSeries("BMW", 15, 89, 25));
+            model.add(new BubbleChartSeries("Audi", 40, 180, 80));
+            model.add(new BubbleChartSeries("Aston Martin", 70, 70, 48));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         
         return model;
     }
