@@ -1,36 +1,34 @@
 package net.paramount.msp.bean;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
-
 import com.github.adminfaces.template.exception.BusinessException;
 
 import net.paramount.msp.infra.model.Filter;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;
-import net.paramount.msp.util.Utils;
+
+import javax.faces.view.ViewScoped;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import static net.paramount.msp.util.Utils.addDetailMessage;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rmpestano on 12/02/17.
  */
-/*@Named
+@Named
 @ViewScoped
 public class CarListMB implements Serializable {
 
     @Inject
     CarService carService;
-    
-    @Inject
-    private Utils utils;
 
     Integer id;
 
@@ -98,7 +96,7 @@ public class CarListMB implements Serializable {
             carService.remove(selectedCar);
         }
         selectedCars.clear();
-        utils.addDetailMessage(numCars + " cars deleted successfully!");
+        addDetailMessage(numCars + " cars deleted successfully!");
     }
 
     public List<Car> getSelectedCars() {
@@ -140,4 +138,4 @@ public class CarListMB implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-}*/
+}

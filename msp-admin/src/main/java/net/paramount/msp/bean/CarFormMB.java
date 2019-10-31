@@ -4,35 +4,32 @@
  */
 package net.paramount.msp.bean;
 
-import static com.github.adminfaces.template.util.Assert.has;
-
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.omnifaces.util.Faces;
-
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;
 import net.paramount.msp.util.Utils;
 
+import org.omnifaces.util.Faces;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.io.Serializable;
+
+import static com.github.adminfaces.template.util.Assert.has;
+import static net.paramount.msp.util.Utils.addDetailMessage;
+
 /**
  * @author rmpestano
  */
-/*@Named
+@Named
 @ViewScoped
 public class CarFormMB implements Serializable {
 
     @Inject
     CarService carService;
-
-    @Inject 
-    private Utils utils;
 
     private Integer id;
     private Car car;
@@ -67,12 +64,12 @@ public class CarFormMB implements Serializable {
 
 
     public void remove() throws IOException {
-        if (!utils.isUserInRole("ROLE_ADMIN")) {
+        if (!Utils.isUserInRole("ROLE_ADMIN")) {
             throw new AccessDeniedException("User not authorized! Only role <b>admin</b> can remove cars.");
         }
         if (has(car) && has(car.getId())) {
             carService.remove(car);
-            utils.addDetailMessage("Car " + car.getModel()
+            addDetailMessage("Car " + car.getModel()
                     + " removed successfully");
             Faces.getFlash().setKeepMessages(true);
             Faces.redirect("user/car-list.jsf");
@@ -88,7 +85,7 @@ public class CarFormMB implements Serializable {
             carService.update(car);
             msg = "Car " + car.getModel() + " updated successfully";
         }
-        utils.addDetailMessage(msg);
+        addDetailMessage(msg);
     }
 
     public void clear() {
@@ -101,4 +98,4 @@ public class CarFormMB implements Serializable {
     }
 
 
-}*/
+}

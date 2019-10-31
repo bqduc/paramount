@@ -20,7 +20,6 @@
         <mojarra.version>2.3.4</mojarra.version>
 	    <joinfaces.version>3.3.0-rc2</joinfaces.version>
     </properties>
-	<!-- 
 	<dependencyManagement>
     	<dependencies>
 			<dependency>
@@ -46,30 +45,11 @@
                 <artifactId>primefaces</artifactId>
                 <version>7.0</version>
             </dependency>
-
-        <dependency>
-            <groupId>org.omnifaces</groupId>
-            <artifactId>omnifaces</artifactId>
-            <version>2.6.1</version>
-        </dependency>	  
+	  
     </dependencies>
   </dependencyManagement>
-     -->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.joinfaces</groupId>
-                <artifactId>joinfaces-dependencies</artifactId>
-                <version>${joinfaces.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-     
+    
     <dependencies>
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>msp-common</artifactId>
@@ -90,6 +70,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>     
+        <dependency>
             <groupId>org.joinfaces</groupId>
             <artifactId>adminfaces-spring-boot-starter</artifactId>
         </dependency>
@@ -97,11 +81,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>           
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>     
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
@@ -118,25 +97,6 @@
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>        
-		
-		
-		
-		
-		
-		
-		
-        <!-- CDI -->
-        <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet</artifactId>
-            <version>2.4.2.Final</version>
-            <scope>runtime</scope>
-        </dependency>		
     </dependencies>
     <build>
         <!--finalName>admin-starter</finalName-->

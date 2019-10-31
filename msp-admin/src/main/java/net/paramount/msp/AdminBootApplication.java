@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-package net.paramount.msp.starter;
+package net.paramount.msp;
 
 import java.util.List;
-
 import javax.inject.Inject;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 
-import net.paramount.msp.configuration.BaseConfiguration;
-import net.paramount.msp.configuration.SecurityConfiguration;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.util.Utils;
 
 /**
  * @author rmpestano
  */
-@Import(value = { 
-		BaseConfiguration.class,
-		SecurityConfiguration.class
-		/*SecurityConfig.class*/})
 @SpringBootApplication
 public class AdminBootApplication {
 	@Inject

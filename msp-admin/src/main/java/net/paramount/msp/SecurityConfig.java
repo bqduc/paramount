@@ -1,4 +1,4 @@
-package net.paramount.msp.starter;
+package net.paramount.msp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * Created by aLeXcBa1990 on 24/11/2018.
  * 
  */
-/*
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
@@ -47,4 +47,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 }
-*/
