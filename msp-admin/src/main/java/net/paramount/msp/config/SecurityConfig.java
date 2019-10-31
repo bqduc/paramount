@@ -36,14 +36,56 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		/*
+		http.authorizeRequests()
+    	.antMatchers(buildUnauthorizedMatchers()).permitAll()
+      .anyRequest().authenticated()
+    .and()
+    .formLogin().loginPage("/login.xhtml")
+    .defaultSuccessUrl("/")
+    .permitAll()
+    .and()
+.logout()
+    .logoutSuccessUrl("/")
+    .permitAll()
+;
+	    */
+	    // form login
+		http.authorizeRequests()
+		//.antMatchers("/", "/login.xhtml", "/javax.faces.resource/**").permitAll()
+    	.antMatchers(buildUnauthorizedMatchers()).permitAll()
+		.anyRequest()
+		.fullyAuthenticated().and().formLogin().loginPage("/login.xhtml").defaultSuccessUrl("/index.xhtml")
+		.failureUrl("/login.xhtml?authfailed=true").permitAll().and().logout().logoutSuccessUrl("/login.xhtml")
+		.logoutUrl("/j_spring_security_logout").and().csrf().disable();
+
+		// allow to use resource links like pdf
+		http.headers().frameOptions().sameOrigin();
+	}
+/*
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 		// form login
 		http.authorizeRequests().antMatchers("/", "/login.xhtml", "/javax.faces.resource/**").permitAll().anyRequest()
 				.fullyAuthenticated().and().formLogin().loginPage("/login.xhtml").defaultSuccessUrl("/index.xhtml")
 				.failureUrl("/login.xhtml?authfailed=true").permitAll().and().logout().logoutSuccessUrl("/login.xhtml")
 				.logoutUrl("/j_spring_security_logout").and().csrf().disable();
 
-		// allow to use ressource links like pdf
+		// allow to use resource links like pdf
 		http.headers().frameOptions().sameOrigin();
 	}
-
+*/
+	private String[] buildUnauthorizedMatchers() {
+		String[] unauthorizedPatterns = new String[] { 
+				"/*", 
+				"/public/**", 
+				"/resources/**", 
+				"/includes/**", 
+				"/pages/**", 
+				"/auth/register/**",
+				"/login.xhtml", 
+				"/javax.faces.resource/**"
+		};
+		return unauthorizedPatterns;
+	}
 }
