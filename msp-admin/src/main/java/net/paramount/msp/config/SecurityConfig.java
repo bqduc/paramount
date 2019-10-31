@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     .authorizeRequests().anyRequest().authenticated()
     .antMatchers("/rapi/" + "**").hasRole("CLIENT")
     .and()
-    	.httpBasic().realmName("VPX_REALM").authenticationEntryPoint(getBasicAuthEntryPoint())
+    	.httpBasic().realmName("VPX_REALM")/*.authenticationEntryPoint(getBasicAuthEntryPoint())*/
     	
     	.and().csrf().disable().headers().frameOptions().disable()
     ;
