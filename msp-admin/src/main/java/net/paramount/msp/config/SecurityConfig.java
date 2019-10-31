@@ -1,4 +1,4 @@
-package net.paramount.msp;
+package net.paramount.msp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

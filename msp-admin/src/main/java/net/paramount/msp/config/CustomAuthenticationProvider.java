@@ -1,4 +1,4 @@
-package net.paramount.msp;
+package net.paramount.msp.config;
 
 import java.util.ArrayList;
 import java.util.List;

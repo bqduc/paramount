@@ -18,6 +18,8 @@ package net.paramount.msp;
 
 import org.springframework.boot.SpringApplication;
 
+import net.paramount.msp.starter.AdminBootApplication;
+
  /**
  * @author rmpestano
  */

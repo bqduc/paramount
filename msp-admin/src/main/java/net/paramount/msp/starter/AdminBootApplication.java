@@ -14,19 +14,30 @@
  * limitations under the License.
  */
 
-package net.paramount.msp;
+package net.paramount.msp.starter;
 
 import java.util.List;
+
 import javax.inject.Inject;
+
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
+import net.paramount.msp.config.BaseConfiguration;
+import net.paramount.msp.config.SecurityConfig;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.util.Utils;
 
 /**
  * @author rmpestano
  */
+@Import(value = { 
+		BaseConfiguration.class, 
+		SecurityConfig.class
+		}
+)
 @SpringBootApplication
 public class AdminBootApplication {
 	@Inject
@@ -37,4 +48,7 @@ public class AdminBootApplication {
         return utils.getCars();
     }
 	
+	public static void main(String[] args) {
+		SpringApplication.run(AdminBootApplication.class, args);
+	}
 }
