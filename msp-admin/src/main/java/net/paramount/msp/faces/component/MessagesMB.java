@@ -1,6 +1,6 @@
 package net.paramount.msp.faces.component;
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 import org.omnifaces.util.Messages;
 
 import javax.inject.Named;

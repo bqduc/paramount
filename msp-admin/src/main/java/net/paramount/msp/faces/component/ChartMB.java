@@ -26,7 +26,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;

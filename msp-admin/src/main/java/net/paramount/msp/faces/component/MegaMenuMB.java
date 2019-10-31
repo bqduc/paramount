@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.inject.Named;
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 
 @Named
 @ViewScoped

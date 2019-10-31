@@ -10,7 +10,7 @@ import org.primefaces.event.ToggleEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 
 /**
  * Created by rmpestano on 23/01/17.

@@ -23,7 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;

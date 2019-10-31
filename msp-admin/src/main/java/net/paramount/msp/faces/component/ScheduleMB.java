@@ -4,7 +4,7 @@ package net.paramount.msp.faces.component;
  * Created by rafael-pestano on 08/02/17.
  */
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;

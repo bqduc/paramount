@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 

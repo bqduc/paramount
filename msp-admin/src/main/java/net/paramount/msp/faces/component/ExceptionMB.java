@@ -2,7 +2,7 @@ package net.paramount.msp.faces.component;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 import com.github.adminfaces.template.exception.BusinessException;
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 
 import javax.faces.application.ViewExpiredException;
 import javax.inject.Named;

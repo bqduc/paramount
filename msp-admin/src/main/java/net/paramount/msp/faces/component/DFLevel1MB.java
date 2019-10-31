@@ -1,6 +1,6 @@
 /*package net.paramount.msp.faces.component;
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 

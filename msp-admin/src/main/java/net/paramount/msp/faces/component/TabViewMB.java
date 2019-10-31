@@ -24,7 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 
