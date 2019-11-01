@@ -54,7 +54,7 @@ public class SourceCodeMB {
     }
 
     private String loadSource(String sourcePath, boolean isJavaSource) {
-        String basePath = isJavaSource ? "/sources/" : "/";
+        /*String basePath = isJavaSource ? "/sources/" : "/";
         String sulfix = isJavaSource ? ".java":".xhtml";
         if(!sourcePath.endsWith(sulfix)){
             sourcePath = sourcePath +sulfix;
@@ -64,7 +64,7 @@ public class SourceCodeMB {
             return new String(Files.readAllBytes(Paths.get(realPath)));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         return "";
     }
 
