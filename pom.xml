@@ -45,12 +45,14 @@
         <version.joda-time>2.9.2</version.joda-time>
 		<joinfaces.version>4.0.9</joinfaces.version>
 		
+		<version.primefaces>7.0</version.primefaces>
 	</properties>
  
     <modules>
         <module>msp-common</module>
         <module>msp-core</module>
-				<module>msp-auth</module>
+				<module>msp-aux</module>
+				<module>msp-emx</module>
         <module>msp-admin</module>
     </modules>
 	

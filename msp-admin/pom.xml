@@ -64,7 +64,13 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>msp-auth</artifactId>
+            <artifactId>msp-aux</artifactId>
+            <version>${project.version}</version>
+        </dependency>	
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>msp-emx</artifactId>
             <version>${project.version}</version>
         </dependency>	
 

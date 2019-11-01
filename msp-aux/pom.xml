@@ -8,7 +8,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>msp-auth</artifactId>
+    <artifactId>msp-aux</artifactId>
     <packaging>jar</packaging>
     <name>PMSP - Authentication and authorization</name>
     <description>Module that contains all services for clinical trial and data management in the project. </description>
