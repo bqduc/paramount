@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Inventory;
-import net.paramount.repository.InventoryFacade;
+import net.paramount.entity.DeliveryOrder;
+import net.paramount.repository.DeliveryOrderFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,11 +20,11 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "inventoryConverter")
-public class InventoryConverter implements Converter {
+@FacesConverter(value = "deliveryOrderConverter")
+public class DeliveryOrderConverter implements Converter {
 
     @Inject
-    private InventoryFacade ejbFacade;
+    private DeliveryOrderFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -52,11 +52,11 @@ public class InventoryConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Inventory) {
-            Inventory o = (Inventory) object;
+        if (object instanceof DeliveryOrder) {
+            DeliveryOrder o = (DeliveryOrder) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Inventory.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), DeliveryOrder.class.getName()});
             return null;
         }
     }

@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.auth.entity.UserProfile;
-import net.paramount.repository.UserFacade;
+import net.paramount.entity.PurchaseOrder;
+import net.paramount.repository.PurchaseOrderFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,11 +20,11 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "userConverter")
-public class UserConverter implements Converter {
+@FacesConverter(value = "purchaseOrderConverter")
+public class PurchaseOrderConverter implements Converter {
 
     @Inject
-    private UserFacade ejbFacade;
+    private PurchaseOrderFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -40,7 +40,7 @@ public class UserConverter implements Converter {
         return key;
     }
 
-    String getStringKey(java.lang.Long value) {
+    String getStringKey(java.lang.Integer value) {
         StringBuffer sb = new StringBuffer();
         sb.append(value);
         return sb.toString();
@@ -52,11 +52,11 @@ public class UserConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof UserProfile) {
-            UserProfile o = (UserProfile) object;
+        if (object instanceof PurchaseOrder) {
+            PurchaseOrder o = (PurchaseOrder) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), UserProfile.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), PurchaseOrder.class.getName()});
             return null;
         }
     }

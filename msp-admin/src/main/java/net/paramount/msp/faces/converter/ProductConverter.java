@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.SaleOrder;
-import net.paramount.repository.SaleOrderFacade;
+import net.paramount.entity.Product;
+import net.paramount.repository.ProductFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,21 +20,27 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "saleOrderConverter")
-public class SaleOrderConverter implements Converter {
+@FacesConverter(value = "productConverter")
+public class ProductConverter implements Converter {
 
     @Inject
-    private SaleOrderFacade ejbFacade;
+    private ProductFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-        if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value)) {
+        if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value) || !isNumeric(value)) {
             return null;
         }
-        return this.ejbFacade.find(getKey(value));
+        
+        try {
+            return this.ejbFacade.find(getKey(value));
+        } catch (Exception e) {
+            return null;
+        }
+        
     }
 
-    java.lang.Integer getKey(String value) {
+    java.lang.Integer getKey(String value) throws Exception  {
         java.lang.Integer key;
         key = Integer.valueOf(value);
         return key;
@@ -45,6 +51,15 @@ public class SaleOrderConverter implements Converter {
         sb.append(value);
         return sb.toString();
     }
+    
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
@@ -52,11 +67,11 @@ public class SaleOrderConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof SaleOrder) {
-            SaleOrder o = (SaleOrder) object;
+        if (object instanceof Product) {
+            Product o = (Product) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), SaleOrder.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Product.class.getName()});
             return null;
         }
     }

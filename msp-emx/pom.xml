@@ -29,13 +29,6 @@
 	    <artifactId>primefaces</artifactId>
 			<version>${version.primefaces}</version>
     </dependency>
-		<!-- <dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>javax.faces-api</artifactId>
@@ -47,6 +40,14 @@
 			<artifactId>javax.faces</artifactId>
 			<version>2.3.3</version>
 		</dependency>
+<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>		
+		<!-- 
+
 
 		<dependency>
 			<groupId>jstl</groupId>

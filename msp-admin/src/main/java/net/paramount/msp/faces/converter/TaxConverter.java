@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.JournalEntry;
-import net.paramount.repository.JournalEntryFacade;
+import net.paramount.entity.Tax;
+import net.paramount.repository.TaxFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,15 +20,15 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "journalEntryConverter")
-public class JournalEntryConverter implements Converter {
+@FacesConverter(value = "taxConverter")
+public class TaxConverter implements Converter {
 
     @Inject
-    private JournalEntryFacade ejbFacade;
+    private TaxFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-        if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value)) {
+        if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value) | !isNumeric(value)) {
             return null;
         }
         return this.ejbFacade.find(getKey(value));
@@ -45,6 +45,15 @@ public class JournalEntryConverter implements Converter {
         sb.append(value);
         return sb.toString();
     }
+    
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
@@ -52,11 +61,11 @@ public class JournalEntryConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof JournalEntry) {
-            JournalEntry o = (JournalEntry) object;
+        if (object instanceof Tax) {
+            Tax o = (Tax) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), JournalEntry.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Tax.class.getName()});
             return null;
         }
     }

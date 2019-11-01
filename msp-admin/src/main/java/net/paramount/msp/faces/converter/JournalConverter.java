@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Partner;
-import net.paramount.repository.PartnerFacade;
+import net.paramount.entity.Journal;
+import net.paramount.repository.JournalFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,26 +20,21 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "partnerConverter")
-public class PartnerConverter implements Converter {
+@FacesConverter(value = "journalConverter")
+public class JournalConverter implements Converter {
 
     @Inject
-    private PartnerFacade ejbFacade;
+    private JournalFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-        if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value) || !isNumeric(value) ) {
+        if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value)) {
             return null;
         }
-        
-        try {
-            return this.ejbFacade.find(getKey(value));
-        } catch (Exception e) {
-            return null;
-        }
+        return this.ejbFacade.find(getKey(value));
     }
 
-    java.lang.Integer getKey(String value) throws Exception {
+    java.lang.Integer getKey(String value) {
         java.lang.Integer key;
         key = Integer.valueOf(value);
         return key;
@@ -51,27 +46,17 @@ public class PartnerConverter implements Converter {
         return sb.toString();
     }
 
-    public static boolean isNumeric(String str) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     @Override
     public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-        System.out.println("inside getAsString");
         if (object == null
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Partner) {
-            Partner o = (Partner) object;
+        if (object instanceof Journal) {
+            Journal o = (Journal) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Partner.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Journal.class.getName()});
             return null;
         }
     }

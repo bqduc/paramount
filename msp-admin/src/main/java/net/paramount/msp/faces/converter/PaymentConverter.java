@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Invoice;
-import net.paramount.repository.InvoiceFacade;
+import net.paramount.entity.Payment;
+import net.paramount.repository.PaymentFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,11 +20,11 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "invoiceConverter")
-public class InvoiceConverter implements Converter {
+@FacesConverter(value = "paymentConverter")
+public class PaymentConverter implements Converter {
 
     @Inject
-    private InvoiceFacade ejbFacade;
+    private PaymentFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -52,11 +52,11 @@ public class InvoiceConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Invoice) {
-            Invoice o = (Invoice) object;
+        if (object instanceof Payment) {
+            Payment o = (Payment) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Invoice.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Payment.class.getName()});
             return null;
         }
     }

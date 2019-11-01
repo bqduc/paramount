@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.ProductCategory;
-import net.paramount.repository.ProductCategoryFacade;
+import net.paramount.entity.ProductUomCategory;
+import net.paramount.repository.ProductUomCategoryFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,11 +20,11 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "productCategoryConverter")
-public class ProductCategoryConverter implements Converter {
+@FacesConverter(value = "productUomCategoryConverter")
+public class ProductUomCategoryConverter implements Converter {
 
     @Inject
-    private ProductCategoryFacade ejbFacade;
+    private ProductUomCategoryFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -52,11 +52,11 @@ public class ProductCategoryConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof ProductCategory) {
-            ProductCategory o = (ProductCategory) object;
+        if (object instanceof ProductUomCategory) {
+            ProductUomCategory o = (ProductUomCategory) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), ProductCategory.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), ProductUomCategory.class.getName()});
             return null;
         }
     }

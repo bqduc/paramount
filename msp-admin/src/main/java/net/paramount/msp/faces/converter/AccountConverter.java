@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Journal;
-import net.paramount.repository.JournalFacade;
+import net.paramount.entity.Account;
+import net.paramount.repository.AccountFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,11 +20,11 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "journalConverter")
-public class JournalConverter implements Converter {
+@FacesConverter(value = "accountConverter")
+public class AccountConverter implements Converter<Object> {
 
     @Inject
-    private JournalFacade ejbFacade;
+    private AccountFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -52,11 +52,11 @@ public class JournalConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Journal) {
-            Journal o = (Journal) object;
+        if (object instanceof Account) {
+            Account o = (Account) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Journal.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Account.class.getName()});
             return null;
         }
     }

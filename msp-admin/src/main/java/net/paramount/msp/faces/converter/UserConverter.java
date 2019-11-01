@@ -1,4 +1,4 @@
-package net.paramount.converters;
+package net.paramount.msp.faces.converter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.ProductUomCategory;
-import net.paramount.repository.ProductUomCategoryFacade;
+import net.paramount.auth.entity.UserProfile;
+import net.paramount.repository.UserFacade;
 import net.paramount.utility.JsfUtil;
 
 /**
@@ -20,11 +20,11 @@ import net.paramount.utility.JsfUtil;
  * github.com/medbounaga
  */
 
-@FacesConverter(value = "productUomCategoryConverter")
-public class ProductUomCategoryConverter implements Converter {
+@FacesConverter(value = "userConverter")
+public class UserConverter implements Converter {
 
     @Inject
-    private ProductUomCategoryFacade ejbFacade;
+    private UserFacade ejbFacade;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -40,7 +40,7 @@ public class ProductUomCategoryConverter implements Converter {
         return key;
     }
 
-    String getStringKey(java.lang.Integer value) {
+    String getStringKey(java.lang.Long value) {
         StringBuffer sb = new StringBuffer();
         sb.append(value);
         return sb.toString();
@@ -52,11 +52,11 @@ public class ProductUomCategoryConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof ProductUomCategory) {
-            ProductUomCategory o = (ProductUomCategory) object;
+        if (object instanceof UserProfile) {
+            UserProfile o = (UserProfile) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), ProductUomCategory.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), UserProfile.class.getName()});
             return null;
         }
     }
