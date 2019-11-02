@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 */
 	private String[] buildUnauthorizedMatchers() {
 		String[] unauthorizedPatterns = new String[] { 
+				"/api/**", 
 				"/*", 
 				"/public/**", 
 				"/resources/**", 

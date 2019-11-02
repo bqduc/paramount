@@ -26,7 +26,6 @@ import org.hibernate.annotations.LazyCollectionOption;
  * 
  * github.com/medbounaga
  */
-
 @Entity
 @Table(name = "account")
 @NamedQueries({
@@ -100,8 +99,10 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public Account(Integer id, String name, Boolean active) {
-        this.id = id;
+    public Account(String code, String name, String title, String type, Boolean active) {
+        this.code = code;
+        this.type = type;
+        this.title = title;
         this.name = name;
         this.active = active;
     }

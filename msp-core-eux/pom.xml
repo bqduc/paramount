@@ -8,74 +8,42 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>msp-emx</artifactId>
+    <artifactId>msp-core-eux</artifactId>
     <packaging>jar</packaging>
-    <name>PMSP - Enterprise Management Expierence</name>
-    <description>Module that contains all services for enterprise management in the project. </description>
+    <name>PMSP - Core EUX</name>
+    <description>Module that contains all services for clinical trial and data management in the project. </description>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>msp-core</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
+		
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>msp-aux</artifactId>
-			<version>${project.version}</version>
-		</dependency>	
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>msp-core-eux</artifactId>
-			<version>${project.version}</version>
-		</dependency>	
-    <dependency>
-	    <groupId>org.primefaces</groupId>
-	    <artifactId>primefaces</artifactId>
-			<version>${version.primefaces}</version>
-    </dependency>
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>javax.faces-api</artifactId>
-			<version>2.3</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.faces</artifactId>
-			<version>2.3.3</version>
-		</dependency>
-<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
-		</dependency>		
-		<!-- 
-
-
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>${springfox-swagger.version}</version>
+		    <optional>true</optional>
 		</dependency>
 
 		<dependency>
-			<groupId>org.jboss.weld.servlet</groupId>
-			<artifactId>weld-servlet</artifactId>
-			<version>2.4.5.Final</version>
-		</dependency>    
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>${springfox-swagger.version}</version>
+		    <optional>true</optional>
+		</dependency>
 
-
-
-
-
-
- -->
-
-
-
-
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.6.2</version>
+		</dependency>
 
     <dependency>
 			<groupId>joda-time</groupId>
