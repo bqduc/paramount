@@ -1,5 +1,7 @@
 package net.paramount.msp.config;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -7,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 /**
  * Created by aLeXcBa1990 on 24/11/2018.
@@ -15,7 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+	@Inject
+	private AuthenticationEntryPoint authEntryPoint;
+
 	@Autowired
 	private CustomAuthenticationProvider authProvider;
 
@@ -61,6 +66,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// allow to use resource links like pdf
 		http.headers().frameOptions().sameOrigin();
+		
+		
+        // Tất cả các request gửi tới Web Server yêu cầu phải được xác thực
+        // (authenticated).
+        http.authorizeRequests()
+        .antMatchers(this.buildRestAPIsMatchers()).authenticated()
+        ;
+        
+		http.httpBasic().authenticationEntryPoint(authEntryPoint);
 	}
 /*
 	@Override
@@ -75,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().sameOrigin();
 	}
 */
+	
 	private String[] buildUnauthorizedMatchers() {
 		String[] unauthorizedPatterns = new String[] { 
 				"/api/**", 
@@ -86,6 +101,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"/auth/register/**",
 				"/login.xhtml", 
 				"/javax.faces.resource/**"
+		};
+		return unauthorizedPatterns;
+	}
+
+	private String[] buildRestAPIsMatchers() {
+		String[] unauthorizedPatterns = new String[] { 
+				"/api/**"
 		};
 		return unauthorizedPatterns;
 	}
