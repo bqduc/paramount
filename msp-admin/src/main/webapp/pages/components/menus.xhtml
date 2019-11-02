@@ -16,6 +16,7 @@
     <ui:define name="body">
         <h:form id="form">
             <div class="ui-g ui-fluid">
+            	<!-- 
                 <div class="ui-g-12">
                     <p:panel styleClass="card no-border" header="MenuBar"
                              toggleable="true">
@@ -66,6 +67,7 @@
                         </p:menubar>
                     </p:panel>
                 </div>
+                -->
 
                 <div class="ui-g-12 ui-lg-6">
                     <p:panel styleClass="card no-border" header="Plain Menu"
@@ -461,6 +463,56 @@
                             <p:menuitem value="Quit" url="http://www.primefaces.org"
                                         icon="fa fa-remove" />
                         </p:megaMenu>
+                    </p:panel>
+                </div>
+                <div class="ui-g-12">
+                    <p:panel styleClass="card no-border" header="MenuBar"
+                             toggleable="true">
+                        <p:menubar>
+                            <p:submenu label="File" icon="fa fa-file">
+                                <p:submenu label="New" icon="fa fa-plus">
+                                    <p:menuitem value="Project" url="#" />
+                                    <p:menuitem value="Other" url="#" />
+                                </p:submenu>
+                                <p:menuitem value="Open" url="#" icon="fa fa-folder-open-o" />
+                                <p:separator />
+                                <p:menuitem value="Quit" url="#" icon="fa fa-close" />
+                            </p:submenu>
+
+                            <p:submenu label="Edit" icon="fa fa-pencil">
+                                <p:menuitem value="Undo" url="#" icon="fa fa-undo" />
+                                <p:menuitem value="Redo" url="#" icon="fa fa-repeat" />
+                            </p:submenu>
+
+                            <p:submenu label="Help" icon="fa fa-question">
+                                <p:menuitem value="Contents" url="#" icon="fa fa-book" />
+                                <p:submenu label="Search" icon="fa fa-search">
+                                    <p:submenu label="Text" icon="fa fa-text-height">
+                                        <p:menuitem value="Workspace" url="#" icon="fa fa-suitcase" />
+                                    </p:submenu>
+                                    <p:menuitem value="File" url="#" icon="fa fa-link" />
+                                </p:submenu>
+                            </p:submenu>
+
+                            <p:submenu label="Actions" icon="fa fa-gears">
+                                <p:submenu label="Ajax" icon="fa fa-refresh">
+                                    <p:menuitem value="Save" icon="fa fa-save" />
+                                    <p:menuitem value="Update" icon="fa fa-refresh" />
+                                </p:submenu>
+                                <p:submenu label="Non-Ajax" icon="fa fa-exchange">
+                                    <p:menuitem value="Delete" icon="fa fa-remove" />
+                                </p:submenu>
+                            </p:submenu>
+
+                            <p:menuitem value="Quit" url="http://www.primefaces.org"
+                                        icon="fa fa-remove" />
+
+                            <f:facet name="options">
+                                <p:inputText
+                                    style="margin-right:10px;vertical-align:middle;padding:2px"
+                                    placeholder="Search" />
+                            </f:facet>
+                        </p:menubar>
                     </p:panel>
                 </div>
 
