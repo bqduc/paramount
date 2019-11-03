@@ -26,6 +26,12 @@
 		</dependency>      
 
 		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-base</artifactId>
+			<version>${version.jackson-jaxrs-base}<!--2.4.2--></version>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>${version.javax.inject}</version>

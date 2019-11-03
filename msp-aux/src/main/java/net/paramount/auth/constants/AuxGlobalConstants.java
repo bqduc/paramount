@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.paramount.crs.constants;
+package net.paramount.auth.constants;
 
 /**
  * @author ducbui

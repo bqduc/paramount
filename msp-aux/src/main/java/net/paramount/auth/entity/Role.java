@@ -23,10 +23,7 @@ import net.paramount.framework.entity.ObjectBase;
 @NamedQueries({
     @NamedQuery(name = "Role.findAll", query = "SELECT u FROM UserProfile u"),
     @NamedQuery(name = "Role.findById", query = "SELECT u FROM UserProfile u WHERE u.id = :id"),
-    @NamedQuery(name = "Role.findByLogin", query = "SELECT u FROM UserProfile u WHERE u.login = :login"),
-    @NamedQuery(name = "Role.findByPassword", query = "SELECT u FROM UserProfile u WHERE u.password = :password"),
     @NamedQuery(name = "Role.findByName", query = "SELECT u FROM UserProfile u WHERE u.name = :name"),
-    @NamedQuery(name = "Role.findByUserType", query = "SELECT u FROM UserProfile u WHERE u.userType = :userType"),
     @NamedQuery(name = "Role.findByActive", query = "SELECT u FROM UserProfile u WHERE u.active = :active")})
 public class Role extends ObjectBase {
     private static final long serialVersionUID = 1L;

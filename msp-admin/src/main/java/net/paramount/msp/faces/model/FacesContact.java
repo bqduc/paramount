@@ -17,7 +17,7 @@ package net.paramount.msp.faces.model;
 
 import java.io.Serializable;
 
-public class Contact implements Serializable{
+public class FacesContact implements Serializable{
 
     private String firstname;
     private String surname;

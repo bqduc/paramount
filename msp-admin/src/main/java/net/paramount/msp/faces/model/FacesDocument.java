@@ -17,7 +17,7 @@ package net.paramount.msp.faces.model;
 
 import java.io.Serializable;
 
-public class Document implements Serializable, Comparable<Document> {
+public class FacesDocument implements Serializable, Comparable<FacesDocument> {
 
 	private String name;
 	
@@ -25,7 +25,7 @@ public class Document implements Serializable, Comparable<Document> {
 	
 	private String type;
 	
-	public Document(String name, String size, String type) {
+	public FacesDocument(String name, String size, String type) {
 		this.name = name;
 		this.size = size;
 		this.type = type;
@@ -74,7 +74,7 @@ public class Document implements Serializable, Comparable<Document> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Document other = (Document) obj;
+		FacesDocument other = (FacesDocument) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -98,7 +98,7 @@ public class Document implements Serializable, Comparable<Document> {
 		return name;
 	}
 
-    public int compareTo(Document document) {
+    public int compareTo(FacesDocument document) {
         return this.getName().compareTo(document.getName());
     }
 }

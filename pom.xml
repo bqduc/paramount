@@ -46,6 +46,7 @@
 		<joinfaces.version>4.0.9</joinfaces.version>
 		
 		<version.primefaces>7.0</version.primefaces>
+		<version.jackson-jaxrs-base>2.4.2</version.jackson-jaxrs-base>
 	</properties>
  
     <modules>

@@ -20,7 +20,7 @@ import net.paramount.framework.repository.BaseRepository;
 public interface UserProfileRepository extends BaseRepository <UserProfile, Long>{
 
 	@Query("SELECT entity FROM #{#entityName} entity WHERE ("
-			+ " LOWER(entity.login) like LOWER(CONCAT('%',:keyword,'%'))"
+			+ " LOWER(entity.authAccount.ssoId) like LOWER(CONCAT('%',:keyword,'%'))"
 			+ ")"
 	)
 	Page<UserProfile> search(@Param("keyword") String keyword, Pageable pageable);

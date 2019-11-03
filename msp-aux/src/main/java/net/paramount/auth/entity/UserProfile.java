@@ -8,7 +8,9 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -31,25 +33,13 @@ import net.paramount.framework.entity.ObjectBase;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM UserProfile u"),
     @NamedQuery(name = "User.findById", query = "SELECT u FROM UserProfile u WHERE u.id = :id"),
-    @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM UserProfile u WHERE u.login = :login"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM UserProfile u WHERE u.password = :password"),
+    @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM UserProfile u WHERE u.authAccount.ssoId = :login"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM UserProfile u WHERE u.authAccount.password = :password"),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM UserProfile u WHERE u.name = :name"),
     @NamedQuery(name = "User.findByUserType", query = "SELECT u FROM UserProfile u WHERE u.userType = :userType"),
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM UserProfile u WHERE u.active = :active")})
 public class UserProfile extends ObjectBase {
     private static final long serialVersionUID = 1L;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 64, message = "{LongString}")
-    @Column(name = "login")
-    private String login;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 64, message = "{LongString}")
-    @Column(name = "password")
-    private String password;
 
     @Basic(optional = false)
     @NotNull
@@ -80,30 +70,22 @@ public class UserProfile extends ObjectBase {
 		org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private List<UserRole> roles = new ArrayList<UserRole>();
 
+	@ManyToOne
+	@JoinColumn(name = "auth_account_id")
+	private AuthAccount authAccount;
+
     public UserProfile() {
     }
 
     public UserProfile(String login, String password, String name, Boolean active) {
-        this.login = login;
-        this.password = password;
+    	if (null == this.authAccount) {
+    		this.authAccount = new AuthAccount();
+    	}
+
+  		this.authAccount.setSsoId(login);
+  		this.authAccount.setPassword(password);
         this.name = name;
         this.active = active;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -172,5 +154,12 @@ public class UserProfile extends ObjectBase {
     public String toString() {
         return "User[ id=" + getId() + " ]";
     }
-    
+
+		public AuthAccount getAuthAccount() {
+			return authAccount;
+		}
+
+		public void setAuthAccount(AuthAccount authAccount) {
+			this.authAccount = authAccount;
+		}
 }

@@ -9,7 +9,7 @@ import javax.inject.Named;
 
 import org.primefaces.model.TreeNode;
 
-import net.paramount.msp.faces.model.Document;
+import net.paramount.msp.faces.model.FacesDocument;
 import net.paramount.msp.faces.service.DocumentService;
 
 /**
@@ -26,7 +26,7 @@ public class TreeTableMB implements Serializable {
 
 	private TreeNode root;
 
-	private Document selectedDocument;
+	private FacesDocument selectedDocument;
 
 	private TreeNode[] selectedNodes;
 
@@ -54,11 +54,11 @@ public class TreeTableMB implements Serializable {
 		this.service = service;
 	}
 
-	public Document getSelectedDocument() {
+	public FacesDocument getSelectedDocument() {
 		return selectedDocument;
 	}
 
-	public void setSelectedDocument(Document selectedDocument) {
+	public void setSelectedDocument(FacesDocument selectedDocument) {
 		this.selectedDocument = selectedDocument;
 	}
 }

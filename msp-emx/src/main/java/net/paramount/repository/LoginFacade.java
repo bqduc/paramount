@@ -25,7 +25,7 @@ public class LoginFacade extends BaseDAO{
 
 		public UserProfile userExist(String username, String password) {
 
-        TypedQuery<UserProfile> query = em.createQuery("SELECT u FROM UserProfile u WHERE u.login = :login AND u.password = :password AND u.active = true", UserProfile.class);
+        TypedQuery<UserProfile> query = em.createQuery("SELECT u FROM UserProfile u WHERE u.authAccount.ssoId = :login AND u.authAccount.password = :password AND u.active = true", UserProfile.class);
 
         query.setParameter("login", username);
         query.setParameter("password", password);

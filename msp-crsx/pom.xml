@@ -20,6 +20,18 @@
 			<version>${project.version}</version>
 		</dependency>	
 
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>msp-aux</artifactId>
+			<version>${project.version}</version>
+		</dependency>	
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>msp-css</artifactId>
+			<version>${project.version}</version>
+		</dependency>	
+
     <dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
