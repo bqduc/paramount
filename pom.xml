@@ -52,8 +52,10 @@
         <module>msp-common</module>
         <module>msp-core</module>
         <module>msp-core-eux</module>
-				<module>msp-aux</module>
-				<module>msp-emx</module>
+		<module>msp-aux</module>
+		<module>msp-emx</module>
+		<module>msp-crsx</module>
+		<module>msp-css</module>
         <module>msp-admin</module>
     </modules>
 	
