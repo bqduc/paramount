@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.paramount.constants;
+package net.paramount.framework.constants;
 
 import net.paramount.common.CommonConstants;
 

@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Admin Starter</title>
+    <title>#{messages['general.app.fullTitle']}</title>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport"
@@ -64,34 +64,34 @@
 </h:head>
 <h:body styleClass="hold-transition login-page">
     <div class="login-box">
-        <div class="login-logo">
+        <div class="login-logo"><center>
             <p:link href="index.xhtml">
-                <b>Admin</b>Starter</p:link>
+                #{messages['general.app.title']}</p:link></center>
         </div>
         <div class="box login-box-body">
             <h:form prependId="false">
                 <div>
-                    <p class="login-box-msg">Sign in to start your session</p>
+                    <p class="login-box-msg">#{messages['aux.loginMessage']}</p>
                     <h:panelGroup rendered="#{param.authfailed eq 'true'}">
                         <div class="alert alert-danger">
-                            Invalid username and password.
+                            #{messages['aux.loginInvalid']}.
                         </div>
                     </h:panelGroup>
-                    <ul style="list-style: none; text-align: right; font-size: 11px;">
+                    <!-- <ul style="list-style: none; text-align: right; font-size: 11px;">
                         <li>User name: admin or user</li>
                         <li>Password: admin or user</li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div class="form-group has-feedback">
                     <p:inputText id="username" styleClass="form-control"
-                                 placeholder="Username">
+                                 placeholder="Username" value="#{messages['aux.login']}">
                         <p:focus/>
                     </p:inputText>
                     <i class="fa fa-envelope form-control-feedback"></i>
                 </div>
                 <div class="form-group has-feedback">
                     <p:password id="password" styleClass="form-control"
-                                placeholder="Password" feedback="true"/>
+                                placeholder="#{messages['aux.password']}" feedback="true" value="#{messages['aux.password']}"/>
                     <i class="fa fa-lock form-control-feedback" style="font-size: 18px"></i>
                 </div>
                 <div class="row">
@@ -102,8 +102,8 @@
                     </div>
                 </div>
             </h:form>
-            <a href="#">I forgot my password</a> <br/> <a href="#"
-                                                          class="text-center">Register a new membership</a>
+            <a href="#">#{messages['aux.forgotPassword']}</a> <br/> <a href="#"
+                                                          class="text-center">#{messages['aux.registerNewMembership']}</a>
         </div>
     </div>
 </h:body>

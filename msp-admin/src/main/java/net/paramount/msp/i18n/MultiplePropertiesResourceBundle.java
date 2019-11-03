@@ -403,6 +403,7 @@ public abstract class MultiplePropertiesResourceBundle extends ResourceBundle {
 							}
 						}
 					} catch (Exception e) {
+						LOG.log(Level.WARNING, CLASS, e.getMessage());
 					}
 				}
 			}

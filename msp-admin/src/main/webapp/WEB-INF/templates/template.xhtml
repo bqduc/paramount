@@ -20,15 +20,15 @@
         <meta name="mobile-web-app-capable" content="yes"/>
 
         <f:loadBundle var="theme" basename="admin-theme"/>
-        <title>AdminFaces Showcase</title>
+        <title>#{messages['general.app.fullTitle']}</title>
     </ui:define>
 
     <ui:define name="logo-lg">
-        Admin Showcase
+        #{messages['general.app.fullTitle']}
     </ui:define>
 
     <ui:define name="logo-mini">
-        Admin
+        #{messages['general.app.title']}
     </ui:define>
 
     <ui:define name="menu">
@@ -58,7 +58,7 @@
                        target='_blank'&gt;PrimeFaces &lt;span style='font-weight: 600'&gt;
                        #{msg['primefaces.version']}&lt;/span&gt;&lt;/a&gt;
                        "/>
-            Powered by <h:link value="AdminFaces - © 2017-2019" id="admin-footer" href="#" onclick="void(0);return false"/>
+            Powered by <h:link value="AdminFaces - © 2018-2019" id="admin-footer" href="#" onclick="void(0);return false"/>
             <div class="pull-right " style="color: gray">
                 Page views: <h:link id="link-stats" href="#" onclick="void(0);return false"> <span
                         style="font-weight: 600"> #{analyticsMB.pageStats.totalPageViews}</span></h:link>

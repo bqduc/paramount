@@ -35,8 +35,8 @@ import net.paramount.common.CommonBeanUtils;
 import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.constants.ControllerConstants;
 import net.paramount.domain.SelectItem;
+import net.paramount.framework.constants.ControllerConstants;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.helper.WebServicingHelper;
 
