@@ -33,18 +33,18 @@ import net.paramount.validation.StrictlyPositiveNumber;
  */
 
 @Entity
-@Table(name = "payment")
+@Table(name = "enterprise_payment")
 @NamedQueries({
-    @NamedQuery(name = "Payment.findByPartner", query = "SELECT p FROM Payment p WHERE p.partner.id = :partnerId AND p.partnerType = :partnerType "),
-    @NamedQuery(name = "Payment.countByPartner", query = "SELECT COUNT(p) FROM Payment p WHERE p.partner.id = :partnerId AND p.partnerType = :partnerType"),
-    @NamedQuery(name = "Payment.findOutstandingByPartner", query = "SELECT p FROM Payment p WHERE p.partner.id = :partnerId AND p.type = :type AND p.state = :status AND p.partnerType = :partnerType AND p.overpayment > 0"),
-    @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
-    @NamedQuery(name = "Payment.findByPartnerType", query = "SELECT p FROM Payment p WHERE p.partnerType = :partnerType"),
-    @NamedQuery(name = "Payment.findById", query = "SELECT p FROM Payment p WHERE p.id = :id"),
-    @NamedQuery(name = "Payment.findByDate", query = "SELECT p FROM Payment p WHERE p.date = :date"),
-    @NamedQuery(name = "Payment.findByAmount", query = "SELECT p FROM Payment p WHERE p.amount = :amount"),
-    @NamedQuery(name = "Payment.findByActive", query = "SELECT p FROM Payment p WHERE p.active = :active")})
-public class Payment implements Serializable {
+    @NamedQuery(name = "Payment.findByPartner", query = "SELECT p FROM EnterprisePayment p WHERE p.partner.id = :partnerId AND p.partnerType = :partnerType "),
+    @NamedQuery(name = "Payment.countByPartner", query = "SELECT COUNT(p) FROM EnterprisePayment p WHERE p.partner.id = :partnerId AND p.partnerType = :partnerType"),
+    @NamedQuery(name = "Payment.findOutstandingByPartner", query = "SELECT p FROM EnterprisePayment p WHERE p.partner.id = :partnerId AND p.type = :type AND p.state = :status AND p.partnerType = :partnerType AND p.overpayment > 0"),
+    @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM EnterprisePayment p"),
+    @NamedQuery(name = "Payment.findByPartnerType", query = "SELECT p FROM EnterprisePayment p WHERE p.partnerType = :partnerType"),
+    @NamedQuery(name = "Payment.findById", query = "SELECT p FROM EnterprisePayment p WHERE p.id = :id"),
+    @NamedQuery(name = "Payment.findByDate", query = "SELECT p FROM EnterprisePayment p WHERE p.date = :date"),
+    @NamedQuery(name = "Payment.findByAmount", query = "SELECT p FROM EnterprisePayment p WHERE p.amount = :amount"),
+    @NamedQuery(name = "Payment.findByActive", query = "SELECT p FROM EnterprisePayment p WHERE p.active = :active")})
+public class EnterprisePayment implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -90,7 +90,7 @@ public class Payment implements Serializable {
     private Boolean active;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne
-    private Account account;
+    private EnterpriseAccount account;
     @JoinColumn(name = "entry_id", referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.PERSIST)
     private JournalEntry journalEntry;
@@ -105,11 +105,11 @@ public class Payment implements Serializable {
     private Partner partner;
     
 
-    public Payment() {
+    public EnterprisePayment() {
 
     }
 
-    public Payment(double amount, Date date, Partner partner, Journal journal, String type, Boolean active, Account account, JournalEntry journalEntry, Invoice invoice, String state, double overpayment, String partnerType) {
+    public EnterprisePayment(double amount, Date date, Partner partner, Journal journal, String type, Boolean active, EnterpriseAccount account, JournalEntry journalEntry, Invoice invoice, String state, double overpayment, String partnerType) {
         this.type = type;
         this.active = active;
         this.account = account;
@@ -125,7 +125,7 @@ public class Payment implements Serializable {
     }
     
 
-    public Payment(double amount, Date date, Partner partner, Journal journal, String type, Boolean active, Account account, JournalEntry journalEntry, Invoice invoice, String state, String reference, double overpayment, String partnerType) {
+    public EnterprisePayment(double amount, Date date, Partner partner, Journal journal, String type, Boolean active, EnterpriseAccount account, JournalEntry journalEntry, Invoice invoice, String state, String reference, double overpayment, String partnerType) {
         this.type = type;
         this.active = active;
         this.account = account;
@@ -221,11 +221,11 @@ public class Payment implements Serializable {
         this.state = state;
     }
 
-    public Account getAccount() {
+    public EnterpriseAccount getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(EnterpriseAccount account) {
         this.account = account;
     }
 
@@ -272,10 +272,10 @@ public class Payment implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Payment)) {
+        if (!(object instanceof EnterprisePayment)) {
             return false;
         }
-        Payment other = (Payment) object;
+        EnterprisePayment other = (EnterprisePayment) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

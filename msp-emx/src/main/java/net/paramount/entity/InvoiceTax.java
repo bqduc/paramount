@@ -61,18 +61,18 @@ public class InvoiceTax implements Serializable {
     private Boolean active;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne
-    private Account account;
+    private EnterpriseAccount account;
     @JoinColumn(name = "invoice_id", referencedColumnName = "id")
     @ManyToOne
     private Invoice invoice;
     @JoinColumn(name = "tax_id", referencedColumnName = "id")
     @ManyToOne
-    private Tax tax;
+    private EnterpriseTax tax;
 
     public InvoiceTax() {
     }
 
-    public InvoiceTax(Date date, Double taxAmount, Double baseAmount, Boolean active, Account account, Invoice invoice, Tax tax) {
+    public InvoiceTax(Date date, Double taxAmount, Double baseAmount, Boolean active, EnterpriseAccount account, Invoice invoice, EnterpriseTax tax) {
         this.date = date;
         this.taxAmount = taxAmount;
         this.baseAmount = baseAmount;
@@ -132,11 +132,11 @@ public class InvoiceTax implements Serializable {
         this.active = active;
     }
 
-    public Account getAccount() {
+    public EnterpriseAccount getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(EnterpriseAccount account) {
         this.account = account;
     }
 
@@ -148,11 +148,11 @@ public class InvoiceTax implements Serializable {
         this.invoice = invoice;
     }
 
-    public Tax getTax() {
+    public EnterpriseTax getTax() {
         return tax;
     }
 
-    public void setTax(Tax tax) {
+    public void setTax(EnterpriseTax tax) {
         this.tax = tax;
     }
 

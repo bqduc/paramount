@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Account;
+import net.paramount.entity.EnterpriseAccount;
 import net.paramount.entity.Partner;
 import net.paramount.framework.repository.BaseDAO;
 
@@ -167,7 +167,7 @@ public class PartnerFacade extends BaseDAO{
         return invoicedSum;
     }
     
-    public List<Account> findByType(String type) {
+    public List<EnterpriseAccount> findByType(String type) {
      List result = em.createNamedQuery("Account.findByType")
              .setParameter("type", type)
              .getResultList();

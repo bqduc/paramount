@@ -50,7 +50,7 @@ public class ProductCategory implements Serializable {
 
     @OneToMany(mappedBy = "category")
     //@LazyCollection(LazyCollectionOption.FALSE)
-    private List<Product> products;
+    private List<EnterpriseProduct> products;
 
     public ProductCategory() {
     }
@@ -89,11 +89,11 @@ public class ProductCategory implements Serializable {
         this.active = active;
     }
 
-    public List<Product> getProducts() {
+    public List<EnterpriseProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<EnterpriseProduct> products) {
         this.products = products;
     }
 

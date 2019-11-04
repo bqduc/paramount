@@ -16,7 +16,6 @@
 package net.paramount.crs.entity;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -31,13 +30,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.paramount.auth.entity.AuthAccount;
+import net.paramount.css.entity.Currency;
+import net.paramount.css.entity.Item;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**
@@ -81,7 +79,6 @@ public class Activity extends BizObjectBase {
 	@Type(type = "org.hibernate.type.TextType")
 	private String description;
 
-	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "issue_date")
 	private Date dueDate;
 

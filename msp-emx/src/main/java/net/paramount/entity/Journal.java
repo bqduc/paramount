@@ -78,7 +78,7 @@ public class Journal implements Serializable {
 
     @OneToMany(mappedBy = "journal")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Payment> payments;
+    private List<EnterprisePayment> payments;
 
     @OneToMany(mappedBy = "journal")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -143,11 +143,11 @@ public class Journal implements Serializable {
         this.journalEntries = journalEntries;
     }
 
-    public List<Payment> getPayments() {
+    public List<EnterprisePayment> getPayments() {
         return payments;
     }
 
-    public void setPayments(List<Payment> payments) {
+    public void setPayments(List<EnterprisePayment> payments) {
         this.payments = payments;
     }
 

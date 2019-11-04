@@ -153,11 +153,11 @@ public class Partner implements Serializable {
 
     @JoinColumn(name = "accountReceivable_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Account accountReceivable;
+    private EnterpriseAccount accountReceivable;
 
     @JoinColumn(name = "accountPayable_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Account accountPayable;   
+    private EnterpriseAccount accountPayable;   
 
     @OneToMany(mappedBy = "partner")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -189,7 +189,7 @@ public class Partner implements Serializable {
 
     @OneToMany(mappedBy = "partner")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Payment> payments;
+    private List<EnterprisePayment> payments;
 
     @OneToMany(mappedBy = "partner")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -384,19 +384,19 @@ public class Partner implements Serializable {
         this.createDate = createDate;
     }
 
-    public Account getAccountReceivable() {
+    public EnterpriseAccount getAccountReceivable() {
         return accountReceivable;
     }
 
-    public void setAccountReceivable(Account accountReceivable) {
+    public void setAccountReceivable(EnterpriseAccount accountReceivable) {
         this.accountReceivable = accountReceivable;
     }
 
-    public Account getAccountPayable() {
+    public EnterpriseAccount getAccountPayable() {
         return accountPayable;
     }
 
-    public void setAccountPayable(Account accountPayable) {
+    public void setAccountPayable(EnterpriseAccount accountPayable) {
         this.accountPayable = accountPayable;
     }
 
@@ -456,11 +456,11 @@ public class Partner implements Serializable {
         this.saleOrders = saleOrders;
     }
 
-    public List<Payment> getPayments() {
+    public List<EnterprisePayment> getPayments() {
         return payments;
     }
 
-    public void setPayments(List<Payment> payments) {
+    public void setPayments(List<EnterprisePayment> payments) {
         this.payments = payments;
     }
 

@@ -99,10 +99,10 @@ public class SaleOrderLine implements Serializable {
     private SaleOrder saleOrder;
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Product product;
+    private EnterpriseProduct product;
     @JoinColumn(name = "tax_id", referencedColumnName = "id")
     @ManyToOne
-    private Tax tax;
+    private EnterpriseTax tax;
 
 
     public SaleOrderLine() {
@@ -216,19 +216,19 @@ public class SaleOrderLine implements Serializable {
         this.saleOrder = saleOrder;
     }
 
-    public Product getProduct() {
+    public EnterpriseProduct getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(EnterpriseProduct product) {
         this.product = product;
     }
 
-    public Tax getTax() {
+    public EnterpriseTax getTax() {
         return tax;
     }
 
-    public void setTax(Tax tax) {
+    public void setTax(EnterpriseTax tax) {
         this.tax = tax;
     }
 

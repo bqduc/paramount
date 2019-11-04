@@ -94,7 +94,7 @@ public class JournalEntry implements Serializable {
     private Partner partner;
 
     @OneToOne(mappedBy = "journalEntry")
-    private Payment payment;
+    private EnterprisePayment payment;
 
     @OneToOne(mappedBy = "journalEntry")
     private Invoice invoice;
@@ -106,7 +106,7 @@ public class JournalEntry implements Serializable {
     public JournalEntry() {
     }
 
-    public JournalEntry(String name, String ref, Date date, Boolean active, Journal journal, Partner partner, Payment payment, Invoice invoice, String state, double amount) {
+    public JournalEntry(String name, String ref, Date date, Boolean active, Journal journal, Partner partner, EnterprisePayment payment, Invoice invoice, String state, double amount) {
         this.name = name;
         this.ref = ref;
         this.date = date;
@@ -119,7 +119,7 @@ public class JournalEntry implements Serializable {
         this.amount = amount;
     }
     
-    public JournalEntry(String ref, Date date, Boolean active, Journal journal, Partner partner, Payment payment, Invoice invoice, String state, double amount) {
+    public JournalEntry(String ref, Date date, Boolean active, Journal journal, Partner partner, EnterprisePayment payment, Invoice invoice, String state, double amount) {
         this.ref = ref;
         this.date = date;
         this.active = active;
@@ -213,11 +213,11 @@ public class JournalEntry implements Serializable {
         this.partner = partner;
     }
     
-    public Payment getPayment() {
+    public EnterprisePayment getPayment() {
         return payment;
     }
 
-    public void setPayment(Payment payment) {
+    public void setPayment(EnterprisePayment payment) {
         this.payment = payment;
     }
 

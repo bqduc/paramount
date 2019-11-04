@@ -94,7 +94,7 @@ public class DeliveryOrderLine implements Serializable {
 
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ManyToOne(optional = false,  fetch = FetchType.EAGER )
-    private Product product;
+    private EnterpriseProduct product;
     
     
     
@@ -105,7 +105,7 @@ public class DeliveryOrderLine implements Serializable {
         this.id = id;
     }
 
-    public DeliveryOrderLine(Product product, Double quantity, Double reserved, String uom, String state, String type, Boolean active, Partner partner, double price, DeliveryOrder deliveryOrder) {
+    public DeliveryOrderLine(EnterpriseProduct product, Double quantity, Double reserved, String uom, String state, String type, Boolean active, Partner partner, double price, DeliveryOrder deliveryOrder) {
         this.product = product;
         this.quantity = quantity;
         this.uom = uom;
@@ -190,11 +190,11 @@ public class DeliveryOrderLine implements Serializable {
         this.deliveryOrder = deliveryOrder;
     }
 
-    public Product getProduct() {
+    public EnterpriseProduct getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(EnterpriseProduct product) {
         this.product = product;
     }
 

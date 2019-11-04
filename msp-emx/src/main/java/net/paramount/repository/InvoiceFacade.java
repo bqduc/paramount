@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Account;
+import net.paramount.entity.EnterpriseAccount;
 import net.paramount.entity.Invoice;
 import net.paramount.entity.InvoiceLine;
 import net.paramount.entity.InvoicePayment;
 import net.paramount.entity.Journal;
 import net.paramount.entity.JournalEntry;
 import net.paramount.entity.Partner;
-import net.paramount.entity.Payment;
-import net.paramount.entity.Product;
+import net.paramount.entity.EnterprisePayment;
+import net.paramount.entity.EnterpriseProduct;
 import net.paramount.entity.PurchaseOrder;
 import net.paramount.entity.SaleOrder;
 import net.paramount.framework.repository.BaseDAO;
@@ -71,7 +71,7 @@ public class InvoiceFacade extends BaseDAO{
         return result;
     }
 
-    public List<Product> findTopNSoldProducts(int n) {
+    public List<EnterpriseProduct> findTopNSoldProducts(int n) {
         List result = em.createNamedQuery("Product.findBySaleOk")
                 .setMaxResults(n)
                 .getResultList();
@@ -80,7 +80,7 @@ public class InvoiceFacade extends BaseDAO{
     }
     
     
-    public List<Product> findTopNPurchasedProducts(int n) {
+    public List<EnterpriseProduct> findTopNPurchasedProducts(int n) {
         List result = em.createNamedQuery("Product.findByPurchaseOk")
                 .setMaxResults(n)
                 .getResultList();
@@ -104,7 +104,7 @@ public class InvoiceFacade extends BaseDAO{
         return outInvoices;
     }
 
-    public Payment create(Payment entity, String partnerType, String type) {
+    public EnterprisePayment create(EnterprisePayment entity, String partnerType, String type) {
         if (entity != null) {
 
             em.persist(entity);
@@ -149,7 +149,7 @@ public class InvoiceFacade extends BaseDAO{
         return entity;
     }
 
-    public Payment update(Payment entity) {
+    public EnterprisePayment update(EnterprisePayment entity) {
         em.merge(entity);
         return entity;
     }
@@ -190,8 +190,8 @@ public class InvoiceFacade extends BaseDAO{
     }
 
 
-    public Payment findPayment(Object id) {
-        return em.find(Payment.class, id);
+    public EnterprisePayment findPayment(Object id) {
+        return em.find(EnterprisePayment.class, id);
     }
 
     public List<Invoice> findBySaleId(int saleId) {
@@ -210,9 +210,9 @@ public class InvoiceFacade extends BaseDAO{
         return result;
     }
 
-    public Account findAccount(Object name) {
+    public EnterpriseAccount findAccount(Object name) {
 
-         List<Account> accounts = em.createNamedQuery("Account.findByName")
+         List<EnterpriseAccount> accounts = em.createNamedQuery("Account.findByName")
                 .setParameter("name", name)
                 .getResultList();
 
@@ -264,8 +264,8 @@ public class InvoiceFacade extends BaseDAO{
                 .getResultList();
     }
 
-    public List<Payment> findSupplierOutstandingPayments(int partnerId) {
-        List<Payment> payments = em.createNamedQuery("Payment.findOutstandingByPartner")
+    public List<EnterprisePayment> findSupplierOutstandingPayments(int partnerId) {
+        List<EnterprisePayment> payments = em.createNamedQuery("Payment.findOutstandingByPartner")
                 .setParameter("partnerId", partnerId)
                 .setParameter("type", "out")
                 .setParameter("status", "Posted")
@@ -275,8 +275,8 @@ public class InvoiceFacade extends BaseDAO{
         return payments;
     }
 
-    public List<Payment> findCustomerOutstandingPayments(int partnerId) {
-        List<Payment> payments = em.createNamedQuery("Payment.findOutstandingByPartner")
+    public List<EnterprisePayment> findCustomerOutstandingPayments(int partnerId) {
+        List<EnterprisePayment> payments = em.createNamedQuery("Payment.findOutstandingByPartner")
                 .setParameter("partnerId", partnerId)
                 .setParameter("type", "in")
                 .setParameter("status", "Posted")
@@ -286,9 +286,9 @@ public class InvoiceFacade extends BaseDAO{
         return payments;
     }
 
-    public List<Account> findAccountByName(String name) {
+    public List<EnterpriseAccount> findAccountByName(String name) {
 
-        List<Account> accounts = em.createNamedQuery("Account.findByName")
+        List<EnterpriseAccount> accounts = em.createNamedQuery("Account.findByName")
                 .setParameter("name", name)
                 .getResultList();
 

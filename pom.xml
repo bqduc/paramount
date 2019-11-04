@@ -47,17 +47,21 @@
 		
 		<version.primefaces>7.0</version.primefaces>
 		<version.jackson-jaxrs-base>2.4.2</version.jackson-jaxrs-base>
+		<version.xlsx-streamer>2.1.0</version.xlsx-streamer>
+		<version.javafaker>0.17.2</version.javafaker>
 	</properties>
  
     <modules>
-        <module>msp-common</module>
-        <module>msp-core</module>
-        <module>msp-core-eux</module>
-		<module>msp-aux</module>
-		<module>msp-emx</module>
-		<module>msp-crsx</module>
-		<module>msp-css</module>
-        <module>msp-admin</module>
+      <module>msp-common</module>
+      <module>msp-core</module>
+      <module>msp-core-eux</module>
+			<module>msp-aux</module>
+			<module>msp-emx</module>
+			<module>msp-crsx</module>
+			<module>msp-css</module>
+			<module>msp-osx</module>
+			<module>msp-dmx</module>
+			<module>msp-admin</module>
     </modules>
 	
     <dependencies>

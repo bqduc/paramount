@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Tax;
+import net.paramount.entity.EnterpriseTax;
 import net.paramount.framework.repository.BaseDAO;
 
 /**
@@ -23,47 +23,47 @@ public class TaxFacade extends BaseDAO{
 	 */
 	private static final long serialVersionUID = 2040454149756281288L;
 
-		public Tax create(Tax entity) {
+		public EnterpriseTax create(EnterpriseTax entity) {
         em.persist(entity);
         return entity;
     }
 
-    public Tax update(Tax entity) {
+    public EnterpriseTax update(EnterpriseTax entity) {
         em.merge(entity);
         return entity;
     }
 
-    public void remove(Tax entity) {
+    public void remove(EnterpriseTax entity) {
         em.remove(em.merge(entity));
     }
 
-    public Tax find(Object id) {
-        return em.find(Tax.class, id);
+    public EnterpriseTax find(Object id) {
+        return em.find(EnterpriseTax.class, id);
     }
     
-    public List<Tax> findSaleTaxes() {
-        List<Tax> taxes = em.createNamedQuery("Tax.findByType")
+    public List<EnterpriseTax> findSaleTaxes() {
+        List<EnterpriseTax> taxes = em.createNamedQuery("Tax.findByType")
                 .setParameter("typeTaxUse", "Sale")
                 .getResultList();
         return taxes;
     }
     
-    public List<Tax> findPurchaseTaxes() {
-        List<Tax> taxes = em.createNamedQuery("Tax.findByType")
+    public List<EnterpriseTax> findPurchaseTaxes() {
+        List<EnterpriseTax> taxes = em.createNamedQuery("Tax.findByType")
                 .setParameter("typeTaxUse", "Purchase")
                 .getResultList();
         return taxes;
     }
 
-    public List<Tax> findAll() {
+    public List<EnterpriseTax> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Tax.class));
+        cq.select(cq.from(EnterpriseTax.class));
         return em.createQuery(cq).getResultList();
     }
 
-    public List<Tax> findRange(int[] range) {
+    public List<EnterpriseTax> findRange(int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Tax.class));
+        cq.select(cq.from(EnterpriseTax.class));
         javax.persistence.Query q = em.createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
         q.setFirstResult(range[0]);
@@ -72,7 +72,7 @@ public class TaxFacade extends BaseDAO{
 
     public int count() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<Tax> rt = cq.from(Tax.class);
+        javax.persistence.criteria.Root<EnterpriseTax> rt = cq.from(EnterpriseTax.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         javax.persistence.Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();

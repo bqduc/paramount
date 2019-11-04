@@ -91,10 +91,10 @@ public class PurchaseOrderLine implements Serializable{
     private PurchaseOrder purchaseOrder;
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Product product;
+    private EnterpriseProduct product;
     @JoinColumn(name = "tax_id", referencedColumnName = "id")
     @ManyToOne
-    private Tax tax;
+    private EnterpriseTax tax;
 
     public PurchaseOrderLine() {
     }
@@ -183,11 +183,11 @@ public class PurchaseOrderLine implements Serializable{
         this.purchaseOrder = purchaseOrder;
     }
 
-    public Product getProduct() {
+    public EnterpriseProduct getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(EnterpriseProduct product) {
         this.product = product;
     }
 
@@ -223,11 +223,11 @@ public class PurchaseOrderLine implements Serializable{
         this.invoiced = invoiced;
     }
 
-    public Tax getTax() {
+    public EnterpriseTax getTax() {
         return tax;
     }
 
-    public void setTax(Tax tax) {
+    public void setTax(EnterpriseTax tax) {
         this.tax = tax;
     }
 

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import net.paramount.css.entity.base.BaseTaxGroup;
 
 @Entity
-@Table(name = "vpos_tax_group")
+@Table(name = "tax_group")
 @EqualsAndHashCode(callSuper = true)
 public class TaxGroup extends BaseTaxGroup {
 	private static final long serialVersionUID = 1L;

@@ -13,19 +13,16 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package net.paramount.crs.entity;
+package net.paramount.crs.entity.base;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
@@ -33,21 +30,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import net.paramount.auth.entity.AuthAccount;
-import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.css.entity.Document;
 import net.paramount.css.entity.Item;
@@ -55,42 +44,32 @@ import net.paramount.css.model.ContactType;
 import net.paramount.embeddable.Phone;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.global.GlobalConstants;
-import net.paramount.model.GenderType;
 
 /**
  * A contact.
  * 
  * @author Bui Quy Duc
  */
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "contact")
-@EqualsAndHashCode(callSuper = true)
-public class Contact extends BizObjectBase {
-	private static final long serialVersionUID = -5019226095410649159L;
+//@Entity
+//@Table(name = "contact")
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
+//@DiscriminatorValue(value = "0")
+@MappedSuperclass
+public abstract class ContactClass extends BizObjectBase {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -913646501472973260L;
 
 	@Column(name="code", length=GlobalConstants.SIZE_SERIAL, unique=true)
 	private String code;
-
-	@Column(name="saluation", length=5)
-	private String saluation;
-
-	@Column(name="first_name", length=50)
-	private String firstName;
-
-	@Column(name="last_name", length=150)
-	private String lastName;
 
 	@Column(name="account_name", length=150)
 	private String accountName;
 
 	@Column(name="title", length=50)
 	private String title;
-
-	@Column(name="department", length=50)
-	private String department;
 
   @Embedded
   @AttributeOverrides({
@@ -108,21 +87,18 @@ public class Contact extends BizObjectBase {
 	@Column(name="portal_secret_key", length=50)
 	private String portalSecretKey;
 
-	@Builder.Default
 	@Column(name = "portal_active")
 	private java.lang.Boolean portalActive = false;
 
-	@Column(name="email", /*nullable=false, unique = true, */length=120)
+	@Column(name="email", length=120)
 	private String email;
 
 	@Column(name="email_others", length=120)
 	private String emailOthers;
 
-	@Builder.Default
 	@Column(name = "email_opt_out")
 	private java.lang.Boolean emailOptOut = false;
 
-	@Builder.Default
 	@Column(name = "email_invalid")
 	private java.lang.Boolean emailInvalid = false;
 
@@ -137,17 +113,6 @@ public class Contact extends BizObjectBase {
 	@Column(name="fax", length=20)
 	private String fax;
 
-  @Column(name="birthdate")
-	@DateTimeFormat(iso = ISO.DATE)
-  private Date birthdate;
-
-	@Column(name="birthplace", length=50)
-	private String birthplace;
-
-	@Column(name="gender")
-  @Enumerated(EnumType.ORDINAL)
-  private GenderType gender;
-
 	@Column(name="type")
   @Enumerated(EnumType.ORDINAL)
   private ContactType type;
@@ -161,7 +126,7 @@ public class Contact extends BizObjectBase {
 	private String resetKey;
 
 	@Column(name="reset_date")
-	private ZonedDateTime resetDate;
+	private Date resetDate;
 
 	@Lob
 	@Column(name = "description", columnDefinition = "TEXT")
@@ -170,39 +135,18 @@ public class Contact extends BizObjectBase {
 
 	@ManyToOne
 	@JoinColumn(name = "reports_contact_id")
-	private Contact reportsTo;
+	private ContactClass reportsTo;
 
 	@ManyToOne
 	@JoinColumn(name = "assistant_contact_id")
-	private Contact assistant;
+	private ContactClass assistant;
 
-	@Builder.Default
 	@Column(name = "sync_contact")
 	private java.lang.Boolean syncContact = false;
 
-	@Builder.Default
 	@Column(name = "do_not_call")
 	private java.lang.Boolean doNotCall = false;
 
-	/*@Builder.Default
-	@Lazy
-	@OneToMany(mappedBy="contact", cascade = CascadeType.ALL)
-	private Set<ContactAddress> contactAddresses = ListUtility.newHashSet();
-
-	@Builder.Default
-	@Lazy
-	@OneToMany(mappedBy="contact", cascade = CascadeType.ALL)
-	private Set<ContactTeam> contactTeams = ListUtility.newHashSet();*/
-
-	@Transient
-	@Builder.Default
-	private Set<ContactAddress> contactAddresses = ListUtility.newHashSet();
-
-	@Builder.Default
-	@Transient
-	private Set<ContactTeam> contactTeams = ListUtility.newHashSet();
-
-	@Builder.Default
 	@ManyToMany(cascade = {
       CascadeType.PERSIST,
       CascadeType.MERGE
@@ -215,15 +159,14 @@ public class Contact extends BizObjectBase {
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_user_id")
-	private AuthAccount ownerAuthAccount;
+	private AuthAccount ownerUserAccount;
 
   @Column(name="issue_date")
-	@DateTimeFormat(iso = ISO.DATE_TIME)
   private Date issueDate;
 	
-  @Column(name="issue_user_id")
-	@DateTimeFormat(iso = ISO.DATE)
-  private AuthAccount issueAuthAccount;
+	@ManyToOne
+	@JoinColumn(name="issue_user_id")
+  private AuthAccount issueUserAccount;
 
   public String getCode() {
 		return code;
@@ -231,14 +174,6 @@ public class Contact extends BizObjectBase {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	public String getSaluation() {
-		return saluation;
-	}
-
-	public void setSaluation(String saluation) {
-		this.saluation = saluation;
 	}
 
 	public Phone getPhone() {
@@ -273,14 +208,6 @@ public class Contact extends BizObjectBase {
 		this.fax = fax;
 	}
 
-	public Date getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
-	}
-
 	public String getActivationKey() {
 		return activationKey;
 	}
@@ -297,11 +224,11 @@ public class Contact extends BizObjectBase {
 		this.resetKey = resetKey;
 	}
 
-	public ZonedDateTime getResetDate() {
+	public Date getResetDate() {
 		return resetDate;
 	}
 
-	public void setResetDate(ZonedDateTime resetDate) {
+	public void setResetDate(Date resetDate) {
 		this.resetDate = resetDate;
 	}
 
@@ -345,14 +272,6 @@ public class Contact extends BizObjectBase {
 		this.leadSource = leadSource;
 	}
 
-	public GenderType getGender() {
-		return gender;
-	}
-
-	public void setGender(GenderType gender) {
-		this.gender = gender;
-	}
-
 	public ContactType getType() {
 		return type;
 	}
@@ -361,19 +280,19 @@ public class Contact extends BizObjectBase {
 		this.type = type;
 	}
 
-	public Contact getReportsTo() {
+	public ContactClass getReportsTo() {
 		return reportsTo;
 	}
 
-	public void setReportsTo(Contact reportsTo) {
+	public void setReportsTo(ContactClass reportsTo) {
 		this.reportsTo = reportsTo;
 	}
 
-	public Contact getAssistant() {
+	public ContactClass getAssistant() {
 		return assistant;
 	}
 
-	public void setAssistant(Contact assistant) {
+	public void setAssistant(ContactClass assistant) {
 		this.assistant = assistant;
 	}
 
@@ -393,63 +312,13 @@ public class Contact extends BizObjectBase {
 		this.doNotCall = doNotCall;
 	}
 
-	public Set<ContactAddress> getContactAddresses() {
-		return contactAddresses;
+	public AuthAccount getOwnerUserAccount() {
+		return ownerUserAccount;
 	}
 
-	public void setContactAddresses(List<ContactAddress> contactAddresses) {
-		if (null==this.contactAddresses)
-			this.contactAddresses = ListUtility.newHashSet();
-
-		if (CommonUtility.isNotEmpty(contactAddresses)){
-			this.contactAddresses.addAll(contactAddresses);
-		}
+	public void setOwnerUserAccount(AuthAccount ownerUserAccount) {
+		this.ownerUserAccount = ownerUserAccount;
 	}
-
-	public void setContactAddresses(Set<ContactAddress> contactAddresses) {
-		this.contactAddresses = contactAddresses;
-	}
-
-	public Set<ContactTeam> getContactTeams() {
-		return contactTeams;
-	}
-
-	public void setContactTeams(List<ContactTeam> contactTeams) {
-		if (null==this.contactTeams)
-			this.contactTeams = ListUtility.newHashSet();
-
-		if (CommonUtility.isNotEmpty(contactTeams)){
-			this.contactTeams.addAll(contactTeams);
-		}
-	}
-
-	public void setContactTeams(Set<ContactTeam> contactTeams) {
-		this.contactTeams = contactTeams;
-	}
-
-	public AuthAccount getOwnerAuthAccount() {
-		return ownerAuthAccount;
-	}
-
-	public void setOwnerAuthAccount(AuthAccount ownerAuthAccount) {
-		this.ownerAuthAccount = ownerAuthAccount;
-	}
-
-	public String getBirthplace() {
-		return birthplace;
-	}
-
-	public void setBirthplace(String birthplace) {
-		this.birthplace = birthplace;
-	}
-
-	/*public PersonalInfo getPersonalInfo() {
-		return personalInfo;
-	}
-
-	public void setPersonalInfo(PersonalInfo personalInfo) {
-		this.personalInfo = personalInfo;
-	}*/
 
 	public List<Document> getDocuments() {
 		return documents;
@@ -457,22 +326,6 @@ public class Contact extends BizObjectBase {
 
 	public void setDocuments(List<Document> documents) {
 		this.documents = documents;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getAccountName() {
@@ -489,14 +342,6 @@ public class Contact extends BizObjectBase {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
 	}
 
 	public String getPortalName() {
@@ -531,12 +376,12 @@ public class Contact extends BizObjectBase {
 		this.issueDate = issueDate;
 	}
 
-	public AuthAccount getIssueAuthAccount() {
-		return issueAuthAccount;
+	public AuthAccount getIssueUserAccount() {
+		return issueUserAccount;
 	}
 
-	public void setIssueAuthAccount(AuthAccount issueAuthAccount) {
-		this.issueAuthAccount = issueAuthAccount;
+	public void setIssueUserAccount(AuthAccount issueUserAccount) {
+		this.issueUserAccount = issueUserAccount;
 	}
 
 }

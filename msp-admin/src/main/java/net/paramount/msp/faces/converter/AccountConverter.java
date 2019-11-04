@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Account;
+import net.paramount.entity.EnterpriseAccount;
 import net.paramount.repository.AccountFacade;
 import net.paramount.utility.JsfUtil;
 
@@ -52,11 +52,11 @@ public class AccountConverter implements Converter<Object> {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Account) {
-            Account o = (Account) object;
+        if (object instanceof EnterpriseAccount) {
+            EnterpriseAccount o = (EnterpriseAccount) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Account.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), EnterpriseAccount.class.getName()});
             return null;
         }
     }

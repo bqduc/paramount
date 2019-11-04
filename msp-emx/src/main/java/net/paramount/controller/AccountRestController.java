@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.entity.Account;
+import net.paramount.entity.EnterpriseAccount;
 import net.paramount.framework.controller.BaseRestController;
 import net.paramount.repository.AccountFacade;
 
@@ -27,7 +27,7 @@ import net.paramount.repository.AccountFacade;
  */
 @RestController
 @RequestMapping("/api/account")
-public class AccountRestController extends BaseRestController<Account> {
+public class AccountRestController extends BaseRestController<EnterpriseAccount> {
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public class AccountRestController extends BaseRestController<Account> {
 	private AccountFacade businessService;
 
 	@Override
-	protected void doCreateBusinessObject(Account businessObject) {
+	protected void doCreateBusinessObject(EnterpriseAccount businessObject) {
 		log.info("Account Rest::CreateBusinessObject: " + businessObject.getName());
 		businessService.create(businessObject);
 		log.info("Account Rest::CreateBusinessObject is done");
@@ -54,18 +54,18 @@ public class AccountRestController extends BaseRestController<Account> {
 	}
 	*/
     @RequestMapping(value = "/listAll/", method = RequestMethod.GET)
-    public ResponseEntity<List<Account>> listAll() {
-        List<Account> userObjects = businessService.findAll();
+    public ResponseEntity<List<EnterpriseAccount>> listAll() {
+        List<EnterpriseAccount> userObjects = businessService.findAll();
         if (userObjects.isEmpty()) {
-            return new ResponseEntity<List<Account>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<EnterpriseAccount>>(HttpStatus.NO_CONTENT);
             // You many decide to return HttpStatus.NOT_FOUND
         }
-        return new ResponseEntity<List<Account>>(userObjects, HttpStatus.OK);
+        return new ResponseEntity<List<EnterpriseAccount>>(userObjects, HttpStatus.OK);
     }
 
 	@RequestMapping(path = "/list", method = RequestMethod.GET)
-	public List<Account> list(HttpServletRequest request, HttpServletResponse response, Model model) {
-		List<Account> objects = businessService.findAll();
+	public List<EnterpriseAccount> list(HttpServletRequest request, HttpServletResponse response, Model model) {
+		List<EnterpriseAccount> objects = businessService.findAll();
 		if (CommonUtility.isEmpty(objects)) {
 			initDummyData();
 			objects = businessService.findAll();
@@ -75,7 +75,7 @@ public class AccountRestController extends BaseRestController<Account> {
 	}
 
 	private void initDummyData() {
-		Account account = new Account("DUMMX", "Dummy Account", "Dummy account for testing purpose. ", "DUMMY", Boolean.TRUE);
+		EnterpriseAccount account = new EnterpriseAccount("DUMMX", "Dummy Account", "Dummy account for testing purpose. ", "DUMMY", Boolean.TRUE);
 		doCreateBusinessObject(account);
 	}
 }

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Account;
+import net.paramount.entity.EnterpriseAccount;
 import net.paramount.entity.Journal;
 import net.paramount.entity.JournalEntry;
 import net.paramount.entity.Partner;
-import net.paramount.entity.Payment;
+import net.paramount.entity.EnterprisePayment;
 import net.paramount.framework.repository.BaseDAO;
 import net.paramount.utility.IdGenerator;
 
@@ -27,39 +27,39 @@ public class PaymentFacade extends BaseDAO{
 	private static final long serialVersionUID = -4384797523311756834L;
 		private IdGenerator idGeerator = new IdGenerator();
 
-    public Payment create(Payment entity) {
+    public EnterprisePayment create(EnterprisePayment entity) {
         em.persist(entity);
         return entity;
     }
 
-    public Payment update(Payment entity) {
+    public EnterprisePayment update(EnterprisePayment entity) {
         em.merge(entity);
         return entity;
     }
 
-    public void remove(Payment entity) {
+    public void remove(EnterprisePayment entity) {
         em.remove(em.merge(entity));
     }
 
-    public Payment find(Object id) {
-        return em.find(Payment.class, id);
+    public EnterprisePayment find(Object id) {
+        return em.find(EnterprisePayment.class, id);
     }
 
-    public List<Payment> findAll() {
-        List<Payment> partners = em.createNamedQuery("Payment.findAll")
+    public List<EnterprisePayment> findAll() {
+        List<EnterprisePayment> partners = em.createNamedQuery("Payment.findAll")
                 .getResultList();
         return partners;
     }
 
-    public List<Payment> findSupplierPayment() {
-        List<Payment> payments = em.createNamedQuery("Payment.findByPartnerType")
+    public List<EnterprisePayment> findSupplierPayment() {
+        List<EnterprisePayment> payments = em.createNamedQuery("Payment.findByPartnerType")
                 .setParameter("partnerType", "supplier")
                 .getResultList();
         return payments;
     }
 
-    public List<Payment> findCustomerPayment() {
-        List<Payment> payments = em.createNamedQuery("Payment.findByPartnerType")
+    public List<EnterprisePayment> findCustomerPayment() {
+        List<EnterprisePayment> payments = em.createNamedQuery("Payment.findByPartnerType")
                 .setParameter("partnerType", "customer")
                 .getResultList();
         return payments;
@@ -81,7 +81,7 @@ public class PaymentFacade extends BaseDAO{
         return result;
     }
 
-    public Payment create(Payment entity, String partnerType, String type) {
+    public EnterprisePayment create(EnterprisePayment entity, String partnerType, String type) {
         if (entity != null) {
 
             em.persist(entity);
@@ -101,8 +101,8 @@ public class PaymentFacade extends BaseDAO{
     }
   
     
-    public List<Payment> findByPartner(Integer partnerId, String partnerType) {
-        List<Payment> payments = em.createNamedQuery("Payment.findByPartner")
+    public List<EnterprisePayment> findByPartner(Integer partnerId, String partnerType) {
+        List<EnterprisePayment> payments = em.createNamedQuery("Payment.findByPartner")
                 .setParameter("partnerId", partnerId)
                 .setParameter("partnerType", partnerType)
                 .getResultList();
@@ -110,9 +110,9 @@ public class PaymentFacade extends BaseDAO{
         return payments;
     }
 
-    public Account findAccount(Object name) {
+    public EnterpriseAccount findAccount(Object name) {
 
-       List<Account> accounts = em.createNamedQuery("Account.findByName")
+       List<EnterpriseAccount> accounts = em.createNamedQuery("Account.findByName")
                 .setParameter("name", name)
                 .getResultList();
 

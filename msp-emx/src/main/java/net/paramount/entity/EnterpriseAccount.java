@@ -29,12 +29,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 @Table(name = "account")
 @NamedQueries({
-    @NamedQuery(name = "Account.findByType", query = "SELECT a FROM Account a WHERE a.type = :type"),         
-    @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
-    @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
-    @NamedQuery(name = "Account.findByName", query = "SELECT a FROM Account a WHERE a.title = :name"),
-    @NamedQuery(name = "Account.findByActive", query = "SELECT a FROM Account a WHERE a.active = :active")})
-public class Account implements Serializable {
+    @NamedQuery(name = "Account.findByType", query = "SELECT a FROM EnterpriseAccount a WHERE a.type = :type"),         
+    @NamedQuery(name = "Account.findAll", query = "SELECT a FROM EnterpriseAccount a"),
+    @NamedQuery(name = "Account.findById", query = "SELECT a FROM EnterpriseAccount a WHERE a.id = :id"),
+    @NamedQuery(name = "Account.findByName", query = "SELECT a FROM EnterpriseAccount a WHERE a.title = :name"),
+    @NamedQuery(name = "Account.findByActive", query = "SELECT a FROM EnterpriseAccount a WHERE a.active = :active")})
+public class EnterpriseAccount implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -86,20 +86,20 @@ public class Account implements Serializable {
 
     @OneToMany(mappedBy = "account")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Payment> payments;
+    private List<EnterprisePayment> payments;
 
     @OneToMany(mappedBy = "account")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Invoice> invoices;
 
-    public Account() {
+    public EnterpriseAccount() {
     }
 
-    public Account(Integer id) {
+    public EnterpriseAccount(Integer id) {
         this.id = id;
     }
 
-    public Account(String code, String name, String title, String type, Boolean active) {
+    public EnterpriseAccount(String code, String name, String title, String type, Boolean active) {
         this.code = code;
         this.type = type;
         this.title = title;
@@ -179,11 +179,11 @@ public class Account implements Serializable {
         this.invoiceTaxes = invoiceTaxes;
     }
     
-    public List<Payment> getPayments() {
+    public List<EnterprisePayment> getPayments() {
         return payments;
     }
 
-    public void setPayments(List<Payment> payments) {
+    public void setPayments(List<EnterprisePayment> payments) {
         this.payments = payments;
     }
 
@@ -205,10 +205,10 @@ public class Account implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Account)) {
+        if (!(object instanceof EnterpriseAccount)) {
             return false;
         }
-        Account other = (Account) object;
+        EnterpriseAccount other = (EnterpriseAccount) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

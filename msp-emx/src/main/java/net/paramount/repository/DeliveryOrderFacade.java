@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import net.paramount.entity.DeliveryOrder;
 import net.paramount.entity.Inventory;
 import net.paramount.entity.Partner;
-import net.paramount.entity.Product;
+import net.paramount.entity.EnterpriseProduct;
 import net.paramount.entity.PurchaseOrder;
 import net.paramount.entity.SaleOrder;
 import net.paramount.framework.repository.BaseDAO;
@@ -51,7 +51,7 @@ public class DeliveryOrderFacade extends BaseDAO {
 		return result;
 	}
 
-	public List<Product> findTopNSoldProducts(int n) {
+	public List<EnterpriseProduct> findTopNSoldProducts(int n) {
 		List result = em.createNamedQuery("Product.findBySaleOk").setMaxResults(n).getResultList();
 
 		return result;
@@ -63,7 +63,7 @@ public class DeliveryOrderFacade extends BaseDAO {
 		return result;
 	}
 
-	public List<Product> findTopNPurchasedProducts(int n) {
+	public List<EnterpriseProduct> findTopNPurchasedProducts(int n) {
 		List result = em.createNamedQuery("Product.findByPurchaseOk").setMaxResults(n).getResultList();
 
 		return result;

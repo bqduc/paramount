@@ -65,7 +65,7 @@ public class Inventory implements Serializable {
     private Boolean active;
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @OneToOne(optional = false)
-    private Product product;
+    private EnterpriseProduct product;
 
     public Inventory() {
     }
@@ -120,11 +120,11 @@ public class Inventory implements Serializable {
         this.active = active;
     }
 
-    public Product getProduct() {
+    public EnterpriseProduct getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(EnterpriseProduct product) {
         this.product = product;
     }
 

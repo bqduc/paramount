@@ -8,9 +8,18 @@ package net.paramount.css.model;
  *
  */
 public enum ContactType {
-	Unknown,
-	Employee,
-	Customer,
-	Vendor,
-	Partner
+	Unknown, //0
+	Employee, //1
+	Customer, //2
+	Supplier, //3
+	Vendor, //4
+	Partner, //5
+
+	Contact, //6
+	Group, //7
+	Team, //8
+
+	Department, //9
+	BusinessUnit, //10
+	BusinessEntity //11
 }

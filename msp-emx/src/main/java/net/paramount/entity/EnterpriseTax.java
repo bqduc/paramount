@@ -28,65 +28,76 @@ import net.paramount.validation.StrictlyPositiveNumber;
  */
 
 @Entity
-@Table(name = "tax")
+@Table(name = "enterprise_tax")
 @NamedQueries({
-    @NamedQuery(name = "Tax.findByType", query = "SELECT t FROM Tax t WHERE t.typeTaxUse = :typeTaxUse"),
-    @NamedQuery(name = "Tax.findAll", query = "SELECT t FROM Tax t"),
-    @NamedQuery(name = "Tax.findById", query = "SELECT t FROM Tax t WHERE t.id = :id"),
-    @NamedQuery(name = "Tax.findByName", query = "SELECT t FROM Tax t WHERE t.name = :name"),
-    @NamedQuery(name = "Tax.findByAmount", query = "SELECT t FROM Tax t WHERE t.amount = :amount"),
-    @NamedQuery(name = "Tax.findByActive", query = "SELECT t FROM Tax t WHERE t.active = :active")})
-public class Tax implements Serializable {
+    @NamedQuery(name = "Tax.findByType", query = "SELECT t FROM EnterpriseTax t WHERE t.typeTaxUse = :typeTaxUse"),
+    @NamedQuery(name = "Tax.findAll", query = "SELECT t FROM EnterpriseTax t"),
+    @NamedQuery(name = "Tax.findById", query = "SELECT t FROM EnterpriseTax t WHERE t.id = :id"),
+    @NamedQuery(name = "Tax.findByName", query = "SELECT t FROM EnterpriseTax t WHERE t.name = :name"),
+    @NamedQuery(name = "Tax.findByAmount", query = "SELECT t FROM EnterpriseTax t WHERE t.amount = :amount"),
+    @NamedQuery(name = "Tax.findByActive", query = "SELECT t FROM EnterpriseTax t WHERE t.active = :active")})
+public class EnterpriseTax implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64, message = "{LongString}")
     @Column(name = "name")
     private String name;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "amount")
     @StrictlyPositiveNumber(message = "{PositiveTaxAmount}")
     private Double amount;
+    
     @Basic(optional = false)
     @NotNull
     @Max(value=100, message="{MaxTaxAmount}") 
     @StrictlyPositiveNumber(message = "{PositiveTaxAmount}")
     @Column(name = "percent")
     private Double percent;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40, message = "{LongString}")
     @Column(name = "type_tax_use")
     private String typeTaxUse;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "active")
     private Boolean active;
+
     @OneToMany(mappedBy = "tax")
     private List<InvoiceLine> invoiceLines;
+
     @OneToMany(mappedBy = "tax")
     private List<PurchaseOrderLine> purchaseOrderLines;
+
     @OneToMany(mappedBy = "tax")
     private List<InvoiceTax> invoiceTaxes;
+    
     @OneToMany(mappedBy = "tax")
     private List<SaleOrderLine> saleOrderLines;
+    
     @OneToMany(mappedBy = "tax")
     private List<JournalItem> journalItems;
 
-    public Tax() {
+    public EnterpriseTax() {
     }
 
-    public Tax(Integer id) {
+    public EnterpriseTax(Integer id) {
         this.id = id;
     }
 
-    public Tax(Integer id, String name, double amount, String typeTaxUse, Boolean active) {
+    public EnterpriseTax(Integer id, String name, double amount, String typeTaxUse, Boolean active) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -193,10 +204,10 @@ public class Tax implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Tax)) {
+        if (!(object instanceof EnterpriseTax)) {
             return false;
         }
-        Tax other = (Tax) object;
+        EnterpriseTax other = (EnterpriseTax) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

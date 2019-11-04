@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import net.paramount.entity.Inventory;
-import net.paramount.entity.Product;
+import net.paramount.entity.EnterpriseProduct;
 import net.paramount.entity.ProductCategory;
 import net.paramount.entity.ProductUom;
 import net.paramount.framework.repository.BaseDAO;
@@ -26,12 +26,12 @@ public class ProductFacade extends BaseDAO{
 	 */
 	private static final long serialVersionUID = 8822453169083138986L;
 
-		public Product create(Product entity) {
+		public EnterpriseProduct create(EnterpriseProduct entity) {
         em.persist(entity);
         return entity;
     }
 
-    public Product update(Product entity) {
+    public EnterpriseProduct update(EnterpriseProduct entity) {
         em.merge(entity);
         return entity;
     }
@@ -41,24 +41,24 @@ public class ProductFacade extends BaseDAO{
         return entity;
     }
 
-    public void remove(Product entity) {
+    public void remove(EnterpriseProduct entity) {
         em.remove(em.merge(entity));
     }
 
-    public Product find(Object id) {
-        return em.find(Product.class, id);
+    public EnterpriseProduct find(Object id) {
+        return em.find(EnterpriseProduct.class, id);
     }
     
-    public List<Product> findSoldProducts() {
-        List<Product> products = em.createNamedQuery("Product.findBySaleOk")
+    public List<EnterpriseProduct> findSoldProducts() {
+        List<EnterpriseProduct> products = em.createNamedQuery("Product.findBySaleOk")
                 .getResultList();
         
         System.out.println("findSoldProducts: "+products.size());
         return products;
     }
     
-    public List<Product> findPurchasedProducts() {
-        List<Product> products = em.createNamedQuery("Product.findByPurchaseOk")
+    public List<EnterpriseProduct> findPurchasedProducts() {
+        List<EnterpriseProduct> products = em.createNamedQuery("Product.findByPurchaseOk")
                 .getResultList();
          System.out.println("findPurchasedProducts: "+products.size());
         return products;
@@ -102,15 +102,15 @@ public class ProductFacade extends BaseDAO{
         return count;
     }
 
-    public List<Product> findAll() {
+    public List<EnterpriseProduct> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Product.class));
+        cq.select(cq.from(EnterpriseProduct.class));
         return em.createQuery(cq).getResultList();
     }
 
-    public List<Product> findRange(int[] range) {
+    public List<EnterpriseProduct> findRange(int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Product.class));
+        cq.select(cq.from(EnterpriseProduct.class));
         javax.persistence.Query q = em.createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
         q.setFirstResult(range[0]);
@@ -119,7 +119,7 @@ public class ProductFacade extends BaseDAO{
 
     public int count() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<Product> rt = cq.from(Product.class);
+        javax.persistence.criteria.Root<EnterpriseProduct> rt = cq.from(EnterpriseProduct.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         javax.persistence.Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();

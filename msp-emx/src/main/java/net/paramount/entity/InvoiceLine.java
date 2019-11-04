@@ -92,7 +92,7 @@ public class InvoiceLine implements Serializable {
     private String taxName;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Account account;
+    private EnterpriseAccount account;
     @JoinColumn(name = "invoice_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Invoice invoice;
@@ -101,10 +101,10 @@ public class InvoiceLine implements Serializable {
     private Partner partner;
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ManyToOne
-    private Product product;
+    private EnterpriseProduct product;
     @JoinColumn(name = "tax_id", referencedColumnName = "id")
     @ManyToOne
-    private Tax tax;
+    private EnterpriseTax tax;
 
     public InvoiceLine() {
     }
@@ -113,7 +113,7 @@ public class InvoiceLine implements Serializable {
         this.id = id;
     }
 
-    public InvoiceLine(Date date, String uom, double price, double priceSubtotal, Double discount, Double quantity, Boolean active, Invoice invoice, Partner partner, Product product, Tax tax, Account account) {
+    public InvoiceLine(Date date, String uom, double price, double priceSubtotal, Double discount, Double quantity, Boolean active, Invoice invoice, Partner partner, EnterpriseProduct product, EnterpriseTax tax, EnterpriseAccount account) {
         this.date = date;
         this.uom = uom;
         this.price = price;
@@ -194,11 +194,11 @@ public class InvoiceLine implements Serializable {
         this.active = active;
     }
 
-    public Account getAccount() {
+    public EnterpriseAccount getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(EnterpriseAccount account) {
         this.account = account;
     }
 
@@ -218,19 +218,19 @@ public class InvoiceLine implements Serializable {
         this.partner = partner;
     }
 
-    public Product getProduct() {
+    public EnterpriseProduct getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(EnterpriseProduct product) {
         this.product = product;
     }
 
-    public Tax getTax() {
+    public EnterpriseTax getTax() {
         return tax;
     }
 
-    public void setTax(Tax tax) {
+    public void setTax(EnterpriseTax tax) {
         this.tax = tax;
     }
 

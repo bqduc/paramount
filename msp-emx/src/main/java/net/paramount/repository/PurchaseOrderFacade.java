@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Account;
+import net.paramount.entity.EnterpriseAccount;
 import net.paramount.entity.DeliveryOrder;
 import net.paramount.entity.Invoice;
 import net.paramount.entity.Journal;
 import net.paramount.entity.Partner;
-import net.paramount.entity.Product;
+import net.paramount.entity.EnterpriseProduct;
 import net.paramount.entity.PurchaseOrder;
 import net.paramount.entity.PurchaseOrderLine;
 import net.paramount.framework.repository.BaseDAO;
@@ -92,7 +92,7 @@ public class PurchaseOrderFacade extends BaseDAO{
         return result;
     }
     
-    public List<Product> findTopNPurchasedProducts(int n) {
+    public List<EnterpriseProduct> findTopNPurchasedProducts(int n) {
         List result = em.createNamedQuery("Product.findByPurchaseOk")
                 .setMaxResults(n)
                 .getResultList();
@@ -108,8 +108,8 @@ public class PurchaseOrderFacade extends BaseDAO{
         return OrderLinesByProduct;  
     }
 
-    public Account findAccount(Object name) {
-       List<Account> accounts = em.createNamedQuery("Account.findByName")
+    public EnterpriseAccount findAccount(Object name) {
+       List<EnterpriseAccount> accounts = em.createNamedQuery("Account.findByName")
                 .setParameter("name", name)
                 .getResultList();
 

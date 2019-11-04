@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Payment;
+import net.paramount.entity.EnterprisePayment;
 import net.paramount.repository.PaymentFacade;
 import net.paramount.utility.JsfUtil;
 
@@ -52,11 +52,11 @@ public class PaymentConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Payment) {
-            Payment o = (Payment) object;
+        if (object instanceof EnterprisePayment) {
+            EnterprisePayment o = (EnterprisePayment) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Payment.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), EnterprisePayment.class.getName()});
             return null;
         }
     }

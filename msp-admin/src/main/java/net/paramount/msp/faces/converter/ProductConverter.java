@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Product;
+import net.paramount.entity.EnterpriseProduct;
 import net.paramount.repository.ProductFacade;
 import net.paramount.utility.JsfUtil;
 
@@ -67,11 +67,11 @@ public class ProductConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Product) {
-            Product o = (Product) object;
+        if (object instanceof EnterpriseProduct) {
+            EnterpriseProduct o = (EnterpriseProduct) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Product.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), EnterpriseProduct.class.getName()});
             return null;
         }
     }

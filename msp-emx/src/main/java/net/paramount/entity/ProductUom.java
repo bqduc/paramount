@@ -54,7 +54,7 @@ public class ProductUom implements Serializable {
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "uom")
-    private List<Product> products;
+    private List<EnterpriseProduct> products;
     @OneToMany(mappedBy = "uom")
     private List<JournalItem> journalItems;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -115,11 +115,11 @@ public class ProductUom implements Serializable {
         this.category = category;
     }
 
-    public List<Product> getProducts() {
+    public List<EnterpriseProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<EnterpriseProduct> products) {
         this.products = products;
     }
 

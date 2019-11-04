@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Account;
+import net.paramount.entity.EnterpriseAccount;
 import net.paramount.framework.repository.BaseDAO;
 
 /**
@@ -25,42 +25,42 @@ public class AccountFacade extends BaseDAO {
 	private static final long serialVersionUID = -7086317564136002833L;
 
 	@Transactional
-	public Account create(Account entity) {
+	public EnterpriseAccount create(EnterpriseAccount entity) {
 		em.persist(entity);
 		return entity;
 	}
 
 	@Transactional
-	public Account update(Account entity) {
+	public EnterpriseAccount update(EnterpriseAccount entity) {
 		em.merge(entity);
 		return entity;
 	}
 
 	@Transactional
-	public void remove(Account entity) {
+	public void remove(EnterpriseAccount entity) {
 		em.remove(em.merge(entity));
 	}
 
-	public Account find(Object id) {
-		Account entity = em.find(Account.class, id);
+	public EnterpriseAccount find(Object id) {
+		EnterpriseAccount entity = em.find(EnterpriseAccount.class, id);
 		return entity;
 	}
 
-	public List<Account> findByType(String type) {
+	public List<EnterpriseAccount> findByType(String type) {
 		List result = em.createNamedQuery("Account.findByType").setParameter("type", type).getResultList();
 
 		return result;
 	}
 
-	public List<Account> findByName(String name) {
+	public List<EnterpriseAccount> findByName(String name) {
 		List result = em.createNamedQuery("Account.findByName").setParameter("name", name).getResultList();
 
 		return result;
 	}
 
-	public List<Account> findAll() {
+	public List<EnterpriseAccount> findAll() {
 		javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-		cq.select(cq.from(Account.class));
+		cq.select(cq.from(EnterpriseAccount.class));
 		return em.createQuery(cq).getResultList();
 	}
 

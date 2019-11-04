@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Tax;
+import net.paramount.entity.EnterpriseTax;
 import net.paramount.repository.TaxFacade;
 import net.paramount.utility.JsfUtil;
 
@@ -61,11 +61,11 @@ public class TaxConverter implements Converter {
                 || (object instanceof String && ((String) object).length() == 0)) {
             return null;
         }
-        if (object instanceof Tax) {
-            Tax o = (Tax) object;
+        if (object instanceof EnterpriseTax) {
+            EnterpriseTax o = (EnterpriseTax) object;
             return getStringKey(o.getId());
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Tax.class.getName()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), EnterpriseTax.class.getName()});
             return null;
         }
     }

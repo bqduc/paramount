@@ -38,18 +38,18 @@ import net.paramount.validation.StrictlyPositiveNumber;
 @Entity
 @Table(name = "product")
 @NamedQueries({
-    @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-    @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
-    @NamedQuery(name = "Product.findByDefaultCode", query = "SELECT p FROM Product p WHERE p.defaultCode = :defaultCode"),
-    @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
-    @NamedQuery(name = "Product.findBySalePrice", query = "SELECT p FROM Product p WHERE p.salePrice = :salePrice"),
-    @NamedQuery(name = "Product.findByPurchasePrice", query = "SELECT p FROM Product p WHERE p.purchasePrice = :purchasePrice"),
-    @NamedQuery(name = "Product.findByWeight", query = "SELECT p FROM Product p WHERE p.weight = :weight"),
-    @NamedQuery(name = "Product.findByVolume", query = "SELECT p FROM Product p WHERE p.volume = :volume"),
-    @NamedQuery(name = "Product.findBySaleOk", query = "SELECT p FROM Product p WHERE p.saleOk = 1"),
-    @NamedQuery(name = "Product.findByPurchaseOk", query = "SELECT p FROM Product p WHERE p.purchaseOk = 1"),
-    @NamedQuery(name = "Product.findByActive", query = "SELECT p FROM Product p WHERE p.active = :active")})
-public class Product implements Serializable {
+    @NamedQuery(name = "Product.findAll", query = "SELECT p FROM EnterpriseProduct p"),
+    @NamedQuery(name = "Product.findById", query = "SELECT p FROM EnterpriseProduct p WHERE p.id = :id"),
+    @NamedQuery(name = "Product.findByDefaultCode", query = "SELECT p FROM EnterpriseProduct p WHERE p.defaultCode = :defaultCode"),
+    @NamedQuery(name = "Product.findByName", query = "SELECT p FROM EnterpriseProduct p WHERE p.name = :name"),
+    @NamedQuery(name = "Product.findBySalePrice", query = "SELECT p FROM EnterpriseProduct p WHERE p.salePrice = :salePrice"),
+    @NamedQuery(name = "Product.findByPurchasePrice", query = "SELECT p FROM EnterpriseProduct p WHERE p.purchasePrice = :purchasePrice"),
+    @NamedQuery(name = "Product.findByWeight", query = "SELECT p FROM EnterpriseProduct p WHERE p.weight = :weight"),
+    @NamedQuery(name = "Product.findByVolume", query = "SELECT p FROM EnterpriseProduct p WHERE p.volume = :volume"),
+    @NamedQuery(name = "Product.findBySaleOk", query = "SELECT p FROM EnterpriseProduct p WHERE p.saleOk = 1"),
+    @NamedQuery(name = "Product.findByPurchaseOk", query = "SELECT p FROM EnterpriseProduct p WHERE p.purchaseOk = 1"),
+    @NamedQuery(name = "Product.findByActive", query = "SELECT p FROM EnterpriseProduct p WHERE p.active = :active")})
+public class EnterpriseProduct implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -141,14 +141,14 @@ public class Product implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SaleOrderLine> saleOrderLines;
 
-    public Product() {
+    public EnterpriseProduct() {
     }
 
-    public Product(Integer id) {
+    public EnterpriseProduct(Integer id) {
         this.id = id;
     }
 
-    public Product(Integer id, String defaultCode, String name, Boolean active) {
+    public EnterpriseProduct(Integer id, String defaultCode, String name, Boolean active) {
         this.id = id;
         this.defaultCode = defaultCode;
         this.name = name;
@@ -344,10 +344,10 @@ public class Product implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Product)) {
+        if (!(object instanceof EnterpriseProduct)) {
             return false;
         }
-        Product other = (Product) object;
+        EnterpriseProduct other = (EnterpriseProduct) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

@@ -142,11 +142,11 @@ public class Invoice implements Serializable {
     private List<InvoiceTax> invoiceTaxes;
 
     @OneToMany(mappedBy = "invoice")
-    private List<Payment> payments;
+    private List<EnterprisePayment> payments;
 
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne
-    private Account account;
+    private EnterpriseAccount account;
 
     @JoinColumn(name = "entry_id", referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -180,7 +180,7 @@ public class Invoice implements Serializable {
         this.id = id;
     }
 
-    public Invoice(Date date, String type, String origin, String state, Boolean active, Partner partner, SaleOrder saleOrder, Account account, Journal journal) {
+    public Invoice(Date date, String type, String origin, String state, Boolean active, Partner partner, SaleOrder saleOrder, EnterpriseAccount account, Journal journal) {
         this.date = date;
         this.type = type;
         this.origin = origin;
@@ -192,7 +192,7 @@ public class Invoice implements Serializable {
         this.journal = journal;     
     }
     
-    public Invoice(Date date, String type, String origin, String state, Boolean active, Partner partner, PurchaseOrder purchaseOrder, Account account, Journal journal, String reference) {
+    public Invoice(Date date, String type, String origin, String state, Boolean active, Partner partner, PurchaseOrder purchaseOrder, EnterpriseAccount account, Journal journal, String reference) {
         this.date = date;
         this.type = type;
         this.origin = origin;
@@ -343,7 +343,7 @@ public class Invoice implements Serializable {
         this.invoiceTaxes = invoiceTaxes;
     }
 
-    public List<Payment> getPayments() {
+    public List<EnterprisePayment> getPayments() {
         if(payments == null){
            
             return payments = new ArrayList<>();
@@ -351,15 +351,15 @@ public class Invoice implements Serializable {
             return payments;
     }
 
-    public void setPayments(List<Payment> payments) {
+    public void setPayments(List<EnterprisePayment> payments) {
         this.payments = payments;
     }
 
-    public Account getAccount() {
+    public EnterpriseAccount getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(EnterpriseAccount account) {
         this.account = account;
     }
 

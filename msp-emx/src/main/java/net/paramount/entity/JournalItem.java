@@ -88,7 +88,7 @@ public class JournalItem implements Serializable {
     private Boolean active;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne
-    private Account account;
+    private EnterpriseAccount account;
     @JoinColumn(name = "entry_id", referencedColumnName = "id")
     @ManyToOne
     private JournalEntry journalEntry;
@@ -100,19 +100,19 @@ public class JournalItem implements Serializable {
     private Partner partner;
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ManyToOne
-    private Product product;
+    private EnterpriseProduct product;
     @JoinColumn(name = "uom_id", referencedColumnName = "id")
     @ManyToOne
     private ProductUom uom;
     @JoinColumn(name = "tax_id", referencedColumnName = "id")
     @ManyToOne
-    private Tax tax;
+    private EnterpriseTax tax;
     
 
     public JournalItem() {
     }
 
-    public JournalItem(Double debit, Double credit, Date date, String name, String ref, Double taxAmount, Double quantity, Boolean active, Account account, JournalEntry journalEntry, Journal journal, Partner partner, Product product, ProductUom uom, Double costOfGoodsSold, Tax tax) {
+    public JournalItem(Double debit, Double credit, Date date, String name, String ref, Double taxAmount, Double quantity, Boolean active, EnterpriseAccount account, JournalEntry journalEntry, Journal journal, Partner partner, EnterpriseProduct product, ProductUom uom, Double costOfGoodsSold, EnterpriseTax tax) {
         
         this.debit = debit;
         this.credit = credit;
@@ -222,11 +222,11 @@ public class JournalItem implements Serializable {
         this.active = active;
     }
 
-    public Account getAccount() {
+    public EnterpriseAccount getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(EnterpriseAccount account) {
         this.account = account;
     }
 
@@ -254,19 +254,19 @@ public class JournalItem implements Serializable {
         this.partner = partner;
     }
 
-    public Product getProduct() {
+    public EnterpriseProduct getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(EnterpriseProduct product) {
         this.product = product;
     }
 
-    public Tax getTax() {
+    public EnterpriseTax getTax() {
         return tax;
     }
 
-    public void setTax(Tax tax) {
+    public void setTax(EnterpriseTax tax) {
         this.tax = tax;
     }
 
