@@ -184,16 +184,6 @@ public class Contact extends BizObjectBase {
 	@Column(name = "do_not_call")
 	private java.lang.Boolean doNotCall = false;
 
-	/*@Builder.Default
-	@Lazy
-	@OneToMany(mappedBy="contact", cascade = CascadeType.ALL)
-	private Set<ContactAddress> contactAddresses = ListUtility.newHashSet();
-
-	@Builder.Default
-	@Lazy
-	@OneToMany(mappedBy="contact", cascade = CascadeType.ALL)
-	private Set<ContactTeam> contactTeams = ListUtility.newHashSet();*/
-
 	@Transient
 	@Builder.Default
 	private Set<ContactAddress> contactAddresses = ListUtility.newHashSet();

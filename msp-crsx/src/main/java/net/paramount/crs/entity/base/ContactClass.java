@@ -16,29 +16,32 @@
 package net.paramount.crs.entity.base;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import net.paramount.auth.entity.AuthAccount;
-import net.paramount.common.ListUtility;
-import net.paramount.css.entity.Document;
 import net.paramount.css.entity.Item;
 import net.paramount.css.model.ContactType;
 import net.paramount.embeddable.Phone;
@@ -50,13 +53,15 @@ import net.paramount.global.GlobalConstants;
  * 
  * @author Bui Quy Duc
  */
-//@Entity
-//@Table(name = "contact")
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
-//@DiscriminatorValue(value = "0")
-@MappedSuperclass
-public abstract class ContactClass extends BizObjectBase {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "contact_class")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "contact_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue(value = "0")
+public class ContactClass extends BizObjectBase {
 	/**
 	 * 
 	 */
@@ -113,20 +118,9 @@ public abstract class ContactClass extends BizObjectBase {
 	@Column(name="fax", length=20)
 	private String fax;
 
-	@Column(name="type")
+	@Column(name="contact_type", insertable=false, updatable=false)
   @Enumerated(EnumType.ORDINAL)
-  private ContactType type;
-
-	@Column(name="activation_key", length=20)
-	@JsonIgnore
-	private String activationKey;
-
-	@Column(name="reset_key", length=20)
-	@JsonIgnore
-	private String resetKey;
-
-	@Column(name="reset_date")
-	private Date resetDate;
+  private ContactType contactType;
 
 	@Lob
 	@Column(name = "description", columnDefinition = "TEXT")
@@ -147,16 +141,6 @@ public abstract class ContactClass extends BizObjectBase {
 	@Column(name = "do_not_call")
 	private java.lang.Boolean doNotCall = false;
 
-	@ManyToMany(cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE
-  })
-  @JoinTable(name = "contact_document",
-      joinColumns = @JoinColumn(name = "contact_id"),
-      inverseJoinColumns = @JoinColumn(name = "document_id")
-  )
-  private List<Document> documents = ListUtility.createArrayList();
-	
 	@ManyToOne
 	@JoinColumn(name = "owner_user_id")
 	private AuthAccount ownerUserAccount;
@@ -208,30 +192,6 @@ public abstract class ContactClass extends BizObjectBase {
 		this.fax = fax;
 	}
 
-	public String getActivationKey() {
-		return activationKey;
-	}
-
-	public void setActivationKey(String activationKey) {
-		this.activationKey = activationKey;
-	}
-
-	public String getResetKey() {
-		return resetKey;
-	}
-
-	public void setResetKey(String resetKey) {
-		this.resetKey = resetKey;
-	}
-
-	public Date getResetDate() {
-		return resetDate;
-	}
-
-	public void setResetDate(Date resetDate) {
-		this.resetDate = resetDate;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -272,12 +232,12 @@ public abstract class ContactClass extends BizObjectBase {
 		this.leadSource = leadSource;
 	}
 
-	public ContactType getType() {
-		return type;
+	public ContactType getContactType() {
+		return contactType;
 	}
 
-	public void setType(ContactType type) {
-		this.type = type;
+	public void setContactType(ContactType contactType) {
+		this.contactType = contactType;
 	}
 
 	public ContactClass getReportsTo() {
@@ -318,14 +278,6 @@ public abstract class ContactClass extends BizObjectBase {
 
 	public void setOwnerUserAccount(AuthAccount ownerUserAccount) {
 		this.ownerUserAccount = ownerUserAccount;
-	}
-
-	public List<Document> getDocuments() {
-		return documents;
-	}
-
-	public void setDocuments(List<Document> documents) {
-		this.documents = documents;
 	}
 
 	public String getAccountName() {
@@ -383,5 +335,4 @@ public abstract class ContactClass extends BizObjectBase {
 	public void setIssueUserAccount(AuthAccount issueUserAccount) {
 		this.issueUserAccount = issueUserAccount;
 	}
-
 }

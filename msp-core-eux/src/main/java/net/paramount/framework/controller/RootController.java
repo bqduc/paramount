@@ -8,13 +8,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.MessageSource;
 
-import net.paramount.framework.component.RootComponent;
+import net.paramount.framework.component.ComponentBase;
 
 /**
  * @author bqduc
  *
  */
-public abstract class RootController extends RootComponent {
+public abstract class RootController extends ComponentBase {
 	/**
 	 * 
 	 */

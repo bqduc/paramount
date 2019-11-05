@@ -6,13 +6,13 @@ package net.paramount.framework.specification;
 import org.springframework.data.jpa.domain.Specification;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.framework.component.RootComponent;
+import net.paramount.framework.component.ComponentBase;
 import net.paramount.framework.model.SearchParameter;
 
 /**
  * @author bqduc
  */
-public abstract class BaseSpecification<UserType, UserRequest> extends RootComponent {
+public abstract class BaseSpecification<UserType, UserRequest> extends ComponentBase {
 	/**
 	 * 
 	 */

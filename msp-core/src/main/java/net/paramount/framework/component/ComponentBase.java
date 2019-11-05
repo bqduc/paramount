@@ -13,7 +13,7 @@ import net.paramount.framework.logging.LogService;
  * @author bqduc
  *
  */
-public abstract class RootComponent implements Serializable {
+public abstract class ComponentBase implements Serializable {
 	/**
 	 * 
 	 */

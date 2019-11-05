@@ -13,6 +13,6 @@ import org.springframework.data.repository.NoRepositoryBean;
  *
  */
 @NoRepositoryBean
-public interface CodeBaseRepository<T, PK extends Serializable> extends JBaseRepository<T, PK> {
+public interface CodeBaseRepository<T, PK extends Serializable> extends BaseRepository<T, PK> {
 	Optional<T> findByCode(String code);
 }
