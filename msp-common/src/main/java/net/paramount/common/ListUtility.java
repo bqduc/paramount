@@ -161,4 +161,11 @@ public class ListUtility {
 		}
 		return suggestedItems;
 	}
+
+	public static <K, T> HashMap <K, T> cloneMap(Map<K, T> srcMap){
+		HashMap <K, T> clonedMap = createMap();
+		clonedMap.putAll(srcMap);
+		return clonedMap;
+	}
+
 }

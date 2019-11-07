@@ -1286,6 +1286,55 @@ public class CommonUtility implements CommonConstants {
 		return resp;
 	}
 
+	public static Map<String, InputStream> extractZipInputStreams(File zipFile) throws EcosysException {
+		Map<String, InputStream> resp = ListUtility.createMap();
+		ZipFile innerZipFile = null;
+		Enumeration<? extends ZipEntry> zipEntries = null;
+		ZipEntry zipEntry = null;
+		try {
+			innerZipFile = new ZipFile(zipFile);
+			zipEntries = innerZipFile.entries();
+			while (zipEntries.hasMoreElements()) {
+				zipEntry = (ZipEntry) zipEntries.nextElement();
+				resp.put(zipEntry.getName(), cloneInputStream(innerZipFile.getInputStream(zipEntry)));
+			}
+		} catch (IOException e) {
+			throw new EcosysException(e);
+		} finally {
+      try {
+      	innerZipFile.close();
+      } catch (Exception e2) {
+      	e2.printStackTrace();
+      }			
+		}
+		return resp;
+	}
+
+	public static InputStream cloneInputStream(final InputStream inputStream) throws EcosysException {
+		InputStream clonedInputStream = null;
+		ByteArrayOutputStream outputStream = null;
+		byte[] buffer = null;
+		int readLength = 0;
+		try {
+		  if (null == inputStream)
+				return null;
+
+		  inputStream.mark(0);
+			outputStream = new ByteArrayOutputStream();
+			buffer = new byte[1024];
+			readLength = 0;
+			while ((readLength = inputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, readLength);
+			}
+			//inputStream.reset();
+			outputStream.flush();
+			clonedInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+		} catch (Exception ex) {
+			throw new EcosysException(ex);
+		}
+		return clonedInputStream;
+	}
+
 	public static Map<String, InputStream> extractZipInputStreams(File zipFile, List<String> zipEntryNames) throws EcosysException {
 		Map<String, InputStream> resp = ListUtility.createMap();
 		ZipFile innerZipFile = null;
@@ -1377,7 +1426,7 @@ public class CommonUtility implements CommonConstants {
 	}
 
 	public static void main(String[] args){
-		String fileName = "d:/development_data/development_data.zip";//"C:\\Users\\ducbq\\Downloads\\data_sheets.zip";
+		String fileName = "D:\\git\\paramount\\msp-osx\\src\\main\\resources\\data/develop_data.zip";//"C:\\Users\\ducbq\\Downloads\\data_sheets.zip";
 		File zipFile = new File(/*
 														 * "D:\\opt\\oss\\aquarium\\aquarium-admin\\src\\main\\resources\\config\\data\\data-catalogues.zip"
 														 */

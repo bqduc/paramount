@@ -14,9 +14,15 @@
     <description>Module that contains all services for clinical trial and data management in the project. </description>
 
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>msp-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>	 -->
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>msp-aux</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 
