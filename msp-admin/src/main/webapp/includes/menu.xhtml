@@ -66,6 +66,62 @@
         </li>
         <li class="treeview">
             <a href="#">
+                <i class="fa fa-files-o"></i>
+                <span>#{messages['menu.nav.mvpPage']}</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <p:link outcome="/pages/mvp/virtualSimulator.xhtml" title="Logon page">
+                        <i class="fa fa-users"></i>
+                        <span>#{messages['menu.nav.logon']}</span>
+                    </p:link>
+                </li>
+
+                <li>
+                    <p:link outcome="/pages/material/login.xhtml" title="Logon page">
+                        <i class="fa fa-user-circle"></i>
+                        <span style="font-weight: bold;text-decoration: underline">#{messages['menu.nav.materialLogon']}</span>
+                    </p:link>
+                </li>
+
+
+                <li>
+                    <p:link outcome="/403.xhtml" title="Access denied page">
+                        <i class="fa fa-circle-o"></i>
+                        <span>#{messages['menu.nav.403']}</span>
+                    </p:link>
+                </li>
+                <li>
+                    <p:link href="/non-existing.xhtml" title="404 page">
+                        <i class="fa fa-circle-o"></i>
+                        <span>#{messages['menu.nav.404']}</span>
+                    </p:link>
+                </li>
+                <li>
+                    <p:link outcome="/500.xhtml" title="500 page">
+                        <i class="fa fa-circle-o"></i>
+                        <span>#{messages['menu.nav.500']}</span>
+                    </p:link>
+                </li>
+                <li>
+                    <p:link outcome="/expired.xhtml" title="View expired page">
+                        <i class="fa fa-circle-o"></i>
+                        <span>#{messages['menu.nav.viewExpired']}</span>
+                    </p:link>
+                </li>
+                <li>
+                    <p:link outcome="/optimistic.xhtml" title="Optimistic lock page">
+                        <i class="fa fa-circle-o"></i>
+                        <span>#{messages['menu.nav.optimisticLock']}</span>
+                    </p:link>
+                </li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a href="#">
                 <i class="fa fa-laptop"></i>
                 <span>#{messages['menu.nav.uiElements']}</span>
                 <span class="pull-right-container">

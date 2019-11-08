@@ -10,6 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.paramount.dmx.repository.GlobalDmxRepository;
 import net.paramount.msp.faces.model.FacesCar;
 import net.paramount.msp.faces.model.Stats;
 import net.paramount.msp.faces.model.Team;
@@ -36,8 +37,12 @@ public class DatatableMB implements Serializable {
     @Inject
     private FacesCarService carService;
 
+    @Inject
+    private GlobalDmxRepository globalDmxRepository;
+
     @PostConstruct
     public void init() {
+    	System.out.println(globalDmxRepository.generateFakeOfficeData());
         teams = new ArrayList<Team>();
         selectedColors = new ArrayList<>();
         Team lakers = new Team("Los Angeles Lakers");
