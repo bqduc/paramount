@@ -4,13 +4,14 @@
 package net.paramount.msp.components;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -71,7 +72,14 @@ public class ResourcesServicesHelper extends ComponentBase {
 			if (null==resource)
 				throw new ResourcesException("Unable to get resource from path: " + resourcePath);
 
-			log.info("Real path: " + this.getClass().getClassLoader().getResourceAsStream(resourcePath));
+			InputStream resourceStream = this.getClass().getClassLoader().getResourceAsStream(resourcePath);
+			log.info("Real path: " + resourceStream);
+
+			resourceFile = File.createTempFile("develop_data", "zip");
+			resourceFile.deleteOnExit();
+			FileOutputStream out = new FileOutputStream(resourceFile);
+			IOUtils.copy(resourceStream, out);
+			
 			
 			log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". " + ". |" + resource.getDescription());
 			resourceFile = resource.getFile();
