@@ -33,6 +33,7 @@ public class ResourcesServicesHelper extends ComponentBase {
 
 	private Resource loadClasspathResource(String resourcePath) {
 		Resource resource = this.resourceLoader.getResource(CLASSPATH + resourcePath);
+		log.info("Resource is loaded::" + resource);
 		return resource;
 	}
 
