@@ -66,6 +66,7 @@ public class ResourcesServicesHelper extends ComponentBase {
 			if (null==resource)
 				throw new ResourcesException("Unable to get resource from path: " + resourcePath);
 
+			log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". |" + resource.getDescription());
 			resourceFile = resource.getFile();
 			log.info("Found resource file by given path: " + resourcePath);
 		} catch (IOException e) {
