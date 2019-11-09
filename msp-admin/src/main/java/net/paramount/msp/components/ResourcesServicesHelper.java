@@ -71,7 +71,7 @@ public class ResourcesServicesHelper extends ComponentBase {
 			if (null==resource)
 				throw new ResourcesException("Unable to get resource from path: " + resourcePath);
 
-			log.info("Real path: " + servletContext.getRealPath("WEB-INF"));
+			log.info("Real path: " + this.getClass().getClassLoader().getResourceAsStream(resourcePath));
 			
 			log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". " + ". |" + resource.getDescription());
 			resourceFile = resource.getFile();
