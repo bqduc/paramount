@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -66,7 +68,9 @@ public class ResourcesServicesHelper extends ComponentBase {
 			if (null==resource)
 				throw new ResourcesException("Unable to get resource from path: " + resourcePath);
 
-			log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". |" + resource.getDescription());
+			String realPath =((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath(".");
+			log.info("Real path: " + realPath);
+			log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". " + ". |" + resource.getDescription());
 			resourceFile = resource.getFile();
 			log.info("Found resource file by given path: " + resourcePath);
 		} catch (IOException e) {
