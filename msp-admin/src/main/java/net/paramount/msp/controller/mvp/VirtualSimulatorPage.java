@@ -68,8 +68,8 @@ public class VirtualSimulatorPage implements Serializable {
 
     public void clear() {
         entity = new Entity();
-        loadResourceData();
-        //loadingAsyncData();
+        //loadResourceData();
+        loadingAsyncData();
     }
 
     public void remove() {
