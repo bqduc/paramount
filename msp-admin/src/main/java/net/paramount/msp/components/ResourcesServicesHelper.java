@@ -33,6 +33,9 @@ public class ResourcesServicesHelper extends ComponentBase {
 	@Inject
 	private ResourceLoader resourceLoader;
 
+	@Inject
+	private ServletContext servletContext;
+	
 	private Resource loadClasspathResource(String resourcePath) {
 		Resource resource = this.resourceLoader.getResource(CLASSPATH + resourcePath);
 		log.info("Resource is loaded::" + resource);
@@ -68,8 +71,8 @@ public class ResourcesServicesHelper extends ComponentBase {
 			if (null==resource)
 				throw new ResourcesException("Unable to get resource from path: " + resourcePath);
 
-			String realPath =((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath(".");
-			log.info("Real path: " + realPath);
+			log.info("Real path: " + servletContext.getRealPath(resourcePath));
+			
 			log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". " + ". |" + resource.getDescription());
 			resourceFile = resource.getFile();
 			log.info("Found resource file by given path: " + resourcePath);
