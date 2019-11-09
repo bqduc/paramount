@@ -81,8 +81,8 @@ public class ResourcesServicesHelper extends ComponentBase {
 			IOUtils.copy(resourceStream, out);
 			
 			
-			log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". " + ". |" + resource.getDescription());
-			resourceFile = resource.getFile();
+			//log.info("Is exist: " + resource.exists() + ". Is file: " + resource.isFile() + ". " + ". |" + resource.getDescription());
+			//resourceFile = resource.getFile();
 			log.info("Found resource file by given path: " + resourcePath);
 		} catch (IOException e) {
 			throw new ResourcesException(e);
