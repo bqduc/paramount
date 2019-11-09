@@ -1,6 +1,9 @@
 package net.paramount.msp.controller.mvp;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +20,10 @@ import javax.inject.Named;
 
 import org.omnifaces.util.Messages;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.util.FileCopyUtils;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
@@ -39,7 +45,10 @@ public class VirtualSimulatorPage implements Serializable {
     private List<String> allTalks;
     private Entity entity;
 
-  	@Inject
+    @Inject
+    private ResourceLoader resourceLoader;
+
+    @Inject
   	private ApplicationContext applicationContext;
 
   	@Inject
@@ -59,7 +68,8 @@ public class VirtualSimulatorPage implements Serializable {
 
     public void clear() {
         entity = new Entity();
-        loadingAsyncData();
+        loadResourceData();
+        //loadingAsyncData();
     }
 
     public void remove() {
@@ -120,6 +130,22 @@ public class VirtualSimulatorPage implements Serializable {
         this.entity = entity;
     }
 
+    protected void loadResourceData() {
+      try
+      {
+      	Resource resource = this.resourceLoader.getResource("classpath:/data/marshall/develop_data.zip");
+        InputStream inputStream = resource.getInputStream();
+
+        byte[] bdata = FileCopyUtils.copyToByteArray(inputStream);
+          //String data = new String(bdata, StandardCharsets.UTF_8);
+        System.out.println(bdata);
+      } 
+      catch (IOException e) 
+      {
+      	e.printStackTrace();
+          //LOGGER.error("IOException", e);
+      }
+    }
 
   	protected void loadingAsyncData() {
   		Map<String, Object> executorMap = ListUtility.createMap();
