@@ -6,17 +6,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.util.Messages;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.TaskExecutor;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
+import net.paramount.common.ListUtility;
+import net.paramount.framework.async.Asynchronous;
+import net.paramount.framework.model.ExecutionContext;
+import net.paramount.msp.async.AsyncExtendedDataLoader;
 import net.paramount.msp.faces.model.Entity;
 
 @Named(value="virtualSimulator")
@@ -31,6 +39,12 @@ public class VirtualSimulatorPage implements Serializable {
     private List<String> allTalks;
     private Entity entity;
 
+  	@Inject
+  	private ApplicationContext applicationContext;
+
+  	@Inject
+  	private TaskExecutor asyncExecutor;
+    
     @PostConstruct
     public void init() {
         allCities = Arrays.asList("São Paulo", "New York", "Tokyo", "Islamabad", "Chongqing", "Guayaquil", "Porto Alegre", "Hanoi", "Montevideo", "Shijiazhuang", "Guadalajara","Stockholm",
@@ -45,6 +59,7 @@ public class VirtualSimulatorPage implements Serializable {
 
     public void clear() {
         entity = new Entity();
+        loadingAsyncData();
     }
 
     public void remove() {
@@ -104,4 +119,23 @@ public class VirtualSimulatorPage implements Serializable {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
+
+
+  	protected void loadingAsyncData() {
+  		Map<String, Object> executorMap = ListUtility.createMap();
+  		ExecutionContext executionContext = null;
+  		Asynchronous asyncExtendedDataLoader = null;
+  		Asynchronous asyncDataPackageLoader = null;
+  		try {
+  			executionContext = ExecutionContext.builder().build().context("AA", "xx").context("DD", "ss");
+
+  			asyncExtendedDataLoader = applicationContext.getBean(AsyncExtendedDataLoader.class, executionContext);
+  			this.asyncExecutor.execute(asyncExtendedDataLoader);
+
+  			executorMap.put("asyncExtendedDataLoader", asyncExtendedDataLoader);
+  			executorMap.put("asyncDataPackageLoader", asyncDataPackageLoader);
+  		} catch (Exception e) {
+  			//log.error(e.getMessage());
+  		}
+  	}
 }
