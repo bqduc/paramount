@@ -23,6 +23,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.paramount.auth.entity.AuthAccount;
 import net.paramount.crs.model.CRXGeneralStage;
+import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.entity.contact.Team;
 import net.paramount.embeddable.Address;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.global.GlobalConstants;

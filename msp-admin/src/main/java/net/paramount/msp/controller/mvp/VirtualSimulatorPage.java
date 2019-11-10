@@ -1,15 +1,13 @@
 package net.paramount.msp.controller.mvp;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
@@ -27,15 +25,19 @@ import org.springframework.util.FileCopyUtils;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
-import net.paramount.common.ListUtility;
+import net.paramount.dmx.repository.GlobalDmxRepository;
+import net.paramount.exceptions.MspDataException;
+import net.paramount.exceptions.ResourcesException;
 import net.paramount.framework.async.Asynchronous;
+import net.paramount.framework.controller.BaseController;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.msp.async.AsyncExtendedDataLoader;
+import net.paramount.msp.components.ResourcesServicesHelper;
 import net.paramount.msp.faces.model.Entity;
 
 @Named(value="virtualSimulator")
 @ViewScoped
-public class VirtualSimulatorPage implements Serializable {
+public class VirtualSimulatorPage extends BaseController {
 
     /**
 	 * 
@@ -54,7 +56,13 @@ public class VirtualSimulatorPage implements Serializable {
   	@Inject
   	private TaskExecutor asyncExecutor;
     
-    @PostConstruct
+  	@Inject
+  	private GlobalDmxRepository globalDmxRepository;
+
+  	@Inject
+  	private ResourcesServicesHelper resourcesServicesHelper;
+
+  	@PostConstruct
     public void init() {
         allCities = Arrays.asList("São Paulo", "New York", "Tokyo", "Islamabad", "Chongqing", "Guayaquil", "Porto Alegre", "Hanoi", "Montevideo", "Shijiazhuang", "Guadalajara","Stockholm",
                 "Seville", "Moscow", "Glasgow", "Reykjavik", "Lyon", "Barcelona", "Kieve", "Vilnius", "Warsaw", "Budapest", "Prague", "Sofia", "Belgrade");
@@ -68,8 +76,9 @@ public class VirtualSimulatorPage implements Serializable {
 
     public void clear() {
         entity = new Entity();
+        archiveData();
         //loadResourceData();
-        loadingAsyncData();
+        //loadingAsyncData();
     }
 
     public void remove() {
@@ -148,20 +157,25 @@ public class VirtualSimulatorPage implements Serializable {
     }
 
   	protected void loadingAsyncData() {
-  		Map<String, Object> executorMap = ListUtility.createMap();
   		ExecutionContext executionContext = null;
   		Asynchronous asyncExtendedDataLoader = null;
-  		Asynchronous asyncDataPackageLoader = null;
   		try {
   			executionContext = ExecutionContext.builder().build().context("AA", "xx").context("DD", "ss");
 
   			asyncExtendedDataLoader = applicationContext.getBean(AsyncExtendedDataLoader.class, executionContext);
   			this.asyncExecutor.execute(asyncExtendedDataLoader);
-
-  			executorMap.put("asyncExtendedDataLoader", asyncExtendedDataLoader);
-  			executorMap.put("asyncDataPackageLoader", asyncDataPackageLoader);
   		} catch (Exception e) {
   			//log.error(e.getMessage());
   		}
+  	}
+
+  	public void archiveData() {
+  		File resourceFile = null;
+  		try {
+    		resourceFile = resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip");
+				globalDmxRepository.archiveResourceData(resourceFile);
+			} catch (MspDataException | ResourcesException e) {
+				log.error(e);
+			}
   	}
 }

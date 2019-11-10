@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.Resource;
@@ -33,9 +32,6 @@ public class ResourcesServicesHelper extends ComponentBase {
 
 	@Inject
 	private ResourceLoader resourceLoader;
-
-	@Inject
-	private ServletContext servletContext;
 	
 	private Resource loadClasspathResource(String resourcePath) {
 		Resource resource = this.resourceLoader.getResource(CLASSPATH + resourcePath);

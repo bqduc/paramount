@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.paramount.auth.entity.AuthAccount;
 import net.paramount.crs.model.CRXGeneralType;
+import net.paramount.css.entity.contact.Team;
 import net.paramount.embeddable.Address;
 import net.paramount.embeddable.Phone;
 import net.paramount.framework.entity.BizObjectBase;

@@ -33,7 +33,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.paramount.crs.entity.inventory.Product;
-import net.paramount.css.entity.PosTax;
+import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.entity.general.PosTax;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**

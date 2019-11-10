@@ -49,6 +49,7 @@
 		<version.jackson-jaxrs-base>2.4.2</version.jackson-jaxrs-base>
 		<version.xlsx-streamer>2.1.0</version.xlsx-streamer>
 		<version.javafaker>0.17.2</version.javafaker>
+		<version.tika>1.22</version.tika>
 	</properties>
  
     <modules>
@@ -61,6 +62,8 @@
 			<module>msp-css</module>
 			<module>msp-osx</module>
 			<module>msp-dmx</module>
+			<module>msp-imx</module>
+			<module>msp-posx</module>
 			<module>msp-admin</module>
     </modules>
 	

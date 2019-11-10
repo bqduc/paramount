@@ -42,7 +42,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import net.paramount.auth.entity.AuthAccount;
-import net.paramount.css.entity.Item;
+import net.paramount.css.entity.general.Item;
 import net.paramount.css.model.ContactType;
 import net.paramount.embeddable.Phone;
 import net.paramount.framework.entity.BizObjectBase;

@@ -23,7 +23,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.paramount.css.entity.Catalogue;
+import net.paramount.css.entity.general.Catalogue;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**

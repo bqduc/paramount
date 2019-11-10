@@ -24,7 +24,9 @@ import net.paramount.auth.entity.AuthAccount;
 import net.paramount.crs.model.CRXGeneralStage;
 import net.paramount.crs.model.CRXGeneralType;
 import net.paramount.crs.model.CRXLeadSource;
-import net.paramount.css.entity.Currency;
+import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.entity.contact.Team;
+import net.paramount.css.entity.general.Currency;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**

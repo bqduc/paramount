@@ -50,6 +50,19 @@
 	    <artifactId>xlsx-streamer</artifactId>
 	    <version>${version.xlsx-streamer}</version>
 	  </dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika -->
+		<!-- <dependency>
+		    <groupId>org.apache.tika</groupId>
+		    <artifactId>tika</artifactId>
+		    <version>${version.tika}</version>
+		</dependency> -->
 		
+  <dependency>
+    <groupId>org.apache.tika</groupId>
+    <artifactId>tika-parsers</artifactId>
+    <version>0.7</version>
+  </dependency>
+  
 	</dependencies>
 </project>

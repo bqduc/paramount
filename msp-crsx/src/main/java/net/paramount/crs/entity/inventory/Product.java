@@ -35,14 +35,15 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.paramount.common.ListUtility;
-import net.paramount.crs.entity.Contact;
-import net.paramount.css.entity.Catalogue;
-import net.paramount.css.entity.Currency;
-import net.paramount.css.entity.MeasureUnit;
+import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.entity.general.Catalogue;
+import net.paramount.css.entity.general.Currency;
+import net.paramount.css.entity.general.MeasureUnit;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.global.GlobalConstants;
 

@@ -5,7 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.MappedSuperclass;
 
-import net.paramount.css.entity.PosTax;
+import net.paramount.css.entity.general.PosTax;
 import net.paramount.framework.entity.BizObjectBase;
 
 

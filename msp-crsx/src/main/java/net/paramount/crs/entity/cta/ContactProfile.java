@@ -33,15 +33,13 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.crs.entity.ContactAddress;
-import net.paramount.crs.entity.ContactTeam;
 import net.paramount.crs.entity.base.ContactClass;
-import net.paramount.css.entity.Document;
+import net.paramount.css.entity.contact.ContactAddress;
+import net.paramount.css.entity.contact.ContactTeam;
+import net.paramount.css.entity.general.Document;
 import net.paramount.model.GenderType;
 
 /**

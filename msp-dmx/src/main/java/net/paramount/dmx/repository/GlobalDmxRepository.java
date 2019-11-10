@@ -3,8 +3,17 @@
  */
 package net.paramount.dmx.repository;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import javax.activation.MimetypesFileTypeMap;
+import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
@@ -13,8 +22,11 @@ import com.github.javafaker.Faker;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.css.entity.general.Office;
+import net.paramount.css.service.general.AttachmentService;
 import net.paramount.embeddable.Address;
+import net.paramount.exceptions.MspDataException;
 import net.paramount.framework.component.ComponentBase;
+import net.paramount.osx.helper.OfficeSuiteServiceProvider;
 
 /**
  * @author ducbui
@@ -34,6 +46,12 @@ public class GlobalDmxRepository extends ComponentBase {
 	public static final Byte[] CATALOGUE_SUBTYPE_LEVELS = new Byte[] {10, 11, 12, 20, 21, 22, 30, 31, 32, 40, 41, 42};
 	public static final String[] cities = new String[] { "Sài Gòn", "Biên Hòa", "Đồng Xoài", "Tây Ninh", "Lái Thiêu", "Đà Lạt", "Bảo Lộc", "Phan Thiết", "Nha Trang", "Sông Cầu", "Quy Nhơn",
 			"Quảng Ngãi", "Đà Nẵng", "Hội An", "Huế", "Hà Nội", "Móng Cái", "Cẩm Phả", "Thác Bản Giốc", "Tuy Hòa", "Cam Lộc", "Bến Tre", "Cần Thơ", "Bạc Liêu", "Mỹ Tho", "Sa Đéc" };
+
+	@Inject
+	private AttachmentService attachmentService;
+	
+	@Inject
+	private OfficeSuiteServiceProvider officeSuiteServiceProvider;
 
 	public Address[] buildAddresses() {
 		List<Address> addresses = ListUtility.createArrayList();
@@ -72,5 +90,42 @@ public class GlobalDmxRepository extends ComponentBase {
 			}
 		}
 		return results;
+	}
+
+	/**
+	 * Archive resource data to database unit
+	 */
+	public void archiveResourceData(final File resourceFile) throws MspDataException {
+		String contentType;
+		InputStream zipInputStream = null;
+		Map<String, InputStream> zipInputStreams = null;
+		File newFile = null;
+		try {
+			MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+			if (resourceFile.getPath().endsWith("zip")) {
+				zipInputStreams = CommonUtility.extractAllZipInputStreams(resourceFile);
+				for (String zipEntry :zipInputStreams.keySet()) {
+					zipInputStream  = zipInputStreams.get(zipEntry);
+					contentType = officeSuiteServiceProvider.detectMineType(zipInputStream, zipEntry);
+					newFile = new File(zipEntry);
+					contentType = officeSuiteServiceProvider.detectMineType(newFile);
+					contentType = mimeTypesMap.getContentType(newFile);
+					if (CommonUtility.isEmpty(contentType)) {
+						contentType = URLConnection.guessContentTypeFromStream(new BufferedInputStream(zipInputStream));
+					}
+
+					if (CommonUtility.isEmpty(contentType)) {
+						contentType = newFile.toURI().toURL().openConnection().getContentType();
+					}
+
+					if (CommonUtility.isEmpty(contentType)) {
+						contentType = Files.probeContentType(newFile.toPath());
+					}
+					System.out.println("Mine type: " + contentType);
+				}
+			}
+		} catch (Exception e) {
+			throw new MspDataException(e);
+		}
 	}
 }

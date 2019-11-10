@@ -34,8 +34,8 @@ import org.hibernate.annotations.Type;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.paramount.auth.entity.AuthAccount;
-import net.paramount.css.entity.Currency;
-import net.paramount.css.entity.Item;
+import net.paramount.css.entity.general.Currency;
+import net.paramount.css.entity.general.Item;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**
