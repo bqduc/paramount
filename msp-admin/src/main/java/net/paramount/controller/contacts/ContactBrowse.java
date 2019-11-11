@@ -1,4 +1,4 @@
-package net.paramount.msp.controller.contacts;
+package net.paramount.controller.contacts;
 
 import java.io.Serializable;
 import java.util.ArrayList;

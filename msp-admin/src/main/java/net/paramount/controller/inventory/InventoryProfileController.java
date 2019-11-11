@@ -1,4 +1,4 @@
-package net.paramount.msp.controller.inventory;
+package net.paramount.controller.inventory;
 
 import java.io.File;
 import java.io.IOException;

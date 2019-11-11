@@ -1,4 +1,4 @@
-package net.paramount.msp.controller.mvp;
+package net.paramount.controller.mvp;
 
 import java.io.File;
 import java.io.IOException;
