@@ -21,12 +21,15 @@ import com.github.javafaker.Faker;
 
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
+import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.entity.general.Office;
 import net.paramount.css.service.general.AttachmentService;
 import net.paramount.embeddable.Address;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.framework.component.ComponentBase;
+import net.paramount.framework.model.CEContext;
 import net.paramount.osx.helper.OfficeSuiteServiceProvider;
+import net.paramount.osx.model.DataWorkbook;
 
 /**
  * @author ducbui
@@ -92,6 +95,26 @@ public class GlobalDmxRepository extends ComponentBase {
 		return results;
 	}
 
+	public List<Contact> generateFakeContactProfiles(){
+		List<Contact> results = ListUtility.createDataList();
+		Contact currentObject = null;
+		Faker faker = new Faker();
+		for (int i = 0; i < NUMBER_TO_GENERATE; i++) {
+			try {
+				currentObject = Contact.builder()
+						.code(faker.code().ean13())
+						.firstName(CommonUtility.stringTruncate(faker.company().name(), 200))
+						.description(faker.company().industry() + "\n" + faker.commerce().department() + "\n" + faker.company().profession())
+						.build();
+				results.add(currentObject);
+				//bizServiceManager.saveOrUpdate(currentObject);
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+		}
+		return results;
+	}
+
 	/**
 	 * Archive resource data to database unit
 	 */
@@ -127,5 +150,9 @@ public class GlobalDmxRepository extends ComponentBase {
 		} catch (Exception e) {
 			throw new MspDataException(e);
 		}
+	}
+
+	public DataWorkbook marshallDataFromZip(CEContext contextParameters) {
+		return DataWorkbook.builder().build();
 	}
 }

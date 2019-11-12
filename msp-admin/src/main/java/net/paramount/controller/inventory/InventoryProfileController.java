@@ -69,8 +69,8 @@ public class InventoryProfileController extends BaseController {
 	@Inject
 	private InventoryProfileService inventoryProfileService;
 
-	@PostConstruct
-	public void init() {
+	@Override
+  public void doPostConstruct() {
 		allCities = Arrays.asList("São Paulo", "New York", "Tokyo", "Islamabad", "Chongqing", "Guayaquil", "Porto Alegre", "Hanoi",
 				"Montevideo", "Shijiazhuang", "Guadalajara", "Stockholm", "Seville", "Moscow", "Glasgow", "Reykjavik", "Lyon", "Barcelona", "Kieve",
 				"Vilnius", "Warsaw", "Budapest", "Prague", "Sofia", "Belgrade");
@@ -170,7 +170,8 @@ public class InventoryProfileController extends BaseController {
 		ExecutionContext executionContext = null;
 		Asynchronous asyncExtendedDataLoader = null;
 		try {
-			executionContext = ExecutionContext.builder().build().context("AA", "xx").context("DD", "ss");
+			executionContext = ExecutionContext.builder().build();
+			executionContext.context("AA", "xx").context("DD", "ss");
 
 			asyncExtendedDataLoader = applicationContext.getBean(AsyncExtendedDataLoader.class, executionContext);
 			this.asyncExecutor.execute(asyncExtendedDataLoader);

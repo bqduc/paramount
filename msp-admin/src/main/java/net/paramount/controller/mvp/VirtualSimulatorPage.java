@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -62,8 +61,9 @@ public class VirtualSimulatorPage extends BaseController {
   	@Inject
   	private ResourcesServicesHelper resourcesServicesHelper;
 
-  	@PostConstruct
-    public void init() {
+  	
+  	@Override
+    public void doPostConstruct() {
         allCities = Arrays.asList("São Paulo", "New York", "Tokyo", "Islamabad", "Chongqing", "Guayaquil", "Porto Alegre", "Hanoi", "Montevideo", "Shijiazhuang", "Guadalajara","Stockholm",
                 "Seville", "Moscow", "Glasgow", "Reykjavik", "Lyon", "Barcelona", "Kieve", "Vilnius", "Warsaw", "Budapest", "Prague", "Sofia", "Belgrade");
         allTalks = Arrays.asList("Designing for Modularity with Java 9", "Twelve Ways to Make Code Suck Less", "Confessions of a Java Educator: 10 Java Insights I Wish I’d Had Earlier",
@@ -160,7 +160,8 @@ public class VirtualSimulatorPage extends BaseController {
   		ExecutionContext executionContext = null;
   		Asynchronous asyncExtendedDataLoader = null;
   		try {
-  			executionContext = ExecutionContext.builder().build().context("AA", "xx").context("DD", "ss");
+  			executionContext = ExecutionContext.builder().build();
+  			executionContext.context("AA", "xx").context("DD", "ss");
 
   			asyncExtendedDataLoader = applicationContext.getBean(AsyncExtendedDataLoader.class, executionContext);
   			this.asyncExecutor.execute(asyncExtendedDataLoader);

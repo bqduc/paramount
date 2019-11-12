@@ -1,6 +1,5 @@
 package net.paramount.controller.contacts;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -11,9 +10,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.crs.entity.base.ContactClass;
-import net.paramount.crs.service.ContactService;
+import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.service.contact.ContactService;
 import net.paramount.dmx.repository.GlobalDmxRepository;
+import net.paramount.framework.controller.BaseController;
 import net.paramount.msp.faces.model.FacesCar;
 import net.paramount.msp.faces.model.Stats;
 import net.paramount.msp.faces.model.Team;
@@ -24,7 +24,7 @@ import net.paramount.msp.faces.service.FacesCarService;
  */
 @Named
 @ViewScoped
-public class ContactBrowse implements Serializable {
+public class ContactBrowse extends BaseController {
 		/**
 	 * 
 	 */
@@ -46,10 +46,9 @@ public class ContactBrowse implements Serializable {
     @Inject
     private GlobalDmxRepository globalDmxRepository;
 
-    @PostConstruct
-    public void init() {
-    	
-    	System.out.println(globalDmxRepository.generateFakeOfficeData());
+  	@Override
+    public void doPostConstruct() {
+    	//System.out.println(globalDmxRepository.generateFakeOfficeData());
         teams = new ArrayList<Team>();
         selectedColors = new ArrayList<>();
         Team lakers = new Team("Los Angeles Lakers");
@@ -74,7 +73,7 @@ public class ContactBrowse implements Serializable {
     }
 
     protected void initData() {
-    	List<ContactClass> bizObjects = this.contactService.getObjects();
+    	List<Contact> bizObjects = this.contactService.getObjects();
     	if (CommonUtility.isEmpty(bizObjects)) {
     		
     	}

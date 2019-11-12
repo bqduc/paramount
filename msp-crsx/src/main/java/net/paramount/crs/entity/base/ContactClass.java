@@ -53,7 +53,7 @@ import net.paramount.global.GlobalConstants;
  * 
  * @author Bui Quy Duc
  */
-@Builder
+/*@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -62,9 +62,9 @@ import net.paramount.global.GlobalConstants;
 @DiscriminatorColumn(name = "contact_type", discriminatorType = DiscriminatorType.INTEGER)
 @DiscriminatorValue(value = "0")
 public class ContactClass extends BizObjectBase {
-	/**
+	*//**
 	 * 
-	 */
+	 *//*
 	private static final long serialVersionUID = -913646501472973260L;
 
 	@Column(name="code", length=GlobalConstants.SIZE_SERIAL, unique=true)
@@ -335,4 +335,4 @@ public class ContactClass extends BizObjectBase {
 	public void setIssueUserAccount(AuthAccount issueUserAccount) {
 		this.issueUserAccount = issueUserAccount;
 	}
-}
+}*/

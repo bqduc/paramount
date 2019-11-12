@@ -25,8 +25,8 @@ import org.springframework.util.FileCopyUtils;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
-import net.paramount.css.entity.general.Catalogue;
-import net.paramount.css.service.general.CatalogueService;
+import net.paramount.css.entity.general.CatalogueSubtype;
+import net.paramount.css.service.general.CatalogueSubtypeService;
 import net.paramount.dmx.repository.GlobalDmxRepository;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ResourcesException;
@@ -36,11 +36,10 @@ import net.paramount.framework.model.ExecutionContext;
 import net.paramount.msp.async.AsyncExtendedDataLoader;
 import net.paramount.msp.components.ResourcesServicesHelper;
 import net.paramount.msp.faces.model.Entity;
-import net.paramount.msp.faces.model.FacesCar;
 
-@Named(value = "catalogueController")
+@Named(value = "catalogueSubtypeController")
 @ViewScoped
-public class CatalogueController extends BaseController {
+public class CatalogueSubtypeController extends BaseController {
 	/**
 	* 
 	*/
@@ -49,10 +48,8 @@ public class CatalogueController extends BaseController {
 	private List<String> allCities;
 	private List<String> allTalks;
 	private Entity entity;
-	
-	private Long bizObjectId;
 
-	private List<Catalogue> listOfEntities;
+	private List<CatalogueSubtype> listOfEntities;
 
 	@Inject
 	private ResourceLoader resourceLoader;
@@ -70,7 +67,7 @@ public class CatalogueController extends BaseController {
 	private ResourcesServicesHelper resourcesServicesHelper;
 
 	@Inject
-	private CatalogueService businessService;
+	private CatalogueSubtypeService businessService;
 
 	@Override
   public void doPostConstruct() {
@@ -155,14 +152,6 @@ public class CatalogueController extends BaseController {
 		this.entity = entity;
 	}
 
-	public Long getBizObjectId() {
-		return bizObjectId;
-	}
-
-	public void setBizObjectId(Long bizObjectId) {
-		this.bizObjectId = bizObjectId;
-	}
-
 	protected void loadResourceData() {
 		try {
 			Resource resource = this.resourceLoader.getResource("classpath:/data/marshall/develop_data.zip");
@@ -200,8 +189,4 @@ public class CatalogueController extends BaseController {
 			log.error(e);
 		}
 	}
-
-  public List<Catalogue> getBusinessObjects() {
-    return this.listOfEntities;
-  }
 }

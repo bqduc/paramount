@@ -24,10 +24,15 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
@@ -44,7 +49,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.paramount.auth.entity.AuthAccount;
 import net.paramount.common.CommonUtility;
@@ -63,11 +67,13 @@ import net.paramount.model.GenderType;
  * @author Bui Quy Duc
  */
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "contact")
-@EqualsAndHashCode(callSuper = true)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "contact_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue(value = "0")
 public class Contact extends BizObjectBase {
 	private static final long serialVersionUID = -5019226095410649159L;
 

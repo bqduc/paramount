@@ -42,7 +42,7 @@ public class DatatableMB implements Serializable {
 
     @PostConstruct
     public void init() {
-    	System.out.println(globalDmxRepository.generateFakeOfficeData());
+    	//System.out.println(globalDmxRepository.generateFakeOfficeData());
         teams = new ArrayList<Team>();
         selectedColors = new ArrayList<>();
         Team lakers = new Team("Los Angeles Lakers");

@@ -1,15 +1,15 @@
-/*package net.paramount.crs.service;
+package net.paramount.css.service.contact;
 
 import org.springframework.data.domain.Page;
 
-import net.paramount.crs.entity.base.ContactClass;
+import net.paramount.css.entity.contact.Contact;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.service.GenericService;
 
-public interface ContactService extends GenericService<ContactClass, Long> {
+public interface ContactService extends GenericService<Contact, Long> {
 
-	*//**
+	/**
 	 * Get one Enterprise with the provided code.
 	 * 
 	 * @param code
@@ -17,16 +17,15 @@ public interface ContactService extends GenericService<ContactClass, Long> {
 	 * @return The Enterprise
 	 * @throws ObjectNotFoundException
 	 *             If no such Enterprise exists.
-	 *//*
-	ContactClass getOne(String code) throws ObjectNotFoundException;
+	 */
+	Contact getOne(String code) throws ObjectNotFoundException;
 
-	*//**
+	/**
 	 * Get one Enterprises with the provided search parameters.
 	 * 
 	 * @param searchParameter
 	 *            The search parameter
 	 * @return The pageable Enterprises
-	 *//*
-	Page<ContactClass> getObjects(SearchParameter searchParameter);
+	 */
+	Page<Contact> getObjects(SearchParameter searchParameter);
 }
-*/

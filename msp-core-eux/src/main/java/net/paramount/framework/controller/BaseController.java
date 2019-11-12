@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -36,6 +37,7 @@ import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.domain.SelectItem;
+import net.paramount.exceptions.ExecutionContextException;
 import net.paramount.framework.constants.ControllerConstants;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.helper.WebServicingHelper;
@@ -51,6 +53,15 @@ public abstract class BaseController extends RootController {
 	protected static final String PAGE_POSTFIX_SHOW = "Show";
 	protected static final String PAGE_POSTFIX_EDIT = "Edit";
 	protected static final String REDIRECT = "redirect:/";
+
+	protected void doPostConstruct() throws ExecutionContextException {
+		throw new ExecutionContextException("Not implemented yet!");
+	}
+
+	@PostConstruct
+	public void onPostConstruct() throws ExecutionContextException {
+		doPostConstruct();
+	}
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {

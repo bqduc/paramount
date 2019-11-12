@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.crs.entity.base.ContactClass;
+import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.entity.contact.ContactAddress;
 import net.paramount.css.entity.contact.ContactTeam;
 import net.paramount.css.entity.general.Document;
@@ -50,7 +50,7 @@ import net.paramount.model.GenderType;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("6")
-public class ContactProfile extends ContactClass {
+public class ContactProfile extends Contact {
 	private static final long serialVersionUID = -5019226095410649159L;
 
 	@Column(name="saluation", length=5)

@@ -4,7 +4,6 @@
 package net.paramount.osx.helper;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -14,16 +13,10 @@ import java.util.Set;
 import org.apache.poi.poifs.filesystem.FileMagic;
 import org.apache.tika.Tika;
 import org.apache.tika.config.TikaConfig;
-import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.mime.MimeTypeException;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.sax.BodyContentHandler;
 import org.springframework.stereotype.Component;
-import org.xml.sax.SAXException;
 
 import lombok.Builder;
 import net.paramount.common.CommonUtility;

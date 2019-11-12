@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.crs.entity.base.ContactClass;
 import net.paramount.crs.entity.cta.ContactProfile;
 import net.paramount.crs.service.ContactProfileService;
-import net.paramount.crs.service.ContactService;
+import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.service.contact.ContactService;
 import net.paramount.framework.controller.BaseRestController;
 
 /**
@@ -29,7 +29,7 @@ import net.paramount.framework.controller.BaseRestController;
  */
 @RestController
 @RequestMapping("/api/contact")
-public class ContactRestController extends BaseRestController<ContactClass> {
+public class ContactRestController extends BaseRestController<Contact> {
 
 	/**
 	 * 
@@ -43,25 +43,25 @@ public class ContactRestController extends BaseRestController<ContactClass> {
 	private ContactProfileService businessServiceProfile;
 
 	@Override
-	protected void doCreateBusinessObject(ContactClass businessObject) {
+	protected void doCreateBusinessObject(Contact businessObject) {
 		log.info("Account Rest::CreateBusinessObject: " + businessObject.getCode());
 		businessService.saveOrUpdate(businessObject);
 		log.info("Account Rest::CreateBusinessObject is done");
 	}
 
 	@RequestMapping(value = "/listAll/", method = RequestMethod.GET)
-	public ResponseEntity<List<ContactClass>> listAll() {
-		List<ContactClass> userObjects = businessService.getObjects();
+	public ResponseEntity<List<Contact>> listAll() {
+		List<Contact> userObjects = businessService.getObjects();
 		if (userObjects.isEmpty()) {
-			return new ResponseEntity<List<ContactClass>>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<Contact>>(HttpStatus.NO_CONTENT);
 			// You many decide to return HttpStatus.NOT_FOUND
 		}
-		return new ResponseEntity<List<ContactClass>>(userObjects, HttpStatus.OK);
+		return new ResponseEntity<List<Contact>>(userObjects, HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/list", method = RequestMethod.GET)
-	public List<ContactClass> list(HttpServletRequest request, HttpServletResponse response, Model model) {
-		List<ContactClass> objects = businessService.getObjects();
+	public List<Contact> list(HttpServletRequest request, HttpServletResponse response, Model model) {
+		List<Contact> objects = businessService.getObjects();
 		if (CommonUtility.isEmpty(objects)) {
 			initDummyData();
 			objects = businessService.getObjects();
@@ -71,7 +71,7 @@ public class ContactRestController extends BaseRestController<ContactClass> {
 	}
 
 	private void initDummyData() {
-		ContactClass account = ContactClass.builder()
+		Contact account = Contact.builder()
 				.code("CC0191019")
 				.accountName("Dummy Contact Clazz")
 				.title("Dummy Class")

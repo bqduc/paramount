@@ -28,7 +28,7 @@
                                          value="New" styleClass="btn-primary"/>
                         <p:spacer width="5"/>
                         <p:commandButton value="Delete Selected" icon="fa fa-trash" styleClass="btn-danger"
-                                         action="#{contactBrowse.delete}"
+                                         action="#{catalogueController.delete}"
                                          disabled="#{empty carListMB.selectedCars or carListMB.selectedCars.size() == 0}"
                                          process="@this" update="@form"
                         >
@@ -43,7 +43,7 @@
                     <p:splitButton value="New" action="car-form?faces-redirect=true"
                                    icon="fa fa-plus"
                                    styleClass="hidden-md hidden-lg btn-primary">
-                        <p:menuitem value="Delete Selected" action="#{contactBrowse.delete}"
+                        <p:menuitem value="Delete Selected" action="#{catalogueController.delete}"
                                     process="@this" update="@form"
                                     disabled="#{empty carListMB.selectedCars or carListMB.selectedCars.size() == 0}"
                                     icon="fa fa-trash">
@@ -57,10 +57,10 @@
                     </p:splitButton>
 
                     <p:separator/>
-                    <p:dataTable widgetVar="carsTable" var="c" value="#{contactBrowse.cars}" rows="5"
+                    <p:dataTable widgetVar="carsTable" var="c" value="#{catalogueController.businessObjects}" rows="5"
                                  rowKey="#{c.id}" lazy="true" paginator="true"
-                                 filteredValue="#{contactBrowse.filteredValue}"
-                                 paginatorPosition="bottom" selection="#{contactBrowse.selectedCars}"
+                                 filteredValue="#{catalogueController.filteredValue}"
+                                 paginatorPosition="bottom" selection="#{catalogueController.selectedCars}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  currentPageReportTemplate="[ {startRecord} to {endRecord} of {totalRecords} ]"
                                  rowsPerPageTemplate="5,10,15,20,30"
@@ -73,11 +73,11 @@
 
 
                         <f:facet name="header">
-                            Find Car by id: <p:inputNumber id="inptId" decimalPlaces="0" value="#{contactBrowse.id}"/>
+                            Find Car by id: <p:inputNumber id="inptId" decimalPlaces="0" value="#{catalogueController.bizObjectId}"/>
                             <p:spacer height="5"/>
                             <p:commandButton id="brFind"
                                              value="Find"
-                                             action="#{contactBrowse.findCarById(carListMB.id)}"
+                                             action="#{catalogueController.findCarById(carListMB.id)}"
                                              process="@form"
                                              update="@form"
                                              styleClass="btn-flat bg-black btn-states"
@@ -88,9 +88,9 @@
                         <p:column headerText="Model" filterBy="#{c.model}" sortBy="#{c.model}"
                                   filterMatchMode="contains">
                             <f:facet name="filter">
-                                <p:autoComplete value="#{contactBrowse.filter.entity.model}" forceSelection="true"
+                                <p:autoComplete value="#{catalogueController.filter.entity.model}" forceSelection="true"
                                                 minQueryLength="2" queryDelay="500"
-                                                completeMethod="#{contactBrowse.completeModel}" maxResults="10">
+                                                completeMethod="#{catalogueController.completeModel}" maxResults="10">
                                     <p:ajax event="itemSelect" process="@this" update="@none"
                                             oncomplete="PF('carsTable').filter()"/>
                                 </p:autoComplete>
@@ -102,7 +102,7 @@
                         </p:column>
                         <p:column headerText="Name" sortBy="#{c.name}" filterBy="#{c.name}">
                             <f:facet name="filter">
-                                <p:inputText value="#{contactBrowse.filter.entity.name}">
+                                <p:inputText value="#{catalogueController.filter.entity.name}">
                                     <p:ajax process="@this" update="@none" oncomplete="PF('carsTable').filter()"/>
                                 </p:inputText>
                             </f:facet>
@@ -110,7 +110,7 @@
                         </p:column>
                         <p:column headerText="Price" sortBy="#{c.price}" filterBy="#{c.price}">
                             <f:facet name="filter">
-                                <p:spinner value="#{contactBrowse.filter.entity.price}">
+                                <p:spinner value="#{catalogueController.filter.entity.price}">
                                     <f:converter converterId="javax.faces.Double"/>
                                     <p:ajax process="@this" update="@none" oncomplete="PF('carsTable').filter()"/>
                                 </p:spinner>
@@ -132,7 +132,7 @@
 
         <p:dialog header="Selected cars" widgetVar="selectedCars" height="250"
                   width="400" responsive="true" styleClass="box-success">
-            <p:dataList id="selectedCarsList" value="#{contactBrowse.selectedCars}" var="car"
+            <p:dataList id="selectedCarsList" value="#{catalogueController.selectedCars}" var="car"
                         type="definition">
                 ID: #{car.id} - Name: #{car.name} - Model: #{car.model}
             </p:dataList>

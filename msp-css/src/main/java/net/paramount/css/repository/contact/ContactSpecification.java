@@ -1,32 +1,31 @@
 /**
  * 
- *//*
-package net.paramount.crs.repository.cta;
+ */
+package net.paramount.css.repository.contact;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import lombok.Builder;
-import net.paramount.crs.entity.base.ContactClass;
+import net.paramount.css.entity.contact.Contact;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.model.SearchRequest;
 import net.paramount.framework.specification.CoreSpecifications;
 
-*//**
+/**
  * @author bqduc
  *
- *//*
+ */
 @Builder
-public class ContactClassSpecification extends CoreSpecifications<ContactClass, SearchRequest>{
-	*//**
+public class ContactSpecification extends CoreSpecifications<Contact, SearchRequest>{
+	/**
 	 * 
-	 *//*
+	 */
 	private static final long serialVersionUID = -4351535957683794972L;
 
-	public static Specification<ContactClass> buildSpecification(final SearchParameter searchParameter) {
-		return ContactClassSpecification
+	public static Specification<Contact> buildSpecification(final SearchParameter searchParameter) {
+		return ContactSpecification
 				.builder()
 				.build()
 				.buildSpecifications(searchParameter);
 	}
 }
-*/
