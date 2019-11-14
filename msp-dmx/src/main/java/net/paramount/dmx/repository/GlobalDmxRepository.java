@@ -103,9 +103,13 @@ public class GlobalDmxRepository extends ComponentBase {
 			try {
 				currentObject = Contact.builder()
 						.code(faker.code().ean13())
-						.firstName(CommonUtility.stringTruncate(faker.company().name(), 200))
+						.firstName(CommonUtility.stringTruncate(faker.name().firstName(), 50))
+						.lastName(CommonUtility.stringTruncate(faker.name().lastName(), 150))
+						.code(CommonUtility.stringTruncate(faker.code().ean13(), 200))
 						.description(faker.company().industry() + "\n" + faker.commerce().department() + "\n" + faker.company().profession())
+						.birthdate(faker.date().birthday())
 						.build();
+				currentObject.setId(i+28192L);
 				results.add(currentObject);
 				//bizServiceManager.saveOrUpdate(currentObject);
 			} catch (Exception e) {

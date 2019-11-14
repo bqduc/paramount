@@ -42,6 +42,10 @@ public abstract class BaseServiceImpl<T extends ObjectBase, PK extends Serializa
 		return getRepository().save(entity);
 	}
 
+	public List<T> saveObjects(List<T> objects) {
+		return getRepository().saveAll(objects);
+	}
+
 	public T create(T entity) {
 		return getRepository().save(entity);
 	}

@@ -16,6 +16,7 @@ import net.paramount.framework.model.SearchParameter;
 
 public interface GenericService<T extends ObjectBase, K extends Serializable>{
 	T saveOrUpdate(T entity);
+	List<T> saveObjects(List<T> objects);
 
 	void remove(K id);
 	void remove(T entity);

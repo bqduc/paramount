@@ -4,6 +4,7 @@
 package net.paramount.framework.repository;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -22,4 +23,5 @@ public interface BaseRepository<T, PK extends Serializable> extends JpaRepositor
 
 	Page<T> findAll(Pageable pageable);
 	Page<T> findAllByOrderByIdAsc(Pageable pageable);
+	//Collection<T> saveAll(Collection<T> collection);
 }

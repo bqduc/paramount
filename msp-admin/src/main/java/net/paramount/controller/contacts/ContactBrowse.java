@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,11 +17,12 @@ import net.paramount.msp.faces.model.FacesCar;
 import net.paramount.msp.faces.model.Stats;
 import net.paramount.msp.faces.model.Team;
 import net.paramount.msp.faces.service.FacesCarService;
+import net.paramount.msp.model.Car;
 
 /**
  * Created by rmpestano on 18/01/17.
  */
-@Named
+@Named(value="contactBrowse")
 @ViewScoped
 public class ContactBrowse extends BaseController {
 		/**
@@ -37,6 +37,8 @@ public class ContactBrowse extends BaseController {
 
     private List<FacesCar> filteredCars;
 
+    List<Car> selectedCars; //cars selected in checkbox column
+
     @Inject
     private FacesCarService carService;
 
@@ -46,9 +48,17 @@ public class ContactBrowse extends BaseController {
     @Inject
     private GlobalDmxRepository globalDmxRepository;
 
-  	@Override
+    private List<Contact> businessObjects;
+    private List<Contact> selectedBusinessObjects;
+
+    @Override
     public void doPostConstruct() {
-    	//System.out.println(globalDmxRepository.generateFakeOfficeData());
+    	this.businessObjects = contactService.getObjects();
+    	if (this.businessObjects.isEmpty()) {
+    		this.businessObjects = globalDmxRepository.generateFakeContactProfiles();
+    		contactService.saveObjects(businessObjects);
+    	}
+    	//System.out.println("Business objects: " + this.businessObjects);
         teams = new ArrayList<Team>();
         selectedColors = new ArrayList<>();
         Team lakers = new Team("Los Angeles Lakers");
@@ -69,7 +79,7 @@ public class ContactBrowse extends BaseController {
         celtics.getStats().add(new Stats("2010-2011", 35, 47));
         teams.add(celtics);
 
-        cars = carService.createCars(30);
+        cars = carService.createCars(230);
     }
 
     protected void initData() {
@@ -158,4 +168,28 @@ public class ContactBrowse extends BaseController {
     public void setSelectedCar(FacesCar selectedCar) {
         this.selectedCar = selectedCar;
     }
+
+		public List<Car> getSelectedCars() {
+			return selectedCars;
+		}
+
+		public void setSelectedCars(List<Car> selectedCars) {
+			this.selectedCars = selectedCars;
+		}
+
+		public List<Contact> getBusinessObjects() {
+			return businessObjects;
+		}
+
+		public void setBusinessObjects(List<Contact> businessObjects) {
+			this.businessObjects = businessObjects;
+		}
+
+		public List<Contact> getSelectedBusinessObjects() {
+			return selectedBusinessObjects;
+		}
+
+		public void setSelectedBusinessObjects(List<Contact> selectedBusinessObjects) {
+			this.selectedBusinessObjects = selectedBusinessObjects;
+		}
 }
