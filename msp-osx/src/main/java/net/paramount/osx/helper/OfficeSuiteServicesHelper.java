@@ -54,18 +54,6 @@ public class OfficeSuiteServicesHelper extends ComponentBase {
 		DefaultExecutionContext executionContext = null;
 		try {
 			executionContext = this.initConfigData(sourceZipFile);
-			/*Map<String, Object> params = ListUtility.createMap();
-			
-			Map<String, String> secretKeyMap = ListUtility.createMap("Vietbank_14.000.xlsx", "thanhcong");
-			Map<String, List<String>> sheetIdMap = ListUtility.createMap();
-			sheetIdMap.put("Bieu thue XNK 2019.07.11.xlsx", ListUtility.arraysAsList(new String[] {"BIEU THUE 2019"}));
-			sheetIdMap.put("Vietbank_14.000.xlsx", ListUtility.arraysAsList(new String[] {"File Tổng hợp", "Các trưởng phó phòng", "9"}));
-			
-			params.put(OSXConstants.PARAM_COMPRESSED_FILE, sourceZipFile);
-			params.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
-			params.put(OSXConstants.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {"Bieu thue XNK 2019.07.11.xlsx", "Final_PL5_Thuoc tan duoc.xlsx", "Vietbank_14.000.xlsx", "data-catalog.xlsx"}));
-			params.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
-			params.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIdMap);*/
 			bucketContainer = OfficeSuiteServiceProvider
 					.builder()
 					.build()

@@ -19,7 +19,6 @@ import net.paramount.common.ListUtility;
 import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.entity.general.Office;
 import net.paramount.css.service.general.AttachmentService;
-import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.embeddable.Address;
 import net.paramount.entity.Attachment;
 import net.paramount.exceptions.MspDataException;
@@ -113,7 +112,6 @@ public class GlobalDmxRepository extends ComponentBase {
 						.build();
 				currentObject.setId(i+28192L);
 				results.add(currentObject);
-				//bizServiceManager.saveOrUpdate(currentObject);
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}

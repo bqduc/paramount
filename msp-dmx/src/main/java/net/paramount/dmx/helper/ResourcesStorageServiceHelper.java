@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -106,51 +105,6 @@ public class ResourcesStorageServiceHelper {
 		}
 	}
 
-	/*
-	public OsxBucketContainer readOfficeDataInZip(final DefaultExecutionContext executionContextParams) throws EcosysException {
-		OsxBucketContainer bucketContainer = OsxBucketContainer.instance();
-		File zipFile = null;
-		Map<String, InputStream> zipInputStreams = null;
-		Map<String, Object> processingParameters = ListUtility.createMap();
-		OfficeDocumentType officeDocumentType = OfficeDocumentType.INVALID;
-		DataWorkbook workbookContainer = null;
-		InputStream zipInputStream = null;
-		Map<String, List<String>> sheetIdsMap = null;
-		List<String> worksheetIds = null;
-		Map<String, String> passwordMap = null;
-		try {
-			zipFile = (File) executionContextParams.get(OSXConstants.PARAM_COMPRESSED_FILE);
-			zipInputStreams = CommonUtility.extractZipInputStreams(zipFile, (List<String>) executionContextParams.get(OSXConstants.PARAM_ZIP_ENTRY));
-			if (zipInputStreams.isEmpty()) {
-				return bucketContainer;
-			}
-
-			passwordMap = (Map) executionContextParams.get(OSXConstants.PARAM_ENCRYPTION_KEY);
-			sheetIdsMap = (Map) executionContextParams.get(OSXConstants.PARAM_DATA_SHEET_IDS);
-			for (String zipEntry : zipInputStreams.keySet()) {
-				zipInputStream = zipInputStreams.get(zipEntry);
-				officeDocumentType = detectOfficeDocumentType(zipInputStream);
-				if (!OfficeDocumentType.isExcelDocument(officeDocumentType)) {
-					continue;
-				}
-
-				worksheetIds = (List<String>) sheetIdsMap.get(zipEntry);
-				processingParameters.putAll(executionContextParams.getContext());
-				processingParameters.remove(OSXConstants.PARAM_COMPRESSED_FILE);
-				processingParameters.put(OSXConstants.PARAM_INPUT_STREAM, zipInputStream);
-				processingParameters.put(OSXConstants.PARAM_DATA_SHEET_IDS, worksheetIds);
-				processingParameters.put(OSXConstants.PARAM_ENCRYPTION_KEY, (String) passwordMap.get(zipEntry));
-				workbookContainer = readExcelFile(processingParameters);
-				if (null != workbookContainer) {
-					bucketContainer.put(zipEntry, workbookContainer);
-				}
-			}
-		} catch (Exception e) {
-			throw new EcosysException(e);
-		}
-		return bucketContainer;
-	}
-	*/
 	public static Attachment buidAttachment(final File file) throws MspRuntimeException {
 		Attachment attachment = null;
 		int lastDot = file.getName().lastIndexOf(CommonConstants.FILE_EXTENSION_SEPARATOR);

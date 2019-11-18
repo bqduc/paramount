@@ -32,16 +32,6 @@ import net.paramount.osx.model.OfficeMarshalType;
 @Component
 @Builder
 public class OfficeSuiteServiceProvider {
-	/*private static TikaConfig tikaConfig = null;
-	private static Tika tika = new Tika();
-
-	static {
-		try {
-			tikaConfig = new TikaConfig();
-		} catch (MimeTypeException | IOException e) {
-			e.printStackTrace();
-		}
-	}*/
 	protected OfficeDocumentType detectOfficeDocumentType(InputStream inputStream) throws EcosysException {
 		OfficeDocumentType excelSheetType = OfficeDocumentType.INVALID;
 		InputStream checkInputStream = null;
@@ -128,97 +118,19 @@ public class OfficeSuiteServiceProvider {
 		return bucketContainer;
 	}
 
-	/*public String detectMineType(final InputStream inputStream, final String fileName) {
-		String mineType = "Unknown";
-		try {
-			InputStream checkInputStream = FileMagic.prepareToCheckMagic(inputStream);
-			System.out.println(FileMagic.valueOf(checkInputStream));
-
-      Metadata metadata = new Metadata();
-			
-			mineType = tika.detect(inputStream);
-			System.out.println("Mine type of #1: " + mineType);
-
-			//Metadata metadata = new Metadata();
-			//metadata.set(Metadata.RESOURCE_NAME_KEY, fileName);
-
-			MediaType mediaType = tikaConfig.getMimeRepository().detect(inputStream, metadata);
-			mineType = mediaType.getType();
-			System.out.println(mediaType.getSubtype());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mineType;
-	}*/
-
-	/*public String detectMineType(final File file) {
-		String mineType = "Unknown";
-		try {
-			mineType = tika.detect(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return mineType;
-	}*/
-
 	public static void main(String[] args) throws Exception {
 		String zipFileName = "D:\\git\\paramount\\msp-osx\\src\\main\\resources\\data\\develop_data.zip";
 		OsxBucketContainer bucketContainer = OfficeSuiteServicesHelper.builder().build().loadDefaultZipConfiguredData(new File(zipFileName));
-		/*
-		 * String encryptKey = "thanhcong"; Map<String, Object> params = ListUtility.createMap();
-		 * 
-		 * Map<String, String> secretKeyMap = ListUtility.createMap("Vietbank_14.000.xlsx", encryptKey); Map<String, List<String>> sheetIdMap =
-		 * ListUtility.createMap(); sheetIdMap.put("Bieu thue XNK 2019.07.11.xlsx", ListUtility.arraysAsList(new String[] {"BIEU THUE 2019"}));
-		 * sheetIdMap.put("Vietbank_14.000.xlsx", ListUtility.arraysAsList(new String[] {"File Tổng hợp", "Các trưởng phó phòng", "9"}));
-		 * 
-		 * params.put(OSXConstants.PARAM_COMPRESSED_FILE, new File(zipFileName)); params.put(OSXConstants.PARAM_ENCRYPTION_KEY,
-		 * secretKeyMap); params.put(OSXConstants.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {"Bieu thue XNK 2019.07.11.xlsx",
-		 * "Final_PL5_Thuoc tan duoc.xlsx", "Vietbank_14.000.xlsx", "data-catalog.xlsx"}));
-		 * params.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
-		 * params.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIdMap); BucketContainer bucketContainer = OfficeSuiteServiceProvider .builder()
-		 * .build() .readOfficeDataInZip(params);
-		 */
 		DataWorkbook workbookContainer = null;
 		Set<Object> keys = bucketContainer.getKeys();
 		for (Object key : keys) {
 			workbookContainer = (DataWorkbook) bucketContainer.get(key);
-			// System.out.println(workbookContainer.getValues().size());
 			System.out.println("############################### " + key + " ###############################");
 			displayWorkbookContainer(workbookContainer);
 		}
 
 		if (null != keys)
 			return;
-
-		/*
-		 * long started = System.currentTimeMillis(); String fileName =
-		 * "C:/Users/ducbq/Downloads/data_sheets/[FILE GỐC] 100.000 Khách hàng PG Bank.xlsx";/
-		 * /"C:/Users/ducbq/Downloads/data_sheets/Danh bạ toàn hệ thống Ngân hàng Vietinbank_Khoảng 14.000.xlsx";/
-		 * /"C:\\Users\\ducbq\\Downloads\\data_sheets\\Bieu thue XNK 2019.07.11 (SongAnhLogs).xlsx";/
-		 * /"C:\\Users\\ducbq\\Downloads\\data_sheets/Danh bạ toàn hệ thống Ngân hàng LIENVIET POST BANK_Khoảng 3.000.xlsx";
-		 * //params.put(OSXConstants.PARAM_ENCRYPTION_KEY, encryptKey); //params.put("BIEU THUE 2019" +
-		 * OSXConstants.PARAM_STARTED_ROW_INDEX, 0); params.put(OSXConstants.PARAM_INPUT_STREAM, new FileInputStream(zipFileName));
-		 * workbookContainer = OfficeSuiteServiceProvider.builder() .build() .readXlsxByStreaming(params); long duration =
-		 * System.currentTimeMillis()-started;
-		 * 
-		 * keys = bucketContainer.getKeys(); for (Object key :keys) { workbookContainer = (DataWorkbook)bucketContainer.get(key);
-		 * System.out.println(workbookContainer.getValues().size()); //displayWorkbookContainer(workbookContainer); }
-		 * System.out.println("Event: " + duration);
-		 * 
-		 * params.put(OSXConstants.PARAM_INPUT_STREAM, new FileInputStream(fileName)); started = System.currentTimeMillis();
-		 * workbookContainer = OfficeSuiteServiceProvider.builder() .build() .readXlsxByEventHandler(params); duration =
-		 * System.currentTimeMillis()-started; System.out.println("---------------------------------------------------------------------");
-		 * System.out.println("Streaming: " + duration); workbookContainer = null; for (Object key :bucketContainer.getKeys()) {
-		 * workbookContainer = (DataWorkbook)bucketContainer.get(key); System.out.println(workbookContainer.getValues().size());
-		 * displayWorkbookContainer(workbookContainer); }
-		 */
-		/*
-		 * String file = "C:\\Users\\ducbq\\Downloads\\data_sheets.zip"; List<InputStream> inputStreams =
-		 * CommonUtility.getZipFileInputStreams(new File(file)); DataBucket dataBucket = null; Map<Object, Object> params =
-		 * ListUtility.createMap(); for (InputStream inputStream :inputStreams) { params.put(DataBucket.PARAM_INPUT_STREAM, inputStream);
-		 * //params.put(DataBucket.PARAM_DATA_SHEETS, sheetIds); params.put(DataBucket.PARAM_STARTED_ROW_INDEX, new Integer[] {1, 1, 1});
-		 * dataBucket = OfficeSuiteServiceProvider.builder() .build() .readXlsxData(params); System.out.println(dataBucket); }
-		 */
 	}
 
 	protected static void displayWorkbookContainer(DataWorkbook workbookContainer) {
