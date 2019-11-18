@@ -9,7 +9,7 @@ import java.util.Map;
 import net.paramount.common.ListUtility;
 
 /**
- * Cross Execution Context
+ * Base Execution Context
  * @author bqduc
  *
  */
@@ -29,7 +29,7 @@ public abstract class ContextBase implements Serializable{
 		return this.context.containsKey(key);
 	}
 
-	public Object getContextData(String key){
+	public Object get(String key){
 		return this.context.get(key);
 	}
 
@@ -37,7 +37,7 @@ public abstract class ContextBase implements Serializable{
 		return (this.context.size()<1)?null:this.context.values().iterator().next();
 	}
 
-	public void putContextData(String key, Object contextData){
+	public void put(String key, Object contextData){
 		this.context.put(key, contextData);
 	}
 

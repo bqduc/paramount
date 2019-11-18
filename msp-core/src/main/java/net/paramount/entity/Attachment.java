@@ -1,4 +1,4 @@
-package net.paramount.css.entity.general;
+package net.paramount.entity;
 
 import java.util.Objects;
 
@@ -34,6 +34,9 @@ public class Attachment extends ObjectAudit {
   
 	@Lob
   private byte[] data;
+
+	@Column(name = "encryption_key", length=200)
+	private String encryptionKey;
 
 	public String getName() {
 		return name;
@@ -78,5 +81,13 @@ public class Attachment extends ObjectAudit {
 
 	public void setData(byte[] data) {
 		this.data = data;
+	}
+
+	public String getEncryptionKey() {
+		return encryptionKey;
+	}
+
+	public void setEncryptionKey(String encryptionKey) {
+		this.encryptionKey = encryptionKey;
 	}
 }

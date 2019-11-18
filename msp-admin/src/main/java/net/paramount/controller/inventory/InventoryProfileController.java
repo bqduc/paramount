@@ -1,6 +1,5 @@
 package net.paramount.controller.inventory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
@@ -10,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -25,16 +23,14 @@ import org.springframework.util.FileCopyUtils;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
+import net.paramount.component.helper.ResourcesServicesHelper;
 import net.paramount.dmx.repository.GlobalDmxRepository;
-import net.paramount.exceptions.MspDataException;
-import net.paramount.exceptions.ResourcesException;
 import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.imx.entity.InventoryProfile;
 import net.paramount.imx.service.InventoryProfileService;
 import net.paramount.msp.async.AsyncExtendedDataLoader;
-import net.paramount.msp.components.ResourcesServicesHelper;
 import net.paramount.msp.faces.model.Entity;
 
 @Named(value = "inventoryProfileController")
@@ -89,7 +85,6 @@ public class InventoryProfileController extends BaseController {
 
 	public void clear() {
 		entity = new Entity();
-		archiveData();
 		// loadResourceData();
 		// loadingAsyncData();
 	}
@@ -177,16 +172,6 @@ public class InventoryProfileController extends BaseController {
 			this.asyncExecutor.execute(asyncExtendedDataLoader);
 		} catch (Exception e) {
 			// log.error(e.getMessage());
-		}
-	}
-
-	public void archiveData() {
-		File resourceFile = null;
-		try {
-			resourceFile = resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip");
-			globalDmxRepository.archiveResourceData(resourceFile);
-		} catch (MspDataException | ResourcesException e) {
-			log.error(e);
 		}
 	}
 }

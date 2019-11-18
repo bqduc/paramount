@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.paramount.framework.model;
+package net.paramount.auth.model;
 
 /**
  * @author bqduc

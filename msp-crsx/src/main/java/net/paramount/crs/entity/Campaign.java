@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.crs.model.CRXGeneralType;
 import net.paramount.css.entity.contact.Team;
 import net.paramount.css.entity.general.Currency;
@@ -46,9 +46,9 @@ public class Campaign extends BizObjectBase{
 	@Column(name = "name", nullable = false, unique=true, length=200)
 	private String name;
 
-	@ManyToOne(targetEntity=AuthAccount.class, fetch=FetchType.EAGER)
+	@ManyToOne(targetEntity=AuthenticateAccount.class, fetch=FetchType.EAGER)
 	@JoinColumn(name = "currency_id")
-	private AuthAccount assignedTo;
+	private AuthenticateAccount assignedTo;
 
 	@Column(name="status")
   @Enumerated(EnumType.ORDINAL)
@@ -113,11 +113,11 @@ public class Campaign extends BizObjectBase{
 		this.name = name;
 	}
 
-	public AuthAccount getAssignedTo() {
+	public AuthenticateAccount getAssignedTo() {
 		return assignedTo;
 	}
 
-	public void setAssignedTo(AuthAccount assignedTo) {
+	public void setAssignedTo(AuthenticateAccount assignedTo) {
 		this.assignedTo = assignedTo;
 	}
 

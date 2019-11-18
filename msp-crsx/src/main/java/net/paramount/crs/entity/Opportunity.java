@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.crs.model.CRXGeneralStage;
 import net.paramount.crs.model.CRXGeneralType;
 import net.paramount.crs.model.CRXLeadSource;
@@ -74,7 +74,7 @@ public class Opportunity extends BizObjectBase{
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "currency_id")
-	private AuthAccount assignedTo;
+	private AuthenticateAccount assignedTo;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "team_id")
@@ -178,11 +178,11 @@ public class Opportunity extends BizObjectBase{
 		this.salesStage = salesStage;
 	}
 
-	public AuthAccount getAssignedTo() {
+	public AuthenticateAccount getAssignedTo() {
 		return assignedTo;
 	}
 
-	public void setAssignedTo(AuthAccount assignedTo) {
+	public void setAssignedTo(AuthenticateAccount assignedTo) {
 		this.assignedTo = assignedTo;
 	}
 

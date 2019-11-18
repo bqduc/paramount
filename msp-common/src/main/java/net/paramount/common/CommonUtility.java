@@ -43,8 +43,10 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.springframework.util.FileCopyUtils;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -401,6 +403,17 @@ public class CommonUtility implements CommonConstants {
 			}
 		}
 		return fileNames;
+	}
+
+	public static String getFileExtension(String path) {
+		int lastSepPos = path.lastIndexOf(CommonConstants.FILE_EXTENSION_SEPARATOR);
+		return path.substring(lastSepPos+1);
+	}
+
+	public static String getFileBaseName(String path) {
+		int lastPathSep = path.lastIndexOf(CommonConstants.FILE_PATH_SEPARATOR);
+		int extSepPos = path.lastIndexOf(CommonConstants.FILE_EXTENSION_SEPARATOR);
+		return path.substring(lastPathSep+1, extSepPos);
 	}
 
 	public static void moveFile(String fromPath, String toPath) {
@@ -1389,6 +1402,49 @@ public class CommonUtility implements CommonConstants {
 		return resp;
 	}
 
+	public static InputStream createInputStream(final String fileName, final byte[] data) throws EcosysException {
+		InputStream inputStream = null;
+		File tempDataFile = null;
+		try {
+		  if (isEmpty(data))
+				return null;
+
+			String baseName = getFileBaseName(fileName);
+			String extension = getFileExtension(fileName);
+			tempDataFile = File.createTempFile(baseName, "." + extension);
+			tempDataFile.deleteOnExit();
+
+			FileCopyUtils.copy(data, tempDataFile);
+
+			inputStream = new FileInputStream(tempDataFile);
+		} catch (Exception ex) {
+			throw new EcosysException(ex);
+		}
+		return inputStream;
+	}
+
+	public static File createFileFromInputStream(final String originFileName, final InputStream inputStream) throws EcosysException {
+		File targetDataFile = null;
+		try {
+		  if (isEmpty(inputStream))
+				return null;
+
+			String baseName = getFileBaseName(originFileName);
+			String extension = getFileExtension(originFileName);
+			targetDataFile = File.createTempFile(baseName, "." + extension);
+			targetDataFile.deleteOnExit();
+
+			FileUtils.copyInputStreamToFile(inputStream, targetDataFile);
+		} catch (Exception ex) {
+			throw new EcosysException(ex);
+		}
+		return targetDataFile;
+	}
+
+	public static byte[] getByteArray(final File dataFile) throws IOException {
+		return FileCopyUtils.copyToByteArray(dataFile);
+	}
+
 	public static boolean regularExpressionCompiled(final String patternExpression, final String value){
 		Pattern pattern = Pattern.compile(patternExpression);
 		Matcher matcher = pattern.matcher(value);
@@ -1460,8 +1516,13 @@ public class CommonUtility implements CommonConstants {
 														 */
 				fileName);
 		try {
-			List<InputStream> zipEntries = getZipFileInputStreams(zipFile);
-			System.out.println(zipEntries);
+			String encoded = SimpleEncryptionEngine.encode("Simplw!");
+			System.out.println(encoded);
+			
+			System.out.println(SimpleEncryptionEngine.decode(encoded));
+			
+			/*List<InputStream> zipEntries = getZipFileInputStreams(zipFile);
+			System.out.println(zipEntries);*/
 		} catch (EcosysException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

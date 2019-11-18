@@ -20,26 +20,26 @@ import net.paramount.framework.model.SearchParameter;
  * @author bqduc
  *
  */
-public abstract class CoreSpecifications<CustomUserType, CustomUserRequest> extends BaseSpecification<CustomUserType, CustomUserRequest>{
+public abstract class CoreSpecifications<UserType, UserRequest> extends BaseSpecification<UserType, UserRequest>{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Specification<CustomUserType> getFilter(CustomUserRequest userRequest) {
+	public Specification<UserType> getFilter(UserRequest userRequest) {
 		return null;
 	}
 
-	protected Specification<CustomUserType> buildSpecifications(final SearchParameter searchParameter){
-		return new Specification<CustomUserType>() {
+	protected Specification<UserType> buildSpecifications(final SearchParameter searchParameter){
+		return new Specification<UserType>() {
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 369798785793130829L;
 
 			@Override
-			public Predicate toPredicate(Root<CustomUserType> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+			public Predicate toPredicate(Root<UserType> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 				Predicate[] predicatesArray = null;
 				Object searchValue = null;
 				List<Predicate> predicates = ListUtility.createArrayList();
@@ -62,7 +62,7 @@ public abstract class CoreSpecifications<CustomUserType, CustomUserRequest> exte
 		};
 	}
 
-	public Specification<CustomUserType> buildRepoSpecification(final SearchParameter searchParameter) {
+	public Specification<UserType> buildRepoSpecification(final SearchParameter searchParameter) {
 		return this.buildSpecifications(searchParameter);
 	}
 }

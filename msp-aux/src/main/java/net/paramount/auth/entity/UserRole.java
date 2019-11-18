@@ -25,7 +25,7 @@ public class UserRole extends ObjectBase {
 
 	@ManyToOne
 	@JoinColumn(name = "role_id")
-	private Role role;
+	private Authority role;
 
 	public UserProfile getUser() {
 		return user;
@@ -35,11 +35,11 @@ public class UserRole extends ObjectBase {
 		this.user = user;
 	}
 
-	public Role getRole() {
+	public Authority getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(Authority role) {
 		this.role = role;
 	}
 }

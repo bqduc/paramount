@@ -19,6 +19,7 @@
 			<artifactId>msp-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
+
     <dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -44,5 +45,10 @@
 			<version>${version.lombok}</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>		
 	</dependencies>
 </project>

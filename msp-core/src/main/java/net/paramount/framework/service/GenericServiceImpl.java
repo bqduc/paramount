@@ -192,7 +192,7 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public ClassType saveOrUpdate(ClassType entity) {
+  public ClassType save(ClassType entity) {
   	ClassType mergedEntity = null;
   	BaseRepository<ClassType, Key> respository = getRepository();
   	if (null != respository){
@@ -210,7 +210,13 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
   	}
 
   	return entity;
-	}
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public ClassType saveOrUpdate(ClassType entity) {
+  	return this.save(entity);
+  }
 
 	public List<ClassType> imports(Map<Object, Object> parameters){
 		return null;

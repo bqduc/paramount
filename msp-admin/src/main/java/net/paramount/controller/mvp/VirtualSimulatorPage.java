@@ -1,7 +1,5 @@
 package net.paramount.controller.mvp;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,13 +15,12 @@ import javax.inject.Named;
 
 import org.omnifaces.util.Messages;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.util.FileCopyUtils;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
+import net.paramount.component.helper.ResourcesServicesHelper;
 import net.paramount.dmx.repository.GlobalDmxRepository;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ResourcesException;
@@ -31,7 +28,6 @@ import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.msp.async.AsyncExtendedDataLoader;
-import net.paramount.msp.components.ResourcesServicesHelper;
 import net.paramount.msp.faces.model.Entity;
 
 @Named(value="virtualSimulator")
@@ -76,8 +72,8 @@ public class VirtualSimulatorPage extends BaseController {
 
     public void clear() {
         entity = new Entity();
-        archiveData();
-        //loadResourceData();
+        archiveData("data/marshall/develop_data.zip");
+        loadResourceData();
         //loadingAsyncData();
     }
 
@@ -142,14 +138,16 @@ public class VirtualSimulatorPage extends BaseController {
     protected void loadResourceData() {
       try
       {
+      	/*DataWorkbook dataWorkbook = globalDmxRepository.marshallDataFromArchived("data/marshall/develop_data.zip", "Vietbank_14.000.xlsx", "thanhcong");
+      	System.out.println(dataWorkbook);
       	Resource resource = this.resourceLoader.getResource("classpath:/data/marshall/develop_data.zip");
         InputStream inputStream = resource.getInputStream();
 
         byte[] bdata = FileCopyUtils.copyToByteArray(inputStream);
           //String data = new String(bdata, StandardCharsets.UTF_8);
-        System.out.println(bdata);
+        System.out.println(bdata);*/
       } 
-      catch (IOException e) 
+      catch (Exception e) 
       {
       	e.printStackTrace();
           //LOGGER.error("IOException", e);
@@ -170,12 +168,12 @@ public class VirtualSimulatorPage extends BaseController {
   		}
   	}
 
-  	public void archiveData() {
-  		File resourceFile = null;
+  	public void archiveData(final String resourceName) {
+  		InputStream resourceFile = null;
   		try {
-    		resourceFile = resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip");
-				globalDmxRepository.archiveResourceData(resourceFile);
-			} catch (MspDataException | ResourcesException e) {
+    		//resourceFile = resourcesServicesHelper.loadClasspathResourceStream(resourceName);
+				//globalDmxRepository.archiveResourceData(resourceName, resourceFile, "");
+			} catch (Exception e) {
 				log.error(e);
 			}
   	}

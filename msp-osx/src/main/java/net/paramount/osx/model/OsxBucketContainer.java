@@ -14,29 +14,16 @@ import net.paramount.common.ListUtility;
  * @author bqduc
  *
  */
-public class BucketContainer {
-	public final static String PARAM_INPUT_RESOURCE_NAME = "inputResourceName";
-	public final static String PARAM_WORK_DATA_SHEET = "workDataSheet";
-	public final static String PARAM_COMPRESSED_FILE = "compressedFile";
-	public final static String PARAM_ZIP_ENTRY = "zipEntry";
-	public final static String PARAM_INPUT_STREAM = "sourceInputStream";
-	public final static String PARAM_DATA_SHEET_IDS = "dataSheets";
-	public final static String PARAM_DATA_INDEXES = "dataIndexes";
-	public final static String PARAM_STARTED_ROW_INDEX = "startedRowIndex";
-	public final static String PARAM_ENCRYPTION_KEY = "encryptionKey";
-	public final static String PARAM_LIMITED_COLUMNS = "limitedColumns";
-	public final static String PARAM_LIMITED_ROWS = "limitedRows";
-	public final static String PARAM_EXCEL_MARSHALLING_TYPE = "excelMarshalType";
-
+public class OsxBucketContainer {
 	private OfficeSuiteTarget suiteTargeted;
 	private Map<Object, Object> bucketData = null;
 	private List<Object> container;
 
-	private BucketContainer() {
+	private OsxBucketContainer() {
 		this.bucketData = new HashMap<>();
 	}
 
-	public BucketContainer(Object[] values) {
+	public OsxBucketContainer(Object[] values) {
 		this.container = ListUtility.createArrayList();
 		for (int idx = 0; idx < values.length; idx++) {
 			this.container.add(values[idx]);
@@ -51,13 +38,13 @@ public class BucketContainer {
 		this.container = container;
 	}
 
-	public static BucketContainer instance() {
-		BucketContainer dataBucket = new BucketContainer();
+	public static OsxBucketContainer instance() {
+		OsxBucketContainer dataBucket = new OsxBucketContainer();
 		return dataBucket;
 	}
 
-	public static BucketContainer getInstance(OfficeSuiteTarget suiteTargeted) {
-		BucketContainer dataBucket = new BucketContainer();
+	public static OsxBucketContainer getInstance(OfficeSuiteTarget suiteTargeted) {
+		OsxBucketContainer dataBucket = new OsxBucketContainer();
 		dataBucket.setSuiteTargeted(suiteTargeted);
 		return dataBucket;
 	}
@@ -74,12 +61,12 @@ public class BucketContainer {
 		this.bucketData = bucketData;
 	}
 
-	public BucketContainer putAll(Map<Object, Object> values) {
+	public OsxBucketContainer putAll(Map<Object, Object> values) {
 		this.bucketData.putAll(values);
 		return this;
 	}
 
-	public BucketContainer put(Object key, Object value) {
+	public OsxBucketContainer put(Object key, Object value) {
 		this.bucketData.put(key, value);
 		return this;
 	}

@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import net.paramount.common.DateTimeUtility;
+import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.model.ExecutionContext;
-import net.paramount.msp.components.ResourcesServicesHelper;
 import net.paramount.osx.helper.OfficeSuiteServicesHelper;
 
 /**
@@ -24,7 +24,7 @@ public class AsyncExtendedDataLoader extends Asynchronous {
 	private OfficeSuiteServicesHelper officeSuiteServicesHelper;
 
 	@Inject
-	private ResourcesServicesHelper resourcesServicesHelper;
+	private ResourcesStorageServiceHelper resourcesStorageServiceHelper;
 
 	public AsyncExtendedDataLoader(ExecutionContext executionContext) {
 		super();
@@ -35,7 +35,8 @@ public class AsyncExtendedDataLoader extends Asynchronous {
 		try {
 			System.out.println("Started load default configuration data at: " + DateTimeUtility.getSystemDateTime());
 			//officeSuiteServicesHelper.loadDefaultZipConfiguredData(ClassPathResourceUtility.builder().build().getFile("data/marshall/develop_data.zip"));
-			officeSuiteServicesHelper.loadDefaultZipConfiguredData(resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip"));
+			//officeSuiteServicesHelper.loadDefaultZipConfiguredData(resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip"));
+			officeSuiteServicesHelper.loadDefaultZipConfiguredData(resourcesStorageServiceHelper.buildDefaultDataExecutionContext());
 			System.out.println("Finished load default configuration data at: " + DateTimeUtility.getSystemDateTime());
 		} catch (Exception e) {
 			log.error(e);

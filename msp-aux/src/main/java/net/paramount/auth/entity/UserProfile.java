@@ -72,14 +72,14 @@ public class UserProfile extends ObjectBase {
 
 	@ManyToOne
 	@JoinColumn(name = "auth_account_id")
-	private AuthAccount authAccount;
+	private AuthenticateAccount authAccount;
 
     public UserProfile() {
     }
 
     public UserProfile(String login, String password, String name, Boolean active) {
     	if (null == this.authAccount) {
-    		this.authAccount = new AuthAccount();
+    		this.authAccount = new AuthenticateAccount();
     	}
 
   		this.authAccount.setSsoId(login);
@@ -155,11 +155,11 @@ public class UserProfile extends ObjectBase {
         return "User[ id=" + getId() + " ]";
     }
 
-		public AuthAccount getAuthAccount() {
+		public AuthenticateAccount getAuthAccount() {
 			return authAccount;
 		}
 
-		public void setAuthAccount(AuthAccount authAccount) {
+		public void setAuthAccount(AuthenticateAccount authAccount) {
 			this.authAccount = authAccount;
 		}
 }

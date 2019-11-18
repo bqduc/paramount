@@ -50,7 +50,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.css.entity.general.Document;
@@ -211,7 +211,7 @@ public class Contact extends BizObjectBase {
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_user_id")
-	private AuthAccount ownerAuthAccount;
+	private AuthenticateAccount ownerAuthAccount;
 
   @Column(name="issue_date")
 	@DateTimeFormat(iso = ISO.DATE_TIME)
@@ -219,7 +219,7 @@ public class Contact extends BizObjectBase {
 	
   @Column(name="issue_user_id")
 	@DateTimeFormat(iso = ISO.DATE)
-  private AuthAccount issueAuthAccount;
+  private AuthenticateAccount issueAuthAccount;
 
   public String getCode() {
 		return code;
@@ -423,11 +423,11 @@ public class Contact extends BizObjectBase {
 		this.contactTeams = contactTeams;
 	}
 
-	public AuthAccount getOwnerAuthAccount() {
+	public AuthenticateAccount getOwnerAuthAccount() {
 		return ownerAuthAccount;
 	}
 
-	public void setOwnerAuthAccount(AuthAccount ownerAuthAccount) {
+	public void setOwnerAuthAccount(AuthenticateAccount ownerAuthAccount) {
 		this.ownerAuthAccount = ownerAuthAccount;
 	}
 
@@ -527,11 +527,11 @@ public class Contact extends BizObjectBase {
 		this.issueDate = issueDate;
 	}
 
-	public AuthAccount getIssueAuthAccount() {
+	public AuthenticateAccount getIssueAuthAccount() {
 		return issueAuthAccount;
 	}
 
-	public void setIssueAuthAccount(AuthAccount issueAuthAccount) {
+	public void setIssueAuthAccount(AuthenticateAccount issueAuthAccount) {
 		this.issueAuthAccount = issueAuthAccount;
 	}
 

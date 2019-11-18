@@ -50,6 +50,8 @@
 		<version.xlsx-streamer>2.1.0</version.xlsx-streamer>
 		<version.javafaker>0.17.2</version.javafaker>
 		<version.tika>1.22</version.tika>
+		
+		<version.commons-io>2.6</version.commons-io>
 	</properties>
  
     <modules>
@@ -57,6 +59,7 @@
       <module>msp-core</module>
       <module>msp-core-eux</module>
 			<module>msp-aux</module>
+			<module>msp-ase</module>
 			<module>msp-emx</module>
 			<module>msp-crsx</module>
 			<module>msp-css</module>

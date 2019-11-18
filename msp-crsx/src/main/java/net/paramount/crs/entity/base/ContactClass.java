@@ -41,7 +41,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.css.entity.general.Item;
 import net.paramount.css.model.ContactType;
 import net.paramount.embeddable.Phone;

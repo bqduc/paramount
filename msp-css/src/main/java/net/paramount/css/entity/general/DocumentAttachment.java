@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import net.paramount.entity.Attachment;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**

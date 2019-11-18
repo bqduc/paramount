@@ -67,26 +67,26 @@
                             <p:outputLabel for="id" value="ID"/>
                         </div>
                         <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputText id="id" value="#{contactDetail.car.id}" size="4"
+                            <p:inputText id="id" value="#{contactDetail.contact.id}" size="4"
                                          readonly="true" styleClass="form-control" style="width: 100%"/>
                         </div>
                         <div class="ui-sm-12 ui-md-2 ui-lg-1">
                             <p:outputLabel value="Model" for="inptModel"/>
                         </div>
                         <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputText id="inptModel" value="#{contactDetail.car.model}"/>
+                            <p:inputText id="inptModel" value="#{contactDetail.contact.firstName}"/>
                         </div>
                         <div class="ui-sm-12 ui-md-2 ui-lg-1">
                             <p:outputLabel value="Name" for="inptName"/>
                         </div>
                         <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputText id="inptName" value="#{contactDetail.car.name}"/>
+                            <p:inputText id="inptName" value="#{contactDetail.contact.lastName}"/>
                         </div>
                         <div class="ui-sm-12 ui-md-2 ui-lg-1">
                             <p:outputLabel value="Price" for="inptPrice"/>
                         </div>
                         <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputNumber id="inptPrice" value="#{contactDetail.car.price}"/>
+                            <p:inputNumber id="inptPrice" value="#{contactDetail.contact.code}"/>
                         </div>
                     </div>
                 </div>

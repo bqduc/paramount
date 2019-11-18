@@ -15,6 +15,7 @@ import net.paramount.framework.model.ExecutionContext;
 import net.paramount.framework.model.SearchParameter;
 
 public interface GenericService<T extends ObjectBase, K extends Serializable>{
+	T save(T entity);
 	T saveOrUpdate(T entity);
 	List<T> saveObjects(List<T> objects);
 

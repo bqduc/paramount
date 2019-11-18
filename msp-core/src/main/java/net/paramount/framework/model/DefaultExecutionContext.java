@@ -11,8 +11,6 @@ import lombok.Builder;
  *
  */
 @Builder
-public class CEContext extends ContextBase {/**
-	 * 
-	 */
+public class DefaultExecutionContext extends ContextBase {
 	private static final long serialVersionUID = -5753161452733638451L;
 }

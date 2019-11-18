@@ -25,6 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
+import net.paramount.ase.config.MspQuartzConfig;
 import net.paramount.msp.config.BaseConfiguration;
 import net.paramount.msp.config.SecurityConfig;
 import net.paramount.msp.model.Car;
@@ -35,7 +36,7 @@ import net.paramount.msp.util.Utils;
  */
 @Import(value = { 
 		BaseConfiguration.class, 
-		SecurityConfig.class
+		SecurityConfig.class, MspQuartzConfig.class
 		}
 )
 @SpringBootApplication

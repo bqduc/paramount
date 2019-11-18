@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.antMatchers(buildUnauthorizedMatchers()).permitAll()
 		.anyRequest()
 		.fullyAuthenticated().and().formLogin().loginPage("/login.xhtml").defaultSuccessUrl("/index.xhtml")
-		.failureUrl("/login.xhtml?authfailed=true").permitAll().and().logout().logoutSuccessUrl("/login.xhtml")
+		.failureUrl("/login.xhtml?authfailed=true").permitAll().and().logout().logoutSuccessUrl("/index.xhtml"/*"/login.xhtml"*/)
 		.logoutUrl("/j_spring_security_logout").and().csrf().disable();
 
 		// allow to use resource links like pdf

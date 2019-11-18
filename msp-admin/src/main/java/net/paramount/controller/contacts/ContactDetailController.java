@@ -17,6 +17,8 @@ import org.omnifaces.util.Faces;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
+import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.service.contact.ContactService;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;
 import net.paramount.msp.util.Utils;
@@ -33,42 +35,30 @@ public class ContactDetailController implements Serializable {
 	 */
 	private static final long serialVersionUID = 5729167746607232066L;
 
-		@Inject
-    CarService carService;
+	@Inject
+	CarService carService;
 
-    @Inject
-    private Utils utils;
+	@Inject
+	private ContactService contactService;
 
-    private Integer id;
+	@Inject
+	private Utils utils;
+
+    private Long id;
     private Car car;
+    
+    private Contact contact;
 
     public void init() {
         if (Faces.isAjaxRequest()) {
             return;
         }
         if (has(id)) {
-            car = carService.findById(id);
+        	this.contact = contactService.getObject(Long.valueOf(id));
         } else {
-            car = new Car();
+        	this.contact = Contact.builder().build();
         }
     }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
 
     public void remove() throws IOException {
         if (!utils.isUserInRole("ROLE_ADMIN")) {
@@ -84,25 +74,35 @@ public class ContactDetailController implements Serializable {
     }
 
     public void save() {
-        String msg;
-        if (car.getId() == null) {
-            carService.insert(car);
-            msg = "Car " + car.getModel() + " created successfully";
-        } else {
-            carService.update(car);
-            msg = "Car " + car.getModel() + " updated successfully";
-        }
+        contactService.saveOrUpdate(this.contact);
+        String msg = "Contact " + this.contact.getCode() + " created successfully";
         utils.addDetailMessage(msg);
     }
 
     public void clear() {
-        car = new Car();
+        this.contact = Contact.builder().build();
         id = null;
     }
 
     public boolean isNew() {
-        return car == null || car.getId() == null;
+        return this.contact == null || this.contact.getId() == null;
     }
+
+	public Contact getContact() {
+		return contact;
+	}
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 
 }

@@ -507,9 +507,7 @@
                             <p:commandLink  styleClass="btn btn-danger"  value="Change password"/>
                         </div>
                         <div class="pull-right">
-                            <p:commandLink id="logout" action="#{logoutMB.doLogout}"  title="Logoff">
-                                <i class="fa fa-sign-out fa-2x"></i>
-                            </p:commandLink>
+                             <h:outputLink value="${pageContext.request.contextPath}/j_spring_security_logout" target="/"><i class="fa fa-sign-out fa-2x"></i></h:outputLink>
                         </div>
                     </h:form>
                 </li>

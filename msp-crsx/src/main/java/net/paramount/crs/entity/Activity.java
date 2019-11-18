@@ -33,7 +33,7 @@ import org.hibernate.annotations.Type;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.css.entity.general.Currency;
 import net.paramount.css.entity.general.Item;
 import net.paramount.framework.entity.BizObjectBase;
@@ -104,7 +104,7 @@ public class Activity extends BizObjectBase {
 
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
-	private AuthAccount owner;
+	private AuthenticateAccount owner;
 
 	@Column(name = "cost")
 	private BigDecimal cost;
@@ -232,11 +232,11 @@ public class Activity extends BizObjectBase {
 		this.subCategory = subCategory;
 	}
 
-	public AuthAccount getOwner() {
+	public AuthenticateAccount getOwner() {
 		return owner;
 	}
 
-	public void setOwner(AuthAccount owner) {
+	public void setOwner(AuthenticateAccount owner) {
 		this.owner = owner;
 	}
 

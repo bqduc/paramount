@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.paramount.msp.components;
+package net.paramount.component.helper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,6 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import net.paramount.common.CommonUtility;
 import net.paramount.exceptions.ResourcesException;
 import net.paramount.framework.component.ComponentBase;
 
@@ -71,7 +72,9 @@ public class ResourcesServicesHelper extends ComponentBase {
 			InputStream resourceStream = this.getClass().getClassLoader().getResourceAsStream(resourcePath);
 			log.info("Real path: " + resourceStream);
 
-			resourceFile = File.createTempFile("develop_data", "zip");
+			String baseName = CommonUtility.getFileBaseName(resourcePath);
+			String extension = CommonUtility.getFileExtension(resourcePath);
+			resourceFile = File.createTempFile(baseName, "." + extension);
 			resourceFile.deleteOnExit();
 			FileOutputStream out = new FileOutputStream(resourceFile);
 			IOUtils.copy(resourceStream, out);

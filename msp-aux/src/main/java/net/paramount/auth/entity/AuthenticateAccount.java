@@ -15,7 +15,7 @@ import net.paramount.framework.entity.ObjectBase;
  */
 @Entity
 @Table(name = "aux_auth_account")
-public class AuthAccount extends ObjectBase {
+public class AuthenticateAccount extends ObjectBase {
 	/**
 	 * 
 	 */

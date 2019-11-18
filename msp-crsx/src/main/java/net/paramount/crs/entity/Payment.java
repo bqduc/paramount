@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.crs.model.CRXGeneralType;
 import net.paramount.css.entity.contact.Team;
 import net.paramount.css.entity.general.Currency;
@@ -56,7 +56,7 @@ public class Payment extends BizObjectBase{
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "currency_id")
-	private AuthAccount assignedTo;
+	private AuthenticateAccount assignedTo;
 
 	@Column(name="status")
   @Enumerated(EnumType.ORDINAL)
@@ -104,11 +104,11 @@ public class Payment extends BizObjectBase{
 		this.name = name;
 	}
 
-	public AuthAccount getAssignedTo() {
+	public AuthenticateAccount getAssignedTo() {
 		return assignedTo;
 	}
 
-	public void setAssignedTo(AuthAccount assignedTo) {
+	public void setAssignedTo(AuthenticateAccount assignedTo) {
 		this.assignedTo = assignedTo;
 	}
 

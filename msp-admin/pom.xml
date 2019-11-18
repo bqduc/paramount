@@ -82,6 +82,12 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>msp-ase</artifactId>
+            <version>${project.version}</version>
+        </dependency>	
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>msp-css</artifactId>
             <version>${project.version}</version>
         </dependency>	

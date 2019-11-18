@@ -4,7 +4,6 @@
 package net.paramount.framework.repository;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;

@@ -9,8 +9,9 @@ import java.util.Map;
 
 import net.paramount.common.ListUtility;
 import net.paramount.osx.helper.OfficeSuiteServiceProvider;
-import net.paramount.osx.model.BucketContainer;
+import net.paramount.osx.model.OsxBucketContainer;
 import net.paramount.osx.model.DataWorkbook;
+import net.paramount.osx.model.OSXConstants;
 
 /**
  * @author bqduc
@@ -27,12 +28,12 @@ public class OSXTestMain {
 	protected static void doTestReadXlsx() {
 		Map<Object, Object> params = ListUtility.createMap();
 		String[] sheetIds = new String[]{/*"languages", "items", "localized-items"*/"online-books", "Forthcoming"}; 
-		BucketContainer dataBucket = null;
+		OsxBucketContainer dataBucket = null;
 		String dataSheet = "D:\\workspace\\aquariums.git\\aquarium\\aquarium-admin\\src\\main\\resources\\config\\data\\data-catalog.xlsx";
 		try {
-			params.put(BucketContainer.PARAM_INPUT_STREAM, new FileInputStream(dataSheet));
-			params.put(BucketContainer.PARAM_DATA_SHEET_IDS, sheetIds);
-			params.put(BucketContainer.PARAM_STARTED_ROW_INDEX, new Integer[] {1, 1, 1});
+			params.put(OSXConstants.PARAM_INPUT_STREAM, new FileInputStream(dataSheet));
+			params.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIds);
+			params.put(OSXConstants.PARAM_STARTED_ROW_INDEX, new Integer[] {1, 1, 1});
 			DataWorkbook workbookContainer = OfficeSuiteServiceProvider.builder()
 			.build()
 			.readExcelFile(params);

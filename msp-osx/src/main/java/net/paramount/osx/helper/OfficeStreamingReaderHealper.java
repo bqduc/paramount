@@ -20,9 +20,9 @@ import lombok.Builder;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.exceptions.EcosysException;
-import net.paramount.osx.model.BucketContainer;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.DataWorksheet;
+import net.paramount.osx.model.OSXConstants;
 import net.paramount.osx.model.OfficeDataPackage;
 
 /**
@@ -34,8 +34,8 @@ public class OfficeStreamingReaderHealper {
 	/**
 	 * 
 	 */
-	public OfficeDataPackage readXlsxDocuments(Map<?, ?> parameters) throws EcosysException {
-		if (parameters.containsKey(BucketContainer.PARAM_COMPRESSED_FILE)) {
+	/*public OfficeDataPackage readXlsxDocuments(Map<?, ?> parameters) throws EcosysException {
+		if (parameters.containsKey(OSXConstants.PARAM_COMPRESSED_FILE)) {
 			throw new EcosysException("There is no zip file in parameters!!");
 		}
 
@@ -43,18 +43,18 @@ public class OfficeStreamingReaderHealper {
 		Map<Object, Object> clonedParameters = (Map<Object, Object>) ListUtility.cloneMap(parameters);
 		DataWorkbook dataWorkbook = null;
 		InputStream zipInputStream = null;
-		File compressedFile = (File)parameters.get(BucketContainer.PARAM_COMPRESSED_FILE);
+		File compressedFile = (File)parameters.get(OSXConstants.PARAM_COMPRESSED_FILE);
 		Map<String, InputStream> inputStreamMap = CommonUtility.extractZipInputStreams(compressedFile);
 		for (String zipEntry :inputStreamMap.keySet()) {
 			zipInputStream = inputStreamMap.get(zipEntry);
-			clonedParameters.put(BucketContainer.PARAM_INPUT_STREAM, zipInputStream);
+			clonedParameters.put(OSXConstants.PARAM_INPUT_STREAM, zipInputStream);
 			dataWorkbook = readXlsx(clonedParameters);
 			if (null != dataWorkbook) {
 				result.put(zipEntry, dataWorkbook);
 			}
 		}
 		return result;
-	}
+	}*/
 
 	/**
 	 * 
@@ -67,12 +67,12 @@ public class OfficeStreamingReaderHealper {
 		DataWorkbook dataWorkbook = DataWorkbook.builder().build();
 		List<Object> dataRow = null;
 		try {
-			inputStream = (InputStream)parameters.get(BucketContainer.PARAM_INPUT_STREAM);
-			if (parameters.containsKey(BucketContainer.PARAM_ENCRYPTION_KEY)) {
+			inputStream = (InputStream)parameters.get(OSXConstants.PARAM_INPUT_STREAM);
+			if (parameters.containsKey(OSXConstants.PARAM_ENCRYPTION_KEY)) {
 				workbook = StreamingReader.builder()
 						.rowCacheSize(100)
 						.bufferSize(4096)
-						.password((String)parameters.get(BucketContainer.PARAM_ENCRYPTION_KEY))
+						.password((String)parameters.get(OSXConstants.PARAM_ENCRYPTION_KEY))
 						.open(inputStream);
 			} else {
 				workbook = StreamingReader.builder()
@@ -117,10 +117,10 @@ public class OfficeStreamingReaderHealper {
 	 * True if no sheet id list otherwise check matched sheet id
 	 */
 	private boolean isValidSheet(Sheet sheet, Map<?, ?> parameters) {
-		if (!parameters.containsKey(BucketContainer.PARAM_DATA_SHEET_IDS) || CommonUtility.isEmpty(parameters.get(BucketContainer.PARAM_DATA_SHEET_IDS)))
+		if (!parameters.containsKey(OSXConstants.PARAM_DATA_SHEET_IDS) || CommonUtility.isEmpty(parameters.get(OSXConstants.PARAM_DATA_SHEET_IDS)))
 			return true;
 
-		List<String> sheetIds = (List<String>)parameters.get(BucketContainer.PARAM_DATA_SHEET_IDS);
+		List<String> sheetIds = (List<String>)parameters.get(OSXConstants.PARAM_DATA_SHEET_IDS);
 		return sheetIds.contains(sheet.getSheetName());
 	}
 }

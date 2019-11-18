@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.crs.model.CRXGeneralType;
 import net.paramount.css.entity.contact.Team;
 import net.paramount.embeddable.Address;
@@ -117,9 +117,9 @@ public class Account extends BizObjectBase{
   })
   private Address billingAddress;
 
-	@ManyToOne(targetEntity=AuthAccount.class, fetch=FetchType.EAGER)
+	@ManyToOne(targetEntity=AuthenticateAccount.class, fetch=FetchType.EAGER)
 	@JoinColumn(name = "currency_id")
-	private AuthAccount assignedTo;
+	private AuthenticateAccount assignedTo;
 
 	@ManyToOne(targetEntity=Team.class, fetch=FetchType.EAGER)
 	@JoinColumn(name = "team_id")
@@ -133,11 +133,11 @@ public class Account extends BizObjectBase{
 		this.name = name;
 	}
 
-	public AuthAccount getAssignedTo() {
+	public AuthenticateAccount getAssignedTo() {
 		return assignedTo;
 	}
 
-	public void setAssignedTo(AuthAccount assignedTo) {
+	public void setAssignedTo(AuthenticateAccount assignedTo) {
 		this.assignedTo = assignedTo;
 	}
 

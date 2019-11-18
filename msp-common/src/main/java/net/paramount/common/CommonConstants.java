@@ -3,6 +3,7 @@
  */
 package net.paramount.common;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 
@@ -11,6 +12,9 @@ import java.nio.charset.Charset;
  *
  */
 public interface CommonConstants {
+	final static String FILE_EXTENSION_SEPARATOR = ".";
+	final static String FILE_PATH_SEPARATOR = "/";
+
 	final static int BUFFER_SIZE = 1024;
 	final static int MAX_POST_SIZE = 200000000;//200MB
 	final static String UNDEFINED = "undefined";

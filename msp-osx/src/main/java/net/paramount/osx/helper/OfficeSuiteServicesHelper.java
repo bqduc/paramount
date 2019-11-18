@@ -4,16 +4,21 @@
 package net.paramount.osx.helper;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
 import lombok.Builder;
+import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.exceptions.EcosysException;
 import net.paramount.framework.component.ComponentBase;
-import net.paramount.osx.model.BucketContainer;
+import net.paramount.framework.model.DefaultExecutionContext;
+import net.paramount.osx.model.OsxBucketContainer;
+import net.paramount.osx.model.DataWorkbook;
+import net.paramount.osx.model.OSXConstants;
 import net.paramount.osx.model.OfficeMarshalType;
 
 /**
@@ -23,34 +28,80 @@ import net.paramount.osx.model.OfficeMarshalType;
 @Component
 @Builder
 public class OfficeSuiteServicesHelper extends ComponentBase {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1799685037252299770L;
 
-	public BucketContainer loadDefaultZipConfiguredData(final File sourceZipFile) throws EcosysException {
-		BucketContainer bucketContainer = null;
+	protected DefaultExecutionContext initConfigData(final File zipFile) {
+		DefaultExecutionContext executionContext = DefaultExecutionContext.builder().build();
+
+		Map<String, String> secretKeyMap = ListUtility.createMap("Vietbank_14.000.xlsx", "thanhcong");
+		Map<String, List<String>> sheetIdMap = ListUtility.createMap();
+		sheetIdMap.put("Vietbank_14.000.xlsx", ListUtility.arraysAsList(new String[] {"File Tổng hợp", "Các trưởng phó phòng", "9"}));
+
+		executionContext.put(OSXConstants.PARAM_COMPRESSED_FILE, zipFile);
+		executionContext.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
+		executionContext.put(OSXConstants.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {"Vietbank_14.000.xlsx", "data-catalog.xlsx"}));
+		executionContext.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
+		executionContext.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIdMap);
+		return executionContext;
+	}
+
+	public OsxBucketContainer loadDefaultZipConfiguredData(final File sourceZipFile) throws EcosysException {
+		OsxBucketContainer bucketContainer = null;
+		DefaultExecutionContext executionContext = null;
 		try {
-			Map<String, Object> params = ListUtility.createMap();
+			executionContext = this.initConfigData(sourceZipFile);
+			/*Map<String, Object> params = ListUtility.createMap();
 			
 			Map<String, String> secretKeyMap = ListUtility.createMap("Vietbank_14.000.xlsx", "thanhcong");
 			Map<String, List<String>> sheetIdMap = ListUtility.createMap();
 			sheetIdMap.put("Bieu thue XNK 2019.07.11.xlsx", ListUtility.arraysAsList(new String[] {"BIEU THUE 2019"}));
 			sheetIdMap.put("Vietbank_14.000.xlsx", ListUtility.arraysAsList(new String[] {"File Tổng hợp", "Các trưởng phó phòng", "9"}));
 			
-			params.put(BucketContainer.PARAM_COMPRESSED_FILE, sourceZipFile);
-			params.put(BucketContainer.PARAM_ENCRYPTION_KEY, secretKeyMap);
-			params.put(BucketContainer.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {"Bieu thue XNK 2019.07.11.xlsx", "Final_PL5_Thuoc tan duoc.xlsx", "Vietbank_14.000.xlsx", "data-catalog.xlsx"}));
-			params.put(BucketContainer.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
-			params.put(BucketContainer.PARAM_DATA_SHEET_IDS, sheetIdMap);
+			params.put(OSXConstants.PARAM_COMPRESSED_FILE, sourceZipFile);
+			params.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
+			params.put(OSXConstants.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {"Bieu thue XNK 2019.07.11.xlsx", "Final_PL5_Thuoc tan duoc.xlsx", "Vietbank_14.000.xlsx", "data-catalog.xlsx"}));
+			params.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
+			params.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIdMap);*/
 			bucketContainer = OfficeSuiteServiceProvider
 					.builder()
 					.build()
-					.readOfficeDataInZip(params);
+					.readOfficeDataInZip(executionContext);
 		} catch (Exception e) {
 			throw new EcosysException(e);
 		}
 		return bucketContainer;
 	}
 
+	public OsxBucketContainer loadDefaultZipConfiguredData(final DefaultExecutionContext executionContext) throws EcosysException {
+		return OfficeSuiteServiceProvider
+					.builder()
+					.build()
+					.readOfficeDataInZip(executionContext);
+	}
+
+	public OsxBucketContainer loadZipDataFromInputStream(final String originFileName, final InputStream inputStream) throws EcosysException {
+		OsxBucketContainer bucketContainer = null;
+		DefaultExecutionContext executionContext = null;
+		File targetDataFile = null;
+		try {
+			targetDataFile = CommonUtility.createFileFromInputStream(originFileName, inputStream);
+			executionContext = this.initConfigData(targetDataFile);
+			bucketContainer = OfficeSuiteServiceProvider
+					.builder()
+					.build()
+					.readOfficeDataInZip(executionContext);
+		} catch (Exception e) {
+			throw new EcosysException(e);
+		}
+		return bucketContainer;
+	}
+
+	public DataWorkbook unmarshallContacts(DefaultExecutionContext executionContext) {
+		DataWorkbook fetchedDataWorkbook = null;
+		return fetchedDataWorkbook;
+	}
 }

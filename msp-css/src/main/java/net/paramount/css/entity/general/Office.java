@@ -22,7 +22,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import net.paramount.auth.entity.AuthAccount;
+import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.embeddable.Address;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.global.GlobalConstants;
@@ -57,11 +57,11 @@ public class Office extends BizObjectBase{
 
 	@ManyToOne
 	@JoinColumn(name = "publisher_id")
-	private AuthAccount publisher;
+	private AuthenticateAccount publisher;
 
 	@ManyToOne
 	@JoinColumn(name = "issue_user_id")
-	private AuthAccount issuedBy;
+	private AuthenticateAccount issuedBy;
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
@@ -104,11 +104,11 @@ public class Office extends BizObjectBase{
 
 	@ManyToOne
 	@JoinColumn(name = "spoc_user_id")
-	private AuthAccount spoc; //Single Point Of Contact
+	private AuthenticateAccount spoc; //Single Point Of Contact
 
 	@ManyToOne
 	@JoinColumn(name = "managing_user_id")
-	private AuthAccount manager;
+	private AuthenticateAccount manager;
 
 	@Column(name = "description", columnDefinition="TEXT")
 	private String description;
