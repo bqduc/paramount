@@ -40,7 +40,30 @@ public class ResourcesServicesHelper extends ComponentBase {
 		return resource;
 	}
 
-	public InputStream loadClasspathResourceStream(String resourcePath) throws ResourcesException {
+	public byte[] loadClasspathResourceBytes(final String resourcePath) throws ResourcesException {
+		Resource resource = null;
+		InputStream resourceDataStream = null;
+		byte[] bdata = null;
+		try {
+			resource = loadClasspathResource(resourcePath);
+			if (null==resource)
+				throw new ResourcesException("Unable to get resource from path: " + resourcePath);
+
+			resourceDataStream = resource.getInputStream();
+			log.info("Found resource by given path: " + resourcePath);
+			bdata = CommonUtility.getByteArray(resourceDataStream);
+			/*
+			byte[] bdata = FileCopyUtils.copyToByteArray(resourceDataStream);
+			String data = new String(bdata, StandardCharsets.UTF_8);
+			System.out.println(bdata);
+			*/
+		} catch (IOException e) {
+			throw new ResourcesException(e);
+		}
+		return bdata;
+	}
+
+	public InputStream loadClasspathResourceStream(final String resourcePath) throws ResourcesException {
 		Resource resource = null;
 		InputStream resourceDataStream = null;
 		try {
@@ -61,7 +84,7 @@ public class ResourcesServicesHelper extends ComponentBase {
 		return resourceDataStream;
 	}
 
-	public File loadClasspathResourceFile(String resourcePath) throws ResourcesException {
+	public File loadClasspathResourceFile(final String resourcePath) throws ResourcesException {
 		Resource resource = null;
 		File resourceFile = null;
 		try {

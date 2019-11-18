@@ -24,4 +24,6 @@ public interface OSXConstants {
 	final static String PARAM_MASTER_FILE = "masterFile";
 	final static String PARAM_MASTER_FILE_ENCRYPTION_KEY = "masterFileEncryptionKey";
 
+	final static String PARAM_MASTER_BUFFER = "masterBuffer";
+	final static String PARAM_MASTER_FILE_NAME = "masterFileName";
 }

@@ -21,11 +21,13 @@ import org.springframework.core.task.TaskExecutor;
 import com.github.adminfaces.template.exception.BusinessException;
 
 import net.paramount.component.helper.ResourcesServicesHelper;
+import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.dmx.repository.GlobalDmxRepository;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ResourcesException;
 import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.controller.BaseController;
+import net.paramount.framework.model.DefaultExecutionContext;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.msp.async.AsyncExtendedDataLoader;
 import net.paramount.msp.faces.model.Entity;
@@ -56,6 +58,9 @@ public class VirtualSimulatorPage extends BaseController {
 
   	@Inject
   	private ResourcesServicesHelper resourcesServicesHelper;
+  	
+  	@Inject
+  	private ResourcesStorageServiceHelper resourcesStorageServiceHelper;
 
   	
   	@Override
@@ -169,9 +174,10 @@ public class VirtualSimulatorPage extends BaseController {
   	}
 
   	public void archiveData(final String resourceName) {
-  		InputStream resourceFile = null;
   		try {
-    		//resourceFile = resourcesServicesHelper.loadClasspathResourceStream(resourceName);
+  			DefaultExecutionContext executionContext = resourcesStorageServiceHelper.buildDefaultDataExecutionContext();
+  			resourcesStorageServiceHelper.archiveResourceData(executionContext);
+  			//resourceFile = resourcesServicesHelper.loadClasspathResourceStream(resourceName);
 				//globalDmxRepository.archiveResourceData(resourceName, resourceFile, "");
 			} catch (Exception e) {
 				log.error(e);
