@@ -21,6 +21,9 @@ public class SimpleEncryptionEngine {
 	}
 
 	private String eliminateEncryptionKey(String buffer) {
+		if (!buffer.contains(ENCRYPTION_SALT))
+			return buffer;
+
 		return buffer.substring(0, buffer.length()-ENCRYPTION_SALT.length());
 	}
 

@@ -54,12 +54,13 @@ public class ResourcesStorageServiceHelper {
 		DefaultExecutionContext executionContext = DefaultExecutionContext.builder().build();
 
 		String defaultContactsData = "Vietbank_14.000.xlsx", defaultCataloguesData = "data-catalog.xlsx";
-		File zipFile = resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip");
+		//File zipFile = resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip");
 		Map<String, String> secretKeyMap = ListUtility.createMap(defaultContactsData, "thanhcong");
 		Map<String, List<String>> sheetIdMap = ListUtility.createMap();
 		sheetIdMap.put(defaultContactsData, ListUtility.arraysAsList(new String[] {"File Tổng hợp", "Các trưởng phó phòng", "9"}));
 
-		executionContext.put(OSXConstants.PARAM_COMPRESSED_FILE, zipFile);
+		executionContext.put(OSXConstants.PARAM_MASTER_BUFFER, resourcesServicesHelper.loadClasspathResourceBytes("data/marshall/develop_data.zip"));
+		executionContext.put(OSXConstants.PARAM_MASTER_FILE_NAME, "data/marshall/develop_data.zip");
 		executionContext.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
 		executionContext.put(OSXConstants.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {defaultContactsData, defaultCataloguesData}));
 		executionContext.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
@@ -68,31 +69,33 @@ public class ResourcesStorageServiceHelper {
 	}
 
 	public void archiveResourceData(final DefaultExecutionContext executionContextParams) throws MspDataException {
-		File zipFile = null;
 		Attachment attachment = null;
 		Optional<Attachment> attachmentChecker = null;
 		Configuration archivedConfig = null;
-		Set<ConfigurationDetail> configDetails = ListUtility.newHashSet();
 		Map<String, String> secretKeyMap = null;
+		byte[] masterDataBuffer = null;
+		String masterDataFileName = null;
 		try {
-			if (!executionContextParams.containKey(OSXConstants.PARAM_MASTER_FILE))
+			if (!(executionContextParams.containKey(OSXConstants.PARAM_MASTER_BUFFER) || executionContextParams.containKey(OSXConstants.PARAM_MASTER_FILE_NAME)))
 				throw new MspDataException("There is no archiving file!");
 
-			zipFile = (File) executionContextParams.get(OSXConstants.PARAM_MASTER_FILE);
-			attachmentChecker = this.attachmentService.getByName(zipFile.getPath());
+			masterDataBuffer = (byte[]) executionContextParams.get(OSXConstants.PARAM_MASTER_BUFFER);
+			masterDataFileName = (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_NAME);
+			attachmentChecker = this.attachmentService.getByName(masterDataFileName);
 			if (!attachmentChecker.isPresent()) {
-				attachment = this.buidAttachment(zipFile.getName(), new FileInputStream(zipFile), (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_ENCRYPTION_KEY));
+				attachment = this.buidAttachment(masterDataFileName, masterDataBuffer, (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_ENCRYPTION_KEY));
 				this.attachmentService.save(attachment);
 				//Build configuration & dependencies accordingly
 				archivedConfig = Configuration.builder()
-						.name(zipFile.getName())
+						.name(masterDataFileName)
+						.value(masterDataFileName)
 						.build();
 
 				secretKeyMap = (Map)executionContextParams.get(OSXConstants.PARAM_ENCRYPTION_KEY);
 				for (String key :secretKeyMap.keySet()) {
-					configDetails.add(ConfigurationDetail.builder()
+					archivedConfig.addConfigurationDetail(ConfigurationDetail.builder()
 							.name(key)
-							.value(secretKeyMap.get(key))
+							.value(SimpleEncryptionEngine.encode(secretKeyMap.get(key)))
 							.build())
 					;
 				}
@@ -180,6 +183,27 @@ public class ResourcesStorageServiceHelper {
 					.encryptionKey(procEncyptionKey)
 					.build();
 		} catch (IOException e) {
+			throw new MspRuntimeException(e);
+		}
+		return attachment;
+	}
+
+	public Attachment buidAttachment(final String fileName, final byte[] bytes, String encryptionKey) throws MspRuntimeException {
+		Attachment attachment = null;
+		int lastDot = fileName.lastIndexOf(CommonConstants.FILE_EXTENSION_SEPARATOR);
+		String fileExtension = fileName.substring(lastDot+1);
+		String procEncyptionKey = null;
+		try {
+			if (CommonUtility.isNotEmpty(encryptionKey))
+				procEncyptionKey = SimpleEncryptionEngine.encode(encryptionKey);
+
+			attachment = Attachment.builder()
+					.name(fileName)
+					.data(bytes)
+					.mimetype(MimeTypes.getMimeType(fileExtension))
+					.encryptionKey(procEncyptionKey)
+					.build();
+		} catch (Exception e) {
 			throw new MspRuntimeException(e);
 		}
 		return attachment;

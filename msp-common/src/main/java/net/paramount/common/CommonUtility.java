@@ -44,9 +44,9 @@ import java.util.zip.ZipFile;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.springframework.util.FileCopyUtils;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -1414,8 +1414,9 @@ public class CommonUtility implements CommonConstants {
 			tempDataFile = File.createTempFile(baseName, "." + extension);
 			tempDataFile.deleteOnExit();
 
-			FileCopyUtils.copy(data, tempDataFile);
+			//FileCopyUtils.copy(data, tempDataFile);
 
+			FileUtils.writeByteArrayToFile(tempDataFile, data);
 			inputStream = new FileInputStream(tempDataFile);
 		} catch (Exception ex) {
 			throw new EcosysException(ex);
@@ -1442,7 +1443,11 @@ public class CommonUtility implements CommonConstants {
 	}
 
 	public static byte[] getByteArray(final File dataFile) throws IOException {
-		return FileCopyUtils.copyToByteArray(dataFile);
+		return FileUtils.readFileToByteArray(dataFile);
+	}
+
+	public static byte[] getByteArray(final InputStream inputStream) throws IOException {
+		return IOUtils.toByteArray(inputStream);
 	}
 
 	public static boolean regularExpressionCompiled(final String patternExpression, final String value){
