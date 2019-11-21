@@ -17,7 +17,7 @@ import lombok.Builder;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.exceptions.EcosysException;
-import net.paramount.framework.model.DefaultExecutionContext;
+import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.model.OsxBucketContainer;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.DataWorksheet;
@@ -31,6 +31,7 @@ import net.paramount.osx.model.OfficeMarshalType;
  */
 @Component
 @Builder
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class OfficeSuiteServiceProvider {
 	protected OfficeDocumentType detectOfficeDocumentType(InputStream inputStream) throws EcosysException {
 		OfficeDocumentType excelSheetType = OfficeDocumentType.INVALID;
@@ -73,8 +74,7 @@ public class OfficeSuiteServiceProvider {
 		return workbookContainer;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public OsxBucketContainer readOfficeDataInZip(final DefaultExecutionContext executionContextParams) throws EcosysException {
+	public OsxBucketContainer readOfficeDataInZip(final ExecutionContext executionContextParams) throws EcosysException {
 		OsxBucketContainer bucketContainer = OsxBucketContainer.instance();
 		File zipFile = null;
 		Map<String, InputStream> zipInputStreams = null;
@@ -106,6 +106,64 @@ public class OfficeSuiteServiceProvider {
 				processingParameters.remove(OSXConstants.PARAM_COMPRESSED_FILE);
 				processingParameters.put(OSXConstants.PARAM_INPUT_STREAM, zipInputStream);
 				processingParameters.put(OSXConstants.PARAM_DATA_SHEET_IDS, worksheetIds);
+				processingParameters.put(OSXConstants.PARAM_ENCRYPTION_KEY, (String) passwordMap.get(zipEntry));
+				workbookContainer = readExcelFile(processingParameters);
+				if (null != workbookContainer) {
+					bucketContainer.put(zipEntry, workbookContainer);
+				}
+			}
+		} catch (Exception e) {
+			throw new EcosysException(e);
+		}
+		return bucketContainer;
+	}
+
+	public OsxBucketContainer extractOfficeDataFromZip(final ExecutionContext executionContextParams) throws EcosysException {
+		OsxBucketContainer bucketContainer = OsxBucketContainer.instance();
+		File zipFile = null;
+		Map<String, InputStream> zipInputStreams = null;
+		Map<String, Object> processingParameters = ListUtility.createMap();
+		OfficeDocumentType officeDocumentType = OfficeDocumentType.INVALID;
+		DataWorkbook workbookContainer = null;
+		InputStream zipInputStream = null;
+		Map<String, List<String>> sheetIdsMap = null;
+		List<String> workbookIds = null;
+		Map<String, String> passwordMap = null;
+		try {
+			if (executionContextParams.containKey(OSXConstants.PARAM_MASTER_BUFFER) && executionContextParams.containKey(OSXConstants.PARAM_MASTER_FILE_NAME)) {
+				zipFile = CommonUtility.createDataFile((String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_NAME), (byte[])executionContextParams.get(OSXConstants.PARAM_MASTER_BUFFER));
+			}
+
+			if (null==zipFile) {
+				return bucketContainer;
+			}
+
+			if (executionContextParams.containKey(OSXConstants.PARAM_ENCRYPTION_KEY)) {
+				passwordMap = (Map) executionContextParams.get(OSXConstants.PARAM_ENCRYPTION_KEY);
+			}
+
+			if (executionContextParams.containKey(OSXConstants.PARAM_DATA_SHEET_IDS)) {
+				sheetIdsMap = (Map) executionContextParams.get(OSXConstants.PARAM_DATA_SHEET_IDS);
+			}
+
+			if (executionContextParams.containKey(OSXConstants.PARAM_DATA_BOOK_IDS)) {
+				workbookIds = (List<String>)executionContextParams.get(OSXConstants.PARAM_DATA_BOOK_IDS);
+			}
+			zipInputStreams = CommonUtility.extractZipInputStreams(zipFile, workbookIds);
+			
+			for (String zipEntry : zipInputStreams.keySet()) {
+				zipInputStream = zipInputStreams.get(zipEntry);
+				officeDocumentType = detectOfficeDocumentType(zipInputStream);
+				if (!OfficeDocumentType.isExcelDocument(officeDocumentType)) {
+					continue;
+				}
+
+				if (null != sheetIdsMap) {
+					processingParameters.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIdsMap.get(zipEntry));
+				}
+				processingParameters.putAll(executionContextParams.getContext());
+				processingParameters.remove(OSXConstants.PARAM_COMPRESSED_FILE);
+				processingParameters.put(OSXConstants.PARAM_INPUT_STREAM, zipInputStream);
 				processingParameters.put(OSXConstants.PARAM_ENCRYPTION_KEY, (String) passwordMap.get(zipEntry));
 				workbookContainer = readExcelFile(processingParameters);
 				if (null != workbookContainer) {

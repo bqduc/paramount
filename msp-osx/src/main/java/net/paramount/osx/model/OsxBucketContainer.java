@@ -78,6 +78,10 @@ public class OsxBucketContainer {
 		return null;
 	}
 
+	public boolean containsKey(Object key) {
+		return this.bucketData.containsKey(key);
+	}
+
 	public Object pull(Object key) {
 		if (this.bucketData.containsKey(key))
 			return this.bucketData.remove(key);

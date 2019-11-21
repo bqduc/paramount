@@ -15,7 +15,7 @@ import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.exceptions.EcosysException;
 import net.paramount.framework.component.ComponentBase;
-import net.paramount.framework.model.DefaultExecutionContext;
+import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.model.OsxBucketContainer;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.OSXConstants;
@@ -34,8 +34,8 @@ public class OfficeSuiteServicesHelper extends ComponentBase {
 	 */
 	private static final long serialVersionUID = 1799685037252299770L;
 
-	protected DefaultExecutionContext initConfigData(final File zipFile) {
-		DefaultExecutionContext executionContext = DefaultExecutionContext.builder().build();
+	protected ExecutionContext initConfigData(final File zipFile) {
+		ExecutionContext executionContext = ExecutionContext.builder().build();
 
 		Map<String, String> secretKeyMap = ListUtility.createMap("Vietbank_14.000.xlsx", "thanhcong");
 		Map<String, List<String>> sheetIdMap = ListUtility.createMap();
@@ -51,7 +51,7 @@ public class OfficeSuiteServicesHelper extends ComponentBase {
 
 	public OsxBucketContainer loadDefaultZipConfiguredData(final File sourceZipFile) throws EcosysException {
 		OsxBucketContainer bucketContainer = null;
-		DefaultExecutionContext executionContext = null;
+		ExecutionContext executionContext = null;
 		try {
 			executionContext = this.initConfigData(sourceZipFile);
 			bucketContainer = OfficeSuiteServiceProvider
@@ -64,7 +64,7 @@ public class OfficeSuiteServicesHelper extends ComponentBase {
 		return bucketContainer;
 	}
 
-	public OsxBucketContainer loadDefaultZipConfiguredData(final DefaultExecutionContext executionContext) throws EcosysException {
+	public OsxBucketContainer loadDefaultZipConfiguredData(final ExecutionContext executionContext) throws EcosysException {
 		return OfficeSuiteServiceProvider
 					.builder()
 					.build()
@@ -73,7 +73,7 @@ public class OfficeSuiteServicesHelper extends ComponentBase {
 
 	public OsxBucketContainer loadZipDataFromInputStream(final String originFileName, final InputStream inputStream) throws EcosysException {
 		OsxBucketContainer bucketContainer = null;
-		DefaultExecutionContext executionContext = null;
+		ExecutionContext executionContext = null;
 		File targetDataFile = null;
 		try {
 			targetDataFile = CommonUtility.createFileFromInputStream(originFileName, inputStream);
@@ -88,7 +88,7 @@ public class OfficeSuiteServicesHelper extends ComponentBase {
 		return bucketContainer;
 	}
 
-	public DataWorkbook unmarshallContacts(DefaultExecutionContext executionContext) {
+	public DataWorkbook unmarshallContacts(ExecutionContext executionContext) {
 		DataWorkbook fetchedDataWorkbook = null;
 		return fetchedDataWorkbook;
 	}

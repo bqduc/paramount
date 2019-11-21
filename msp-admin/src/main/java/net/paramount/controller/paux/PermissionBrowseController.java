@@ -1,4 +1,4 @@
-package net.paramount.controller.contacts;
+package net.paramount.controller.paux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.paramount.auth.service.UserAuthenticationService;
 import net.paramount.common.CommonUtility;
 import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.service.contact.ContactService;
@@ -22,13 +23,13 @@ import net.paramount.msp.model.Car;
 /**
  * @author ducbq
  */
-@Named(value="contactBrowse")
+@Named(value="permissionBrowse")
 @ViewScoped
-public class ContactBrowse extends BaseController {
+public class PermissionBrowseController extends BaseController {
 		/**
 	 * 
 	 */
-	private static final long serialVersionUID = 265858846501330811L;
+	private static final long serialVersionUID = -2825754765498119385L;
 
 		private List<Team> teams;
     private List<FacesCar> cars;
@@ -39,6 +40,9 @@ public class ContactBrowse extends BaseController {
 
     List<Car> selectedCars; //cars selected in checkbox column
 
+    @Inject
+    private UserAuthenticationService userAuthenticationService;
+    
     @Inject
     private FacesCarService carService;
 

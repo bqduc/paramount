@@ -1359,9 +1359,16 @@ public class CommonUtility implements CommonConstants {
 		try {
 			innerZipFile = new ZipFile(zipFile);
 			zipEntries = innerZipFile.entries();
-			while (zipEntries.hasMoreElements()) {
-				zipEntry = (ZipEntry) zipEntries.nextElement();
-				if (zipEntryNames.contains(zipEntry.getName())) {
+			if (CommonUtility.isNotEmpty(zipEntryNames)) {
+				while (zipEntries.hasMoreElements()) {
+					zipEntry = (ZipEntry) zipEntries.nextElement();
+					if (zipEntryNames.contains(zipEntry.getName())) {
+						resp.put(zipEntry.getName(), buildInputStream(innerZipFile.getInputStream(zipEntry)));
+					}
+				}
+			} else {
+				while (zipEntries.hasMoreElements()) {
+					zipEntry = (ZipEntry) zipEntries.nextElement();
 					resp.put(zipEntry.getName(), buildInputStream(innerZipFile.getInputStream(zipEntry)));
 				}
 			}
@@ -1422,6 +1429,24 @@ public class CommonUtility implements CommonConstants {
 			throw new EcosysException(ex);
 		}
 		return inputStream;
+	}
+
+	public static File createDataFile(final String fileName, final byte[] data) throws EcosysException {
+		File targetDataFile = null;
+		try {
+		  if (isEmpty(data))
+				return null;
+
+			String baseName = getFileBaseName(fileName);
+			String extension = getFileExtension(fileName);
+			targetDataFile = File.createTempFile(baseName, "." + extension);
+			targetDataFile.deleteOnExit();
+
+			FileUtils.writeByteArrayToFile(targetDataFile, data);
+		} catch (Exception ex) {
+			throw new EcosysException(ex);
+		}
+		return targetDataFile;
 	}
 
 	public static File createFileFromInputStream(final String originFileName, final InputStream inputStream) throws EcosysException {

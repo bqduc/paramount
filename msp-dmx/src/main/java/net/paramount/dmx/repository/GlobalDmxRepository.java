@@ -16,17 +16,21 @@ import com.github.javafaker.Faker;
 
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
+import net.paramount.css.entity.config.Configuration;
 import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.entity.general.Office;
+import net.paramount.css.service.config.ConfigurationService;
 import net.paramount.css.service.general.AttachmentService;
+import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.embeddable.Address;
 import net.paramount.entity.Attachment;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.framework.component.ComponentBase;
-import net.paramount.framework.model.DefaultExecutionContext;
+import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.helper.OfficeSuiteServiceProvider;
 import net.paramount.osx.helper.OfficeSuiteServicesHelper;
 import net.paramount.osx.model.DataWorkbook;
+import net.paramount.osx.model.OSXConstants;
 import net.paramount.osx.model.OsxBucketContainer;
 
 /**
@@ -56,6 +60,12 @@ public class GlobalDmxRepository extends ComponentBase {
 
 	@Inject
 	private OfficeSuiteServicesHelper officeSuiteServicesHelper;
+	
+	@Inject
+	private ConfigurationService configurationService;
+	
+	@Inject
+	private ResourcesStorageServiceHelper resourcesStorageServiceHelper;
 
 	public Address[] buildAddresses() {
 		List<Address> addresses = ListUtility.createArrayList();
@@ -136,23 +146,33 @@ public class GlobalDmxRepository extends ComponentBase {
 		}
 	}
 
-	public DataWorkbook marshallDataFromArchived(String archivedName) throws MspDataException {
+	public OsxBucketContainer marshallDataFromArchived(String archivedName, List<String> databookIds, List<String> datasheetIds) throws MspDataException {
 		Optional<Attachment> optAttachment = this.attachmentService.getByName(archivedName);
 		if (!optAttachment.isPresent())
 			return null;
 
+		Optional<Configuration> optConfig = null;
 		OsxBucketContainer osxBucketContainer = null;
 		InputStream inputStream = null;
+		ExecutionContext defaultExecutionContext = null;
 		try {
 			inputStream = CommonUtility.createInputStream(archivedName, optAttachment.get().getData());
 			if (null==inputStream)
 				return null;
 
-			osxBucketContainer = officeSuiteServicesHelper.loadZipDataFromInputStream(optAttachment.get().getName(), inputStream);
-			officeSuiteServiceProvider.readOfficeDataInZip(DefaultExecutionContext.builder().build());
+			optConfig = configurationService.getOne(archivedName);
+			if (optConfig.isPresent()) {
+				defaultExecutionContext = resourcesStorageServiceHelper.buildExecutionContext(optConfig.get(), optAttachment.get().getData());
+			}
+
+			defaultExecutionContext.put(OSXConstants.PARAM_DATA_BOOK_IDS, databookIds);
+			if (CommonUtility.isNotEmpty(datasheetIds)) {
+				defaultExecutionContext.put(OSXConstants.PARAM_DATA_SHEET_IDS, datasheetIds);
+			}
+			osxBucketContainer = officeSuiteServiceProvider.extractOfficeDataFromZip(defaultExecutionContext);
 		} catch (Exception e) {
 			 throw new MspDataException(e);
 		}
-		return DataWorkbook.builder().build();
+		return osxBucketContainer;
 	}
 }

@@ -30,7 +30,7 @@ import net.paramount.entity.Attachment;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.MspRuntimeException;
 import net.paramount.exceptions.ResourcesException;
-import net.paramount.framework.model.DefaultExecutionContext;
+import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.model.OSXConstants;
 import net.paramount.osx.model.OfficeMarshalType;
 
@@ -49,8 +49,30 @@ public class ResourcesStorageServiceHelper {
 	@Inject
 	private ConfigurationService configurationService;
 
-	public DefaultExecutionContext buildDefaultDataExecutionContext() throws ResourcesException {
-		DefaultExecutionContext executionContext = DefaultExecutionContext.builder().build();
+	public ExecutionContext buildExecutionContext(Configuration config, byte[] dataBytes) throws ResourcesException {
+		if (null == config) {
+			return null;
+		}
+
+		ExecutionContext executionContext = ExecutionContext.builder().build();
+
+		String masterFileName = config.getValue();
+		Map<String, String> secretKeyMap = ListUtility.createMap();
+		for (ConfigurationDetail configDetail :config.getConfigurationDetails()) {
+			if (OSXConstants.PARAM_ENCRYPTION_KEY.equalsIgnoreCase(configDetail.getValueExtended())) {
+				secretKeyMap.put(configDetail.getName(), SimpleEncryptionEngine.decode(configDetail.getValue()));
+			}
+		}
+
+		executionContext.put(OSXConstants.PARAM_MASTER_BUFFER, dataBytes);
+		executionContext.put(OSXConstants.PARAM_MASTER_FILE_NAME, masterFileName);
+		executionContext.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
+		executionContext.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
+		return executionContext;
+	}
+
+	public ExecutionContext buildDefaultDataExecutionContext() throws ResourcesException {
+		ExecutionContext executionContext = ExecutionContext.builder().build();
 
 		String defaultContactsData = "Vietbank_14.000.xlsx", defaultCataloguesData = "data-catalog.xlsx";
 		//File zipFile = resourcesServicesHelper.loadClasspathResourceFile("data/marshall/develop_data.zip");
@@ -67,7 +89,7 @@ public class ResourcesStorageServiceHelper {
 		return executionContext;
 	}
 
-	public void archiveResourceData(final DefaultExecutionContext executionContextParams) throws MspDataException {
+	public void archiveResourceData(final ExecutionContext executionContextParams) throws MspDataException {
 		Attachment attachment = null;
 		Optional<Attachment> attachmentChecker = null;
 		Configuration archivedConfig = null;
@@ -93,8 +115,9 @@ public class ResourcesStorageServiceHelper {
 				secretKeyMap = (Map)executionContextParams.get(OSXConstants.PARAM_ENCRYPTION_KEY);
 				for (String key :secretKeyMap.keySet()) {
 					archivedConfig.addConfigurationDetail(ConfigurationDetail.builder()
-							.name(key)
+							.name(OSXConstants.PARAM_ENCRYPTION_KEY)
 							.value(SimpleEncryptionEngine.encode(secretKeyMap.get(key)))
+							.valueExtended(key)
 							.build())
 					;
 				}

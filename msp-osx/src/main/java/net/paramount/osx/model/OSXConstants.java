@@ -13,7 +13,8 @@ public interface OSXConstants {
 	final static String PARAM_COMPRESSED_FILE = "compressedFile";
 	final static String PARAM_ZIP_ENTRY = "zipEntry";
 	final static String PARAM_INPUT_STREAM = "sourceInputStream";
-	final static String PARAM_DATA_SHEET_IDS = "dataSheets";
+	final static String PARAM_DATA_BOOK_IDS = "dataBookIds";
+	final static String PARAM_DATA_SHEET_IDS = "dataSheetIds";
 	final static String PARAM_DATA_INDEXES = "dataIndexes";
 	final static String PARAM_STARTED_ROW_INDEX = "startedRowIndex";
 	final static String PARAM_ENCRYPTION_KEY = "encryptionKey";

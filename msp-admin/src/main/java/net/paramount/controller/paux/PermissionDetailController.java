@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.paramount.controller.contacts;
+package net.paramount.controller.paux;
 
 import static com.github.adminfaces.template.util.Assert.has;
 
@@ -17,6 +17,7 @@ import org.omnifaces.util.Faces;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
+import net.paramount.auth.service.UserAuthenticationService;
 import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.service.contact.ContactService;
 import net.paramount.msp.model.Car;
@@ -26,16 +27,18 @@ import net.paramount.msp.util.Utils;
 /**
  * @author ducbq
  */
-@Named(value="contactDetail")
+@Named(value="permissionDetail")
 @ViewScoped
-public class ContactDetailController implements Serializable {
-
-    /**
+public class PermissionDetailController implements Serializable {
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5729167746607232066L;
+	private static final long serialVersionUID = -8331499270487789202L;
 
-	@Inject
+  @Inject
+  private UserAuthenticationService userAuthenticationService;
+
+  @Inject
 	CarService carService;
 
 	@Inject

@@ -20,28 +20,21 @@ import org.springframework.core.task.TaskExecutor;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
-import net.paramount.common.ListUtility;
+import net.paramount.auth.domain.UserAccountProfile;
+import net.paramount.auth.helper.AuxServiceHelper;
 import net.paramount.component.helper.ResourcesServicesHelper;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.dmx.repository.GlobalDmxRepository;
-import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.controller.BaseController;
-import net.paramount.framework.model.ExecutionContext;
-import net.paramount.msp.async.AsyncExtendedDataLoader;
 import net.paramount.msp.faces.model.Entity;
-import net.paramount.msp.i18n.CustomResourceBundle;
-import net.paramount.osx.model.DataWorkbook;
-import net.paramount.osx.model.DataWorksheet;
-import net.paramount.osx.model.OsxBucketContainer;
 
-@Named(value="virtualSimulator")
+@Named(value="virtualWebProfile")
 @ViewScoped
-public class VirtualSimulatorPage extends BaseController {
-
-    /**
+public class VirtualWebProfileController extends BaseController {
+		/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4917742028352793276L;
+	private static final long serialVersionUID = -4054830380339740986L;
 		private List<String> allCities;
     private List<String> allTalks;
     private Entity entity;
@@ -63,11 +56,12 @@ public class VirtualSimulatorPage extends BaseController {
   	
   	@Inject
   	private ResourcesStorageServiceHelper resourcesStorageServiceHelper;
-  	
-  	@Inject
-  	private CustomResourceBundle customResourceBundle;
 
-  	
+  	@Inject
+  	private AuxServiceHelper auxServiceHelper;
+
+  	private UserAccountProfile  userAccountProfile;
+
   	@Override
     public void doPostConstruct() {
         allCities = Arrays.asList("São Paulo", "New York", "Tokyo", "Islamabad", "Chongqing", "Guayaquil", "Porto Alegre", "Hanoi", "Montevideo", "Shijiazhuang", "Guadalajara","Stockholm",
@@ -77,16 +71,14 @@ public class VirtualSimulatorPage extends BaseController {
                 "From Java EE to Jakarta EE: a user perspective", "Cloud Native Java with Open J9, Fast, Lean and Definitely Mean", "Service Mesh and Sidecars with Istio and Envoy");
         allCities.sort(Comparator.naturalOrder());
         allTalks.sort(Comparator.naturalOrder());
-        entity = new Entity();
-    }
+        
+        //Build information of user's profile
+        String remoteUser = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+        this.userAccountProfile = this.auxServiceHelper.getUserAccountProfile(remoteUser);
+  	}
 
     public void clear() {
-        entity = new Entity();
-        System.out.println("Remote user: " + FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        this.marshallContacts();
-        archiveData("data/marshall/develop_data.zip");
-        //loadResourceData();
-        //loadingAsyncData();
+    	System.out.println("Remote user: " + FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
     }
 
     public void remove() {
@@ -139,83 +131,5 @@ public class VirtualSimulatorPage extends BaseController {
         this.allTalks = talks;
     }
 
-    public Entity getEntity() {
-        return entity;
-    }
 
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
-
-    protected void loadResourceData() {
-      try
-      {
-      	/*DataWorkbook dataWorkbook = globalDmxRepository.marshallDataFromArchived("data/marshall/develop_data.zip", "Vietbank_14.000.xlsx", "thanhcong");
-      	System.out.println(dataWorkbook);
-      	Resource resource = this.resourceLoader.getResource("classpath:/data/marshall/develop_data.zip");
-        InputStream inputStream = resource.getInputStream();
-
-        byte[] bdata = FileCopyUtils.copyToByteArray(inputStream);
-          //String data = new String(bdata, StandardCharsets.UTF_8);
-        System.out.println(bdata);*/
-      } 
-      catch (Exception e) 
-      {
-      	e.printStackTrace();
-          //LOGGER.error("IOException", e);
-      }
-    }
-
-  	protected void loadingAsyncData() {
-  		ExecutionContext executionContext = null;
-  		Asynchronous asyncExtendedDataLoader = null;
-  		try {
-  			executionContext = ExecutionContext.builder().build();
-  			executionContext.context("AA", "xx").context("DD", "ss");
-
-  			asyncExtendedDataLoader = applicationContext.getBean(AsyncExtendedDataLoader.class, executionContext);
-  			this.asyncExecutor.execute(asyncExtendedDataLoader);
-  		} catch (Exception e) {
-  			//log.error(e.getMessage());
-  		}
-  	}
-
-  	public void archiveData(final String resourceName) {
-  		try {
-  			ExecutionContext executionContext = resourcesStorageServiceHelper.buildDefaultDataExecutionContext();
-  			resourcesStorageServiceHelper.archiveResourceData(executionContext);
-  			//resourceFile = resourcesServicesHelper.loadClasspathResourceStream(resourceName);
-				//globalDmxRepository.archiveResourceData(resourceName, resourceFile, "");
-			} catch (Exception e) {
-				log.error(e);
-			}
-  	}
-
-  	protected void marshallContacts() {
-  		DataWorksheet dataWorksheet = null;
-  		try {
-  			String resourceName = "data/marshall/develop_data.zip";
-  			DataWorkbook dataWorkbook = extractContacts(resourceName, ListUtility.createDataList("Vietbank_14.000.xlsx"));
-				System.out.println(dataWorkbook); 
-				for (Object sheetId :dataWorkbook.getKeys()) {
-					dataWorksheet = dataWorkbook.getWorksheet(sheetId);
-					System.out.println(dataWorksheet);
-				}
-			} catch (Exception e) {
-				log.error(e);
-			}
-  	}
-
-  	protected DataWorkbook extractContacts(String archivedResourceName, List<String> dataWorkbookId){
-			DataWorkbook dataWorkbook = null;
-  		try {
-  			OsxBucketContainer osxBucketContainer = globalDmxRepository.marshallDataFromArchived(archivedResourceName, dataWorkbookId, null);
-				if (null != osxBucketContainer && osxBucketContainer.containsKey(dataWorkbookId)){
-					dataWorkbook = (DataWorkbook)osxBucketContainer.get(dataWorkbookId);
-				}
-			} catch (Exception e) {
-				log.error(e);
-			}
-  		return dataWorkbook;
-  	}
 }

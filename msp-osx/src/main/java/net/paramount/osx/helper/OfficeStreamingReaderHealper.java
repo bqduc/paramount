@@ -31,30 +31,6 @@ import net.paramount.osx.model.OfficeDataPackage;
  */
 @Builder
 public class OfficeStreamingReaderHealper {
-	/**
-	 * 
-	 */
-	/*public OfficeDataPackage readXlsxDocuments(Map<?, ?> parameters) throws EcosysException {
-		if (parameters.containsKey(OSXConstants.PARAM_COMPRESSED_FILE)) {
-			throw new EcosysException("There is no zip file in parameters!!");
-		}
-
-		OfficeDataPackage result = OfficeDataPackage.builder().build();
-		Map<Object, Object> clonedParameters = (Map<Object, Object>) ListUtility.cloneMap(parameters);
-		DataWorkbook dataWorkbook = null;
-		InputStream zipInputStream = null;
-		File compressedFile = (File)parameters.get(OSXConstants.PARAM_COMPRESSED_FILE);
-		Map<String, InputStream> inputStreamMap = CommonUtility.extractZipInputStreams(compressedFile);
-		for (String zipEntry :inputStreamMap.keySet()) {
-			zipInputStream = inputStreamMap.get(zipEntry);
-			clonedParameters.put(OSXConstants.PARAM_INPUT_STREAM, zipInputStream);
-			dataWorkbook = readXlsx(clonedParameters);
-			if (null != dataWorkbook) {
-				result.put(zipEntry, dataWorkbook);
-			}
-		}
-		return result;
-	}*/
 
 	/**
 	 * 
