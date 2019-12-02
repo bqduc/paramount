@@ -8,6 +8,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
+import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.GUUISequenceGenerator;
 import net.paramount.common.ListUtility;
@@ -21,6 +26,7 @@ import net.paramount.exceptions.DataLoadingException;
 import net.paramount.framework.component.ComponentBase;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.framework.model.ExecutionContext;
+import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.model.SequenceType;
 import net.paramount.osx.helper.OfficeSuiteServiceProvider;
 import net.paramount.osx.helper.OfficeSuiteServicesHelper;
@@ -79,11 +85,29 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 			return this.businessUnitMap.get(contactDataRow.get(IDX_BUSINESS_UNIT_CODE));
 		}
 
+		BusinessUnit businessUnit = this.businessUnitService.getOne((String)contactDataRow.get(IDX_BUSINESS_UNIT_CODE));
+		if (null != businessUnit) {
+			this.businessUnitMap.put(businessUnit.getCode(), businessUnit);
+			return businessUnit;
+		}
+
+		SearchParameter searchParameter = SearchParameter.builder()
+				.pageable(PageRequest.of(CommonConstants.DEFAULT_PAGE_BEGIN, CommonConstants.DEFAULT_PAGE_SIZE, Sort.Direction.ASC, "id"))
+				.build()
+				.put("name", (String)contactDataRow.get(IDX_BUSINESS_UNIT_NAME));
+		Page<BusinessUnit> fetchedObjects = this.businessUnitService.getObjects(searchParameter);
+		if (fetchedObjects.hasContent()) {
+			businessUnit = fetchedObjects.getContent().get(0);
+			this.businessUnitMap.put(businessUnit.getCode(), businessUnit);
+			return businessUnit;
+		}
+		
 		BusinessUnit businessDivision = getBusinessDivision(contactDataRow);
-		BusinessUnit businessUnit = BusinessUnit.builder()
+		businessUnit = BusinessUnit.builder()
 				.parent(businessDivision)
 				.code((String)contactDataRow.get(IDX_BUSINESS_UNIT_CODE))
 				.name((String)contactDataRow.get(IDX_BUSINESS_UNIT_NAME))
+				.nameLocal((String)contactDataRow.get(IDX_BUSINESS_UNIT_NAME))
 				.build();
 
 		this.businessUnitService.save(businessUnit);
@@ -102,10 +126,22 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 			}
 		}
 
+		SearchParameter searchParameter = SearchParameter.builder()
+				.pageable(PageRequest.of(CommonConstants.DEFAULT_PAGE_BEGIN, CommonConstants.DEFAULT_PAGE_SIZE, Sort.Direction.ASC, "id"))
+				.build()
+				.put("name", (String)contactDataRow.get(IDX_BUSINESS_DIVISION_NAME));
+		Page<BusinessUnit> fetchedObjects = this.businessUnitService.getObjects(searchParameter);
+		if (fetchedObjects.hasContent()) {
+			businessDivision = fetchedObjects.getContent().get(0);
+			this.businessUnitMap.put(businessDivision.getCode(), businessDivision);
+			return businessDivision;
+		}
+
 		String guuId = GUUISequenceGenerator.getInstance().nextGUUIdString(SequenceType.BUSINESS_DIVISION.getType());
 		businessDivision = BusinessUnit.builder()
 				.code(guuId)
 				.name((String)contactDataRow.get(IDX_BUSINESS_DIVISION_NAME))
+				.nameLocal((String)contactDataRow.get(IDX_BUSINESS_DIVISION_NAME))
 				.build();
 		this.businessUnitService.save(businessDivision);
 		this.businessUnitMap.put(businessDivision.getCode(), businessDivision);

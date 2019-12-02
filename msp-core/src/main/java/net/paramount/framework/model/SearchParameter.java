@@ -126,8 +126,9 @@ public class SearchParameter {
 		return this;
 	}
 
-	public void put(String key, Object value){
+	public SearchParameter put(String key, Object value){
 		this.parameterMap.put(key, value);
+		return this;
 	}
 
 	public Object get(String key){

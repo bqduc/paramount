@@ -82,7 +82,9 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 					} catch (DataLoadingException e) {
 						e.printStackTrace();
 					}
-					results.add(currentContact);
+					if (null != currentContact) {
+						results.add(currentContact);
+					}
 				}
 			}
 		} else {
