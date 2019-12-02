@@ -10,7 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.paramount.dmx.repository.GlobalDmxRepository;
+import net.paramount.dmx.repository.GlobalDmxRepositoryManager;
 import net.paramount.msp.faces.model.FacesCar;
 import net.paramount.msp.faces.model.Stats;
 import net.paramount.msp.faces.model.Team;
@@ -38,7 +38,7 @@ public class DatatableMB implements Serializable {
     private FacesCarService carService;
 
     @Inject
-    private GlobalDmxRepository globalDmxRepository;
+    private GlobalDmxRepositoryManager globalDmxRepository;
 
     @PostConstruct
     public void init() {

@@ -25,4 +25,9 @@ public class ExecutionContext extends ContextBase {
 	public void setExecutionStage(String executionStage) {
 		this.executionStage = executionStage;
 	}
+
+	public ExecutionContext set(String key, Object contextData){
+		super.put(key, contextData);
+		return this;
+	}
 }

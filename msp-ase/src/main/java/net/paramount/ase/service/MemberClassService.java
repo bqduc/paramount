@@ -46,9 +46,9 @@ public class MemberClassService {
             }
         }
 
-        log.info("Class Statics:");
+        /*log.info("Class Statics:");
         log.info("=============");
         memberClassesMap.forEach((k,v) -> log.info("{}: {}", k, v));
-        log.info("==========================");
+        log.info("==========================");*/
     }
 }

@@ -55,6 +55,7 @@ import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.css.entity.general.Document;
 import net.paramount.css.entity.general.Item;
+import net.paramount.css.entity.org.BusinessUnit;
 import net.paramount.css.model.ContactType;
 import net.paramount.embeddable.Phone;
 import net.paramount.framework.entity.BizObjectBase;
@@ -175,12 +176,24 @@ public class Contact extends BizObjectBase {
 	private String description;
 
 	@ManyToOne
+	@JoinColumn(name = "referal_contact_id")
+	private Contact referal;
+
+	@ManyToOne
 	@JoinColumn(name = "reports_contact_id")
 	private Contact reportsTo;
 
 	@ManyToOne
 	@JoinColumn(name = "assistant_contact_id")
 	private Contact assistant;
+
+	@ManyToOne
+	@JoinColumn(name = "business_unit_id")
+	private BusinessUnit businessUnit;
+
+	@ManyToOne
+	@JoinColumn(name = "job_info_id")
+	private Item jobInfo;
 
 	@Builder.Default
 	@Column(name = "sync_contact")
@@ -439,14 +452,6 @@ public class Contact extends BizObjectBase {
 		this.birthplace = birthplace;
 	}
 
-	/*public PersonalInfo getPersonalInfo() {
-		return personalInfo;
-	}
-
-	public void setPersonalInfo(PersonalInfo personalInfo) {
-		this.personalInfo = personalInfo;
-	}*/
-
 	public List<Document> getDocuments() {
 		return documents;
 	}
@@ -533,6 +538,30 @@ public class Contact extends BizObjectBase {
 
 	public void setIssueAuthAccount(AuthenticateAccount issueAuthAccount) {
 		this.issueAuthAccount = issueAuthAccount;
+	}
+
+	public Contact getReferal() {
+		return referal;
+	}
+
+	public void setReferal(Contact referal) {
+		this.referal = referal;
+	}
+
+	public BusinessUnit getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(BusinessUnit businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+
+	public Item getJobInfo() {
+		return jobInfo;
+	}
+
+	public void setJobInfo(Item jobInfo) {
+		this.jobInfo = jobInfo;
 	}
 
 }

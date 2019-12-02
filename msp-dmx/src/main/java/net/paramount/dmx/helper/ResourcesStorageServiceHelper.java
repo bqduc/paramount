@@ -96,33 +96,40 @@ public class ResourcesStorageServiceHelper {
 		Map<String, String> secretKeyMap = null;
 		byte[] masterDataBuffer = null;
 		String masterDataFileName = null;
+		Optional<Configuration> archivedConfigChecker = null;
 		try {
 			if (!(executionContextParams.containKey(OSXConstants.PARAM_MASTER_BUFFER) || executionContextParams.containKey(OSXConstants.PARAM_MASTER_FILE_NAME)))
 				throw new MspDataException("There is no archiving file!");
 
-			masterDataBuffer = (byte[]) executionContextParams.get(OSXConstants.PARAM_MASTER_BUFFER);
 			masterDataFileName = (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_NAME);
 			attachmentChecker = this.attachmentService.getByName(masterDataFileName);
-			if (!attachmentChecker.isPresent()) {
-				attachment = this.buidAttachment(masterDataFileName, masterDataBuffer, (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_ENCRYPTION_KEY));
-				this.attachmentService.save(attachment);
-				//Build configuration & dependencies accordingly
-				archivedConfig = Configuration.builder()
-						.name(masterDataFileName)
-						.value(masterDataFileName)
-						.build();
+			if (attachmentChecker.isPresent())
+				return; //throw new MspDataException("The archiving file is persisted already!");
 
-				secretKeyMap = (Map)executionContextParams.get(OSXConstants.PARAM_ENCRYPTION_KEY);
-				for (String key :secretKeyMap.keySet()) {
-					archivedConfig.addConfigurationDetail(ConfigurationDetail.builder()
-							.name(OSXConstants.PARAM_ENCRYPTION_KEY)
-							.value(SimpleEncryptionEngine.encode(secretKeyMap.get(key)))
-							.valueExtended(key)
-							.build())
-					;
-				}
-				this.configurationService.save(archivedConfig);
+			masterDataBuffer = (byte[]) executionContextParams.get(OSXConstants.PARAM_MASTER_BUFFER);
+			attachment = this.buidAttachment(masterDataFileName, masterDataBuffer, (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_ENCRYPTION_KEY));
+			this.attachmentService.save(attachment);
+			//Build configuration & dependencies accordingly
+			archivedConfigChecker = this.configurationService.getOne(masterDataFileName);
+			if (archivedConfigChecker.isPresent())
+				return;
+
+			archivedConfig = Configuration.builder()
+					.group("ArchivedMasterData")
+					.name(masterDataFileName)
+					.value(masterDataFileName)
+					.build();
+
+			secretKeyMap = (Map)executionContextParams.get(OSXConstants.PARAM_ENCRYPTION_KEY);
+			for (String key :secretKeyMap.keySet()) {
+				archivedConfig.addConfigurationDetail(ConfigurationDetail.builder()
+						.name(OSXConstants.PARAM_ENCRYPTION_KEY)
+						.value(SimpleEncryptionEngine.encode(secretKeyMap.get(key)))
+						.valueExtended(key)
+						.build())
+				;
 			}
+			this.configurationService.save(archivedConfig);
 		} catch (Exception e) {
 			throw new MspDataException(e);
 		}

@@ -1,12 +1,12 @@
 /**
  * 
  */
-package net.paramount.css.repository.contact;
+package net.paramount.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import lombok.Builder;
-import net.paramount.css.entity.contact.Contact;
+import net.paramount.css.entity.contact.ContactAddress;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.model.SearchRequest;
 import net.paramount.framework.specification.CoreSpecifications;
@@ -16,14 +16,14 @@ import net.paramount.framework.specification.CoreSpecifications;
  *
  */
 @Builder
-public class ContactSpecification extends CoreSpecifications<Contact, SearchRequest>{
+public class ContactAddressSpecification extends CoreSpecifications <ContactAddress, SearchRequest>{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4351535957683794972L;
+	private static final long serialVersionUID = 4984760941753997036L;
 
-	public static Specification<Contact> buildSpecification(final SearchParameter searchParameter) {
-		return ContactSpecification
+	public static Specification<ContactAddress> buildSpecification(final SearchParameter searchParameter) {
+		return ContactAddressSpecification
 				.builder()
 				.build()
 				.buildSpecifications(searchParameter);

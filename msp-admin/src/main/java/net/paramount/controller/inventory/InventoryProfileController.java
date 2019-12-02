@@ -24,7 +24,7 @@ import org.springframework.util.FileCopyUtils;
 import com.github.adminfaces.template.exception.BusinessException;
 
 import net.paramount.component.helper.ResourcesServicesHelper;
-import net.paramount.dmx.repository.GlobalDmxRepository;
+import net.paramount.dmx.repository.GlobalDmxRepositoryManager;
 import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.framework.model.ExecutionContext;
@@ -57,7 +57,7 @@ public class InventoryProfileController extends BaseController {
 	private TaskExecutor asyncExecutor;
 
 	@Inject
-	private GlobalDmxRepository globalDmxRepository;
+	private GlobalDmxRepositoryManager globalDmxRepository;
 
 	@Inject
 	private ResourcesServicesHelper resourcesServicesHelper;

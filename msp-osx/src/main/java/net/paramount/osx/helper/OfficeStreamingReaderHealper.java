@@ -3,13 +3,13 @@
  */
 package net.paramount.osx.helper;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,7 +23,6 @@ import net.paramount.exceptions.EcosysException;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.DataWorksheet;
 import net.paramount.osx.model.OSXConstants;
-import net.paramount.osx.model.OfficeDataPackage;
 
 /**
  * @author ducbq
@@ -61,32 +60,42 @@ public class OfficeStreamingReaderHealper {
 				if (!isValidSheet(sheet, parameters))
 					continue;
 
-				worksheet = DataWorksheet.builder()
-						.id(sheet.getSheetName())
-						.build();
-				for (Row currentRow : sheet) {
-					dataRow = ListUtility.createArrayList();
-					for (Cell currentCell : currentRow) {
-						if (null==currentCell || CellType._NONE.equals(currentCell.getCellType()) || CellType.BLANK.equals(currentCell.getCellType())) {
-							dataRow.add("");
-						} else if (CellType.BOOLEAN.equals(currentCell.getCellType())) {
-							dataRow.add(currentCell.getBooleanCellValue());
-						} else if (CellType.FORMULA.equals(currentCell.getCellType())) {
-							
-						} else if (CellType.NUMERIC.equals(currentCell.getCellType())) {
-							dataRow.add(currentCell.getNumericCellValue());
-						} else if (CellType.STRING.equals(currentCell.getCellType())) {
-							dataRow.add(currentCell.getStringCellValue());
-						}
-					}
-					worksheet.addDataRows(Integer.valueOf(currentRow.getRowNum()), dataRow);
-				}
+				worksheet = buildDataWorksheet(sheet);
 				dataWorkbook.put(worksheet.getId(), worksheet);
 			}
 		} catch (Exception e) {
 			throw new EcosysException(e);
 		}
 		return dataWorkbook;
+	}
+
+	private DataWorksheet buildDataWorksheet(Sheet sheet) {
+		List<Object> dataRow = null;
+		DataWorksheet dataWorksheet = DataWorksheet.builder()
+				.id(sheet.getSheetName())
+				.build();
+		for (Row currentRow : sheet) {
+			dataRow = ListUtility.createArrayList();
+			for (Cell currentCell : currentRow) {
+				if (null==currentCell || CellType._NONE.equals(currentCell.getCellType()) || CellType.BLANK.equals(currentCell.getCellType())) {
+					dataRow.add("");
+				} else if (CellType.BOOLEAN.equals(currentCell.getCellType())) {
+					dataRow.add(currentCell.getBooleanCellValue());
+				} else if (CellType.FORMULA.equals(currentCell.getCellType())) {
+					
+				} else if (CellType.NUMERIC.equals(currentCell.getCellType())) {
+					if (DateUtil.isCellDateFormatted(currentCell)) {
+						dataRow.add(currentCell.getDateCellValue());
+					} else {
+						dataRow.add(currentCell.getNumericCellValue());
+					}
+				} else if (CellType.STRING.equals(currentCell.getCellType())) {
+					dataRow.add(currentCell.getStringCellValue());
+				}
+			}
+			dataWorksheet.addDataRows(Integer.valueOf(currentRow.getRowNum()), dataRow);
+		}
+		return dataWorksheet;
 	}
 
 	/**
@@ -96,6 +105,7 @@ public class OfficeStreamingReaderHealper {
 		if (!parameters.containsKey(OSXConstants.PARAM_DATA_SHEET_IDS) || CommonUtility.isEmpty(parameters.get(OSXConstants.PARAM_DATA_SHEET_IDS)))
 			return true;
 
+		//Map<String, List<String>> sheetIds = (Map<String, List<String>>)parameters.get(OSXConstants.PARAM_DATA_SHEET_IDS);
 		List<String> sheetIds = (List<String>)parameters.get(OSXConstants.PARAM_DATA_SHEET_IDS);
 		return sheetIds.contains(sheet.getSheetName());
 	}

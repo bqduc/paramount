@@ -55,12 +55,12 @@ public class MemberService {
             }
         }
 
-        log.info("Member Statics:");
+        /*log.info("Member Statics:");
         log.info("==============");
         log.info("Active member count: {}", activeCount);
         log.info(" - Registered for Classes count: {}", registeredForClassesCount);
         log.info(" - Not registered for Classes count: {}", notRegisteredForClassesCount);
         log.info("Inactive member count: {}", inactiveCount);
-        log.info("==========================");
+        log.info("==========================");*/
     }
 }

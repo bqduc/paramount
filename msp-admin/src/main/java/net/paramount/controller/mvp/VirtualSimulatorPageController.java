@@ -15,6 +15,7 @@ import javax.inject.Named;
 
 import org.omnifaces.util.Messages;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.task.TaskExecutor;
 
@@ -22,8 +23,9 @@ import com.github.adminfaces.template.exception.BusinessException;
 
 import net.paramount.common.ListUtility;
 import net.paramount.component.helper.ResourcesServicesHelper;
+import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
-import net.paramount.dmx.repository.GlobalDmxRepository;
+import net.paramount.dmx.repository.GlobalDmxRepositoryManager;
 import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.framework.model.ExecutionContext;
@@ -32,16 +34,18 @@ import net.paramount.msp.faces.model.Entity;
 import net.paramount.msp.i18n.CustomResourceBundle;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.DataWorksheet;
+import net.paramount.osx.model.MarshallingObjects;
+import net.paramount.osx.model.OSXConstants;
 import net.paramount.osx.model.OsxBucketContainer;
 
 @Named(value="virtualSimulator")
 @ViewScoped
-public class VirtualSimulatorPage extends BaseController {
-
+public class VirtualSimulatorPageController extends BaseController {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 4917742028352793276L;
+
 		private List<String> allCities;
     private List<String> allTalks;
     private Entity entity;
@@ -56,7 +60,7 @@ public class VirtualSimulatorPage extends BaseController {
   	private TaskExecutor asyncExecutor;
     
   	@Inject
-  	private GlobalDmxRepository globalDmxRepository;
+  	private GlobalDmxRepositoryManager globalDmxRepository;
 
   	@Inject
   	private ResourcesServicesHelper resourcesServicesHelper;
@@ -67,7 +71,9 @@ public class VirtualSimulatorPage extends BaseController {
   	@Inject
   	private CustomResourceBundle customResourceBundle;
 
-  	
+  	@Inject 
+  	private DmxCollaborator dmxCollaborator;
+
   	@Override
     public void doPostConstruct() {
         allCities = Arrays.asList("São Paulo", "New York", "Tokyo", "Islamabad", "Chongqing", "Guayaquil", "Porto Alegre", "Hanoi", "Montevideo", "Shijiazhuang", "Guadalajara","Stockholm",
@@ -80,13 +86,30 @@ public class VirtualSimulatorPage extends BaseController {
         entity = new Entity();
     }
 
+    public void unmarshallingData() {
+      System.out.println("Remote user: " + FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+      this.marshallContacts();
+    }
+
+    public void marshallingData() {
+      System.out.println("Remote user: " + FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+      this.marshallContacts();
+    }
+
     public void clear() {
         entity = new Entity();
         System.out.println("Remote user: " + FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         this.marshallContacts();
-        archiveData("data/marshall/develop_data.zip");
         //loadResourceData();
         //loadingAsyncData();
+    }
+
+    public void persistArchivedData() {
+    	try {
+        archiveData("data/marshall/develop_data.zip");
+			} catch (Exception e) {
+				log.error(e);
+			}
     }
 
     public void remove() {
@@ -180,7 +203,7 @@ public class VirtualSimulatorPage extends BaseController {
   		}
   	}
 
-  	public void archiveData(final String resourceName) {
+  	private void archiveData(final String resourceName) {
   		try {
   			ExecutionContext executionContext = resourcesStorageServiceHelper.buildDefaultDataExecutionContext();
   			resourcesStorageServiceHelper.archiveResourceData(executionContext);
@@ -193,24 +216,56 @@ public class VirtualSimulatorPage extends BaseController {
 
   	protected void marshallContacts() {
   		DataWorksheet dataWorksheet = null;
+  		ExecutionContext executionContext = null;
+  		String contactWorkBookId = dmxCollaborator.getConfiguredContactWorkbookId(), itemWorkbookId = dmxCollaborator.getConfiguredDataCatalogueWorkbookId();
   		try {
-  			String resourceName = "data/marshall/develop_data.zip";
-  			DataWorkbook dataWorkbook = extractContacts(resourceName, ListUtility.createDataList("Vietbank_14.000.xlsx"));
+  			Resource resource = this.resourceLoader.getResource("classpath:" + dmxCollaborator.getConfiguredDataPackage());
+
+  			executionContext = ExecutionContext.builder().build()
+  	  			.set(OSXConstants.PARAM_CONFIGURATION_ENTRY, dmxCollaborator.getConfiguredDataLoadingEntry())
+  	  			.set(OSXConstants.PARAM_MARSHALLING_OBJECTS, ListUtility.createDataList(
+  	  					MarshallingObjects.CONTACTS, 
+  	  					MarshallingObjects.ITEMS, 
+  	  					MarshallingObjects.LOCALIZED_ITEMS, 
+  	  					MarshallingObjects.LANGUAGES))
+
+  	  			.set(OSXConstants.PARAM_DATA_BOOK_IDS, ListUtility.createDataList(contactWorkBookId, itemWorkbookId))
+  	  			.set(OSXConstants.PARAM_DATA_SHEETS_MAP, ListUtility.createMap(
+  	  					contactWorkBookId, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()), 
+  	  					itemWorkbookId, ListUtility.createDataList(dmxCollaborator.getConfiguredDataCatalogueWorksheetIds())))
+  	  			.set(OSXConstants.PARAM_DATA_BOOKS_SHEETS_MAP, ListUtility.createMap(
+  	  					MarshallingObjects.CONTACTS, contactWorkBookId, 
+  	  					MarshallingObjects.ITEMS, itemWorkbookId, 
+  	  					MarshallingObjects.LANGUAGES, itemWorkbookId,
+  	  					MarshallingObjects.LOCALIZED_ITEMS, itemWorkbookId))
+
+  	  			//.set(OSXConstants.PARAM_INPUT_RESOURCE_NAME, "data/marshall/develop_data.zip")
+  	  			//.set(OSXConstants.PARAM_FROM_ATTACHMENT, Boolean.TRUE)
+
+  	  			.set(OSXConstants.PARAM_INPUT_STREAM, resource.getInputStream())
+  	  			.set(OSXConstants.PARAM_FROM_ATTACHMENT, Boolean.FALSE)
+  			
+  			;
+  			globalDmxRepository.marshallData(executionContext);
+
+  			/*List<Contact> contacts = globalDmxRepository.marshallContacts(resourceName, "Vietbank_14.000.xlsx", ListUtility.createDataList("File Tổng hợp"));
+  			System.out.println(contacts);*/
+  			/*dataWorkbook = extractContacts(resourceName, "Vietbank_14.000.xlsx");
 				System.out.println(dataWorkbook); 
 				for (Object sheetId :dataWorkbook.getKeys()) {
 					dataWorksheet = dataWorkbook.getWorksheet(sheetId);
 					System.out.println(dataWorksheet);
-				}
+				}*/
 			} catch (Exception e) {
 				log.error(e);
 			}
   	}
 
-  	protected DataWorkbook extractContacts(String archivedResourceName, List<String> dataWorkbookId){
+  	protected DataWorkbook extractContacts(String archivedResourceName, String dataWorkbookId){
 			DataWorkbook dataWorkbook = null;
   		try {
-  			OsxBucketContainer osxBucketContainer = globalDmxRepository.marshallDataFromArchived(archivedResourceName, dataWorkbookId, null);
-				if (null != osxBucketContainer && osxBucketContainer.containsKey(dataWorkbookId)){
+  			OsxBucketContainer osxBucketContainer = globalDmxRepository.marshallDataFromArchived(archivedResourceName, ListUtility.createDataList(dataWorkbookId), null);
+				if (null != osxBucketContainer){
 					dataWorkbook = (DataWorkbook)osxBucketContainer.get(dataWorkbookId);
 				}
 			} catch (Exception e) {

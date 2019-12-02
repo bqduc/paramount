@@ -24,7 +24,7 @@ import net.paramount.auth.domain.UserAccountProfile;
 import net.paramount.auth.helper.AuxServiceHelper;
 import net.paramount.component.helper.ResourcesServicesHelper;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
-import net.paramount.dmx.repository.GlobalDmxRepository;
+import net.paramount.dmx.repository.GlobalDmxRepositoryManager;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.msp.faces.model.Entity;
 
@@ -49,7 +49,7 @@ public class VirtualWebProfileController extends BaseController {
   	private TaskExecutor asyncExecutor;
     
   	@Inject
-  	private GlobalDmxRepository globalDmxRepository;
+  	private GlobalDmxRepositoryManager globalDmxRepository;
 
   	@Inject
   	private ResourcesServicesHelper resourcesServicesHelper;

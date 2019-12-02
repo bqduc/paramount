@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import net.paramount.framework.entity.ObjectAudit;
 
 /**
- * A Book.
+ * An attachment.
  */
 @Builder
 @AllArgsConstructor

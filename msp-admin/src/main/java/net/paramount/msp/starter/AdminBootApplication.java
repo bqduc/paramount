@@ -34,22 +34,19 @@ import net.paramount.msp.util.Utils;
 /**
  * @author rmpestano
  */
-@Import(value = { 
-		BaseConfiguration.class, 
-		SecurityConfig.class, MspQuartzConfig.class
-		}
-)
+@Import(value = { BaseConfiguration.class, SecurityConfig.class, MspQuartzConfig.class })
 @SpringBootApplication
 public class AdminBootApplication {
 	@Inject
 	private Utils utils;
 
-    @Bean
-    public List<Car> getCars() {
-        return utils.getCars();
-    }
-	
+	@Bean
+	public List<Car> getCars() {
+		return utils.getCars();
+	}
+
 	public static void main(String[] args) {
-		SpringApplication.run(AdminBootApplication.class, args);
+		
+		//SpringApplication.run(AdminBootApplication.class, args);
 	}
 }

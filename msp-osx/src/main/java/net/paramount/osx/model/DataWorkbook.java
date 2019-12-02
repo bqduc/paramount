@@ -35,7 +35,7 @@ public class DataWorkbook extends DataPackage {
 		return this.worksheets.keySet();
 	}
 
-	public Collection<DataWorksheet> getValues(){
+	public Collection<DataWorksheet> datasheets(){
 		return this.worksheets.values();
 	}
 }

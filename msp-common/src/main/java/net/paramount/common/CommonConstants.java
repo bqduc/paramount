@@ -204,7 +204,7 @@ public interface CommonConstants {
 	static final String REQUEST_CLIENT = "requestClient";
 
 	static final Integer DEFAULT_PAGE_BEGIN = 0;
-	static final Integer DEFAULT_PAGE_SIZE = 20;
+	static final Integer DEFAULT_PAGE_SIZE = 50;
 
 	static final String HEADER_AUTHORIZED = "Authorization";
 	

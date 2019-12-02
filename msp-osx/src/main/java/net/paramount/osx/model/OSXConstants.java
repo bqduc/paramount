@@ -15,6 +15,8 @@ public interface OSXConstants {
 	final static String PARAM_INPUT_STREAM = "sourceInputStream";
 	final static String PARAM_DATA_BOOK_IDS = "dataBookIds";
 	final static String PARAM_DATA_SHEET_IDS = "dataSheetIds";
+	final static String PARAM_DATA_SHEETS_MAP = "dataSheetsMap";
+	final static String PARAM_DATA_BOOKS_SHEETS_MAP = "dataBooksSheetsMap";
 	final static String PARAM_DATA_INDEXES = "dataIndexes";
 	final static String PARAM_STARTED_ROW_INDEX = "startedRowIndex";
 	final static String PARAM_ENCRYPTION_KEY = "encryptionKey";
@@ -27,4 +29,10 @@ public interface OSXConstants {
 
 	final static String PARAM_MASTER_BUFFER = "masterBuffer";
 	final static String PARAM_MASTER_FILE_NAME = "masterFileName";
+
+	final static String PARAM_MARSHALLING_OBJECTS = "marshallingObjects";
+	final static String PARAM_MARSHALLED_CONTAINER = "marshalledContainer";
+	final static String PARAM_FROM_ATTACHMENT = "fromAttachment";
+
+	final static String PARAM_CONFIGURATION_ENTRY = "configurationEntry";
 }

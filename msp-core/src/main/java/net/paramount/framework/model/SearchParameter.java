@@ -33,6 +33,7 @@ public class SearchParameter {
 	private Model model;
 	private String fromDate;
 	private String toDate;
+	private String keyword;
 
 	@Builder.Default
 	private Map<String, Object> parameterMap = ListUtility.createMap();
@@ -131,5 +132,11 @@ public class SearchParameter {
 
 	public Object get(String key){
 		return this.parameterMap.get(key);
+	}
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 }

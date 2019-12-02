@@ -27,6 +27,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.paramount.framework.entity.BizObjectBase;
+import net.paramount.global.GlobalConstants;
 
 /**
  * An item.
@@ -47,9 +48,14 @@ public class Item extends BizObjectBase {
 	private static final long serialVersionUID = -3725780457128265336L;
 
 	@NotNull
-	@Size(min = 3, max = 50)
+	@Size(min = 3, max = GlobalConstants.SIZE_CODE)
 	@Column(unique = true)
 	private String code;
+
+	@NotNull
+	@Size(min = 3, max = GlobalConstants.SIZE_NAME)
+	@Column(unique = true)
+	private String name;
 
 	@Size(max = 50)
 	@Column(name="subtype")

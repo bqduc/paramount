@@ -36,9 +36,18 @@
                         <p:commandButton value="Back" immediate="true" styleClass="btn-default"
                                          action="/index?faces-redirect=true" process="@this"
                                          icon="fa fa-reply"/>
-                        <p:commandButton value="#{messages['mvp.initializeData']}" action="#{virtualSimulator.clear}" process="@this"
+                        <p:commandButton value="#{messages['mvp.archiveData']}" action="#{virtualSimulator.persistArchivedData}" process="@this"
                                          icon="fa fa-refresh" styleClass="btn-success" update="@form"
                                          rendered="#{virtualSimulator.isNew()}" resetValues="true"/>
+
+                        <p:commandButton value="#{messages['mvp.marshallingData']}" action="#{virtualSimulator.marshallingData}" process="@this"
+                                         icon="fa fa-refresh" styleClass="btn-success" update="@form"
+                                         rendered="#{virtualSimulator.isNew()}" resetValues="true"/>
+
+                        <p:commandButton value="#{messages['mvp.unmarshallingData']}" action="#{virtualSimulator.unmarshallingData}" process="@this"
+                                         icon="fa fa-refresh" styleClass="btn-success" update="@form"
+                                         rendered="#{virtualSimulator.isNew()}" resetValues="true"/>
+                                                                
                     </div>
                     <p:splitButton value="Save" action="#{samplePageMB.save}" update="@form" icon="fa fa-check"
                                    styleClass="hidden-md hidden-lg btn-primary">

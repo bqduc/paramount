@@ -33,7 +33,7 @@ public class DataWorksheet extends DataPackage {
 		this.dataRows.put(key, dataRows);
 	}
 
-	public Set<?> getKeys() {
+	public Set<Integer> getKeys() {
 		return this.dataRows.keySet();
 	}
 

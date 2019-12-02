@@ -11,7 +11,7 @@ import javax.inject.Named;
 import net.paramount.common.CommonUtility;
 import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.service.contact.ContactService;
-import net.paramount.dmx.repository.GlobalDmxRepository;
+import net.paramount.dmx.repository.ContactRepositoryManager;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.msp.faces.model.FacesCar;
 import net.paramount.msp.faces.model.Stats;
@@ -46,7 +46,7 @@ public class ContactBrowse extends BaseController {
     private ContactService contactService;
 
     @Inject
-    private GlobalDmxRepository globalDmxRepository;
+    private ContactRepositoryManager globalDmxRepository;
 
     private List<Contact> businessObjects;
     private List<Contact> selectedBusinessObjects;

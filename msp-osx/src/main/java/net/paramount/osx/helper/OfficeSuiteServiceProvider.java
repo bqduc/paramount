@@ -144,6 +144,8 @@ public class OfficeSuiteServiceProvider {
 
 			if (executionContextParams.containKey(OSXConstants.PARAM_DATA_SHEET_IDS)) {
 				sheetIdsMap = (Map) executionContextParams.get(OSXConstants.PARAM_DATA_SHEET_IDS);
+			} else if (executionContextParams.containKey(OSXConstants.PARAM_DATA_SHEETS_MAP)) {
+				sheetIdsMap = (Map) executionContextParams.get(OSXConstants.PARAM_DATA_SHEETS_MAP);
 			}
 
 			if (executionContextParams.containKey(OSXConstants.PARAM_DATA_BOOK_IDS)) {
@@ -192,7 +194,7 @@ public class OfficeSuiteServiceProvider {
 	}
 
 	protected static void displayWorkbookContainer(DataWorkbook workbookContainer) {
-		for (DataWorksheet worksheetContainer : workbookContainer.getValues()) {
+		for (DataWorksheet worksheetContainer : workbookContainer.datasheets()) {
 			System.out.println("Sheet: " + worksheetContainer.getId());
 			for (List<?> dataRow : worksheetContainer.getValues()) {
 				System.out.println(dataRow);
