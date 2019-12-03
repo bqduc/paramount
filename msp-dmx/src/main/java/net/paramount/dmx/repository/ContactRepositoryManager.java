@@ -19,6 +19,7 @@ import net.paramount.common.GenderTypeUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.entity.general.Office;
+import net.paramount.css.service.contact.ContactService;
 import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.repository.base.DmxRepositoryBase;
 import net.paramount.embeddable.Address;
@@ -46,6 +47,9 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 	@Inject 
 	private DmxCollaborator dmxCollaborator;
 	
+	@Inject 
+	private ContactService contactService;
+
 	@Override
 	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
 		DataWorkbook dataWorkbook = null;
@@ -57,8 +61,12 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 			dataWorkbook = (DataWorkbook)osxBucketContainer.get(dmxCollaborator.getConfiguredContactWorkbookId());
 		}
 
-		List<EntityBase> contacts = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()));
-		System.out.println(contacts);
+		List<EntityBase> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()));
+		if (CommonUtility.isNotEmpty(marshalledObjects)) {
+			for (EntityBase entityBase :marshalledObjects) {
+				contactService.save((Contact)entityBase);
+			}
+		}
 		return executionContext;
 	}
 

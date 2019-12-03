@@ -88,7 +88,7 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 			marshallingObjects = (List)executionContext.get(OSXConstants.PARAM_MARSHALLING_OBJECTS);
 			if (null != executionContext.get(OSXConstants.PARAM_MARSHALLED_CONTAINER) && marshallingObjects.contains(MarshallingObjects.LANGUAGES)){
 				//Should be a thread
-				itemDmxRepository.doMarshallingBusinessObjects(executionContext);
+				itemDmxRepository.marshallingBusinessObjects(executionContext);
 			}
 
 			if (null != executionContext.get(OSXConstants.PARAM_MARSHALLED_CONTAINER) && marshallingObjects.contains(MarshallingObjects.CONTACTS)){

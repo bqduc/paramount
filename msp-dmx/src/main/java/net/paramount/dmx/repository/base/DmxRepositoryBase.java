@@ -19,6 +19,7 @@ import net.paramount.common.ListUtility;
 import net.paramount.css.entity.general.Item;
 import net.paramount.css.entity.org.BusinessUnit;
 import net.paramount.css.service.config.ConfigurationService;
+import net.paramount.css.service.config.ItemService;
 import net.paramount.css.service.org.BusinessUnitService;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.embeddable.Phone;
@@ -73,6 +74,9 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 	@Inject
 	protected ConfigurationService configurationService;
 	
+	@Inject
+	protected ItemService itemService;
+
 	@Inject
 	protected ResourcesStorageServiceHelper resourcesStorageServiceHelper;
 
@@ -156,11 +160,31 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		if (CommonUtility.isNotEmpty(code) && itemMap.containsKey(code))
 			return itemMap.get(code);
 
-		Item marshalledItem = Item.builder()
+		for (Item object :this.itemMap.values()) {
+			if (object.getName().equals(name)) {
+				return object;
+			}
+		}
+
+		Item fetchedObject = null;
+		SearchParameter searchParameter = SearchParameter.builder()
+				.pageable(PageRequest.of(CommonConstants.DEFAULT_PAGE_BEGIN, CommonConstants.DEFAULT_PAGE_SIZE, Sort.Direction.ASC, "id"))
+				.build()
+				.put("name", name);
+		Page<Item> fetchedObjects = this.itemService.getObjects(searchParameter);
+		if (fetchedObjects.hasContent()) {
+			fetchedObject = fetchedObjects.getContent().get(0);
+			this.itemMap.put(fetchedObject.getCode(), fetchedObject);
+			return fetchedObject;
+		}
+
+		fetchedObject = Item.builder()
 				.code(code)
 				.name(name)
 				.build();
-		return marshalledItem;
+		this.itemService.save(fetchedObject);
+		this.itemMap.put(fetchedObject.getCode(), fetchedObject);
+		return fetchedObject;
 	}
 
 	protected Phone parsePhone(List<?> contactDataRow) {
