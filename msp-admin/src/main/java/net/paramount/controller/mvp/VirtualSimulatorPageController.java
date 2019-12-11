@@ -23,6 +23,7 @@ import com.github.adminfaces.template.exception.BusinessException;
 
 import net.paramount.common.ListUtility;
 import net.paramount.component.helper.ResourcesServicesHelper;
+import net.paramount.controller.GlobalWebConstants;
 import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.dmx.repository.GlobalDmxRepositoryManager;
@@ -85,6 +86,10 @@ public class VirtualSimulatorPageController extends BaseController {
         allTalks.sort(Comparator.naturalOrder());
         entity = new Entity();
     }
+
+  	public String configureMasterData() {
+  		return GlobalWebConstants.ACTION_SUCCESS;
+  	}
 
     public void unmarshallingData() {
       System.out.println("Remote user: " + FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 import net.paramount.css.entity.general.Catalogue;
 import net.paramount.css.repository.general.CatalogueRepository;
+import net.paramount.css.specification.CatalogueSpecification;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;
 import net.paramount.framework.service.GenericServiceImpl;
-import net.paramount.specification.CatalogueSpecification;
 
 @Service
 public class CatalogueServiceImpl extends GenericServiceImpl<Catalogue, Long> implements CatalogueService{
@@ -34,6 +34,11 @@ public class CatalogueServiceImpl extends GenericServiceImpl<Catalogue, Long> im
 	@Override
 	public Optional<Catalogue> getOne(String name) throws ObjectNotFoundException {
 		return repository.findByName(name);
+	}
+
+	@Override
+	public Optional<Catalogue> getByCode(String code) throws ObjectNotFoundException {
+		return repository.findByCode(code);
 	}
 
 	@Override

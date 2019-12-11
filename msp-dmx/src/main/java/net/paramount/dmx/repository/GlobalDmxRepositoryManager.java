@@ -24,7 +24,7 @@ import net.paramount.entity.Attachment;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.framework.component.ComponentBase;
-import net.paramount.framework.entity.EntityBase;
+import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.helper.OfficeSuiteServiceProvider;
 import net.paramount.osx.model.DataWorkbook;
@@ -175,8 +175,8 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 		return executionContext;
 	}
 
-	public List<EntityBase> marshallContacts(String archivedResourceName, String dataWorkbookId, List<String> datasheetIdList) throws MspDataException {
-		List<EntityBase> contacts = null;
+	public List<Entity> marshallContacts(String archivedResourceName, String dataWorkbookId, List<String> datasheetIdList) throws MspDataException {
+		List<Entity> contacts = null;
 		DataWorkbook dataWorkbook = null;
 		OsxBucketContainer osxBucketContainer = null;
 		List<String> databookIdList = null;

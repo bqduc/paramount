@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.repository.contact.ContactRepository;
+import net.paramount.css.specification.ContactSpecification;
 import net.paramount.exceptions.ExecutionContextException;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;
 import net.paramount.framework.service.GenericServiceImpl;
-import net.paramount.specification.ContactSpecification;
 
 
 @Service

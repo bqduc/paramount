@@ -24,6 +24,7 @@ public interface GenericService<T extends ObjectBase, K extends Serializable>{
 	void removeAll();
 
 	long count();
+	long count(String countByProperty, Object value);
   /**
    * Get object with the provided key.
    * 

@@ -9,24 +9,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**
  * @author bqduc
  *
  */
-@SuppressWarnings("serial")
+@Builder
 @Entity
 @Table(name = "unit")
 public class MeasureUnit extends BizObjectBase {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4182427455638019608L;
+
 	@Column(name = "code", unique = true)
 	private String code;
 
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "name_local")
+	private String nameLocal;
+
 	@Column(name = "comments")
-	private String comments;
+	private String info;
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
@@ -36,27 +45,24 @@ public class MeasureUnit extends BizObjectBase {
 		return code;
 	}
 
-	public MeasureUnit setCode(String code) {
+	public void setCode(String code) {
 		this.code = code;
-		return this;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public MeasureUnit setName(String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
 	}
 
-	public String getComments() {
-		return comments;
+	public String getNameLocal() {
+		return nameLocal;
 	}
 
-	public MeasureUnit setComments(String comments) {
-		this.comments = comments;
-		return this;
+	public void setNameLocal(String nameLocal) {
+		this.nameLocal = nameLocal;
 	}
 
 	public MeasureUnit getParent() {
@@ -67,10 +73,12 @@ public class MeasureUnit extends BizObjectBase {
 		this.parent = parent;
 	}
 
-	public static MeasureUnit createInstance(String code, String name, String comments){
-		return new MeasureUnit()
-				.setCode(code)
-				.setName(name)
-				.setComments(comments);
+	public String getInfo() {
+		return info;
 	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
 }

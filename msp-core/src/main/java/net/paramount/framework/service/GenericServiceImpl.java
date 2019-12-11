@@ -24,6 +24,7 @@ import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.exceptions.ExecutionContextException;
 import net.paramount.exceptions.MspDataException;
+import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.framework.entity.ObjectBase;
 import net.paramount.framework.model.ExecutionContext;
@@ -62,7 +63,7 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 	 * contextParams context parameters
 	 * 
 	 */
-	protected Optional<ClassType> getBizObject(Map<?, ?> contextParams) throws MspDataException {
+	protected Optional<ClassType> getBizObject(Map<?, ?> contextParams) throws ObjectNotFoundException {
 		Object operationSpec = contextParams.get(CommonConstants.PARAM_OPERATION);
 		Map<?, ?> operationData = (Map<?, ?>)contextParams.get(CommonConstants.PARAM_DATA);
 		
@@ -81,12 +82,12 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 				}
 			}
 		} catch (Exception e) {
-			throw new MspDataException(e);
+			throw new ObjectNotFoundException(e);
 		}
 		return (Optional)fetchedObject;
 	}
 
-	protected Optional<ClassType> getBizObject(String defaultOperationName, Object param) throws MspDataException {
+	protected Optional<ClassType> getBizObject(String defaultOperationName, Object param) throws ObjectNotFoundException {
 		Map<String, Object> paramData = CommonUtility.createParameterMap("name", param);
 		Map<String, Object> contextParams = CommonUtility.createParameterMap(CommonConstants.PARAM_OPERATION, defaultOperationName, CommonConstants.PARAM_DATA, paramData);
 
@@ -157,6 +158,12 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public long count() {
 		return getRepository().count();
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public long count(String countByProperty, Object value) {
+		throw new RuntimeException("Not implemented yet");
 	}
 
 	@Override

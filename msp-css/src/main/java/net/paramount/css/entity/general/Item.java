@@ -57,7 +57,11 @@ public class Item extends BizObjectBase {
 	@Column(unique = true)
 	private String name;
 
-	@Size(max = 50)
+	@Size(min = 3, max = GlobalConstants.SIZE_NAME_MEDIUM)
+	@Column(name="name_extend")
+	private String nameExtend;
+
+	@Size(max = GlobalConstants.SIZE_NAME_TINY)
 	@Column(name="subtype")
 	private String subtype;
 }

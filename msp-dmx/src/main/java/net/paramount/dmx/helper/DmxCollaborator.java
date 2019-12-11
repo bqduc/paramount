@@ -33,7 +33,9 @@ public class DmxCollaborator {
 		return new String[] {
 				MarshallingObjects.ITEMS.getObjectName(), 
 				MarshallingObjects.LOCALIZED_ITEMS.getObjectName(), 
-				MarshallingObjects.LANGUAGES.getObjectName()};
+				MarshallingObjects.LANGUAGES.getObjectName(),
+				MarshallingObjects.INVENTORY_ITEMS.getObjectName()
+		};
 	}
 
 	public String getConfiguredDataPackage() {

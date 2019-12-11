@@ -60,6 +60,10 @@ public class ListUtility {
 		return retMap;
 	}
 
+	public static <T> HashSet <T> createHashSet(){
+		return newHashSet();
+	}
+
 	public static <T> HashSet <T> newHashSet(){
 		return new HashSet<>();
 	}

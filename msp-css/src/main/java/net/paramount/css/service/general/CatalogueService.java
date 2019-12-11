@@ -14,13 +14,24 @@ public interface CatalogueService extends GenericService<Catalogue, Long> {
 	/**
 	 * Get one Catalogue with the provided name.
 	 * 
-	 * @param code
+	 * @param name
 	 *            The Catalogue name
 	 * @return The Catalogue
 	 * @throws ObjectNotFoundException
 	 *             If no such Catalogue exists.
 	 */
 	Optional<Catalogue> getOne(String name) throws ObjectNotFoundException;
+
+	/**
+	 * Get one Catalogue with the provided code.
+	 * 
+	 * @param code
+	 *            The Catalogue code
+	 * @return The Catalogue
+	 * @throws ObjectNotFoundException
+	 *             If no such Catalogue exists.
+	 */
+	Optional<Catalogue> getByCode(String code) throws ObjectNotFoundException;
 
 	/**
 	 * Get one Catalogues with the provided search parameters.

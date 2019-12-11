@@ -227,11 +227,10 @@ public class Contact extends BizObjectBase {
 	private AuthenticateAccount ownerAuthAccount;
 
   @Column(name="issue_date")
-	@DateTimeFormat(iso = ISO.DATE_TIME)
   private Date issueDate;
 	
-  @Column(name="issue_user_id")
-	@DateTimeFormat(iso = ISO.DATE)
+	@ManyToOne
+  @JoinColumn(name="issue_user_id")
   private AuthenticateAccount issueAuthAccount;
 
   public String getCode() {

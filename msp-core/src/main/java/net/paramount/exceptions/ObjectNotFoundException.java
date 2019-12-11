@@ -7,5 +7,9 @@ public class ObjectNotFoundException extends RuntimeException {
     public ObjectNotFoundException(String objectId) {
         super("No such object with id: " + objectId);
     }
+
+    public ObjectNotFoundException(Throwable throwable) {
+      super(throwable);
+  }
 }
 

@@ -26,6 +26,7 @@ import net.paramount.embeddable.Phone;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.framework.component.ComponentBase;
 import net.paramount.framework.entity.BizObjectBase;
+import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.model.SequenceType;
@@ -153,10 +154,13 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 	}
 
 	protected Item parseJobInfo(List<?> contactDataRow) {
-		return marshallItem((String)contactDataRow.get(IDX_JOB_CODE), (String)contactDataRow.get(IDX_JOB_NAME));
+		return marshallItem((String)contactDataRow.get(IDX_JOB_CODE), (String)contactDataRow.get(IDX_JOB_NAME), null, null);
 	}
 
-	protected Item marshallItem(String code, String name) {
+	protected Item marshallItem(String code, String name, String nameExtend, String subtype) {
+		if (CommonUtility.isEmpty(code) || CommonUtility.isEmpty(name))
+			return null;
+
 		if (CommonUtility.isNotEmpty(code) && itemMap.containsKey(code))
 			return itemMap.get(code);
 
@@ -181,6 +185,8 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		fetchedObject = Item.builder()
 				.code(code)
 				.name(name)
+				.nameExtend(nameExtend)
+				.subtype(subtype)
 				.build();
 		this.itemService.save(fetchedObject);
 		this.itemMap.put(fetchedObject.getCode(), fetchedObject);
@@ -195,23 +201,27 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		return phone;
 	}
 
-	public List<?> marshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+	public ExecutionContext marshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
+		return doMarshallingBusinessObjects(executionContext);
+	}
+
+	public List<Entity> marshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
 		return doMarshallingBusinessObjects(dataWorkbook, datasheetIds);
 	}
 
-	protected List<?> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+	public Entity marshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+		return doMarshallBusinessObject(marshallingDataRow);
+	}
+
+	protected List<Entity> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
 		throw new DataLoadingException("Not implemented yet");
 	}
 
-	protected BizObjectBase marshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+	protected Entity doMarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
 		throw new DataLoadingException("Not implemented yet");
 	}
 
 	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
 		throw new DataLoadingException("Not implemented yet");
-	}
-
-	public ExecutionContext marshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
-		return doMarshallingBusinessObjects(executionContext);
 	}
 }

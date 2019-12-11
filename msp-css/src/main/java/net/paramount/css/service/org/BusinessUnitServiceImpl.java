@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 import net.paramount.css.entity.org.BusinessUnit;
 import net.paramount.css.repository.org.BusinessUnitRepository;
+import net.paramount.css.specification.BusinessUnitSpecification;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;
 import net.paramount.framework.service.GenericServiceImpl;
-import net.paramount.specification.BusinessUnitSpecification;
 
 @Service
 public class BusinessUnitServiceImpl extends GenericServiceImpl<BusinessUnit, Long> implements BusinessUnitService{

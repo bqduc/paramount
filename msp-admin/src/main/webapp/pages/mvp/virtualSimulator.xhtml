@@ -47,6 +47,11 @@
                         <p:commandButton value="#{messages['mvp.unmarshallingData']}" action="#{virtualSimulator.unmarshallingData}" process="@this"
                                          icon="fa fa-refresh" styleClass="btn-success" update="@form"
                                          rendered="#{virtualSimulator.isNew()}" resetValues="true"/>
+                                         
+                        <p:commandButton value="#{messages['mvp.configureMasterData']}" action="#{virtualSimulator.configureMasterData}" process="@this"
+                                         icon="fa fa-refresh" styleClass="btn-success" update="@form"
+                                         rendered="#{virtualSimulator.isNew()}" resetValues="true"/>
+                                         
                                                                 
                     </div>
                     <p:splitButton value="Save" action="#{samplePageMB.save}" update="@form" icon="fa fa-check"

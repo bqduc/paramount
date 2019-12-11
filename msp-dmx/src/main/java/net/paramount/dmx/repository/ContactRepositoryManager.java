@@ -25,7 +25,7 @@ import net.paramount.dmx.repository.base.DmxRepositoryBase;
 import net.paramount.embeddable.Address;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.framework.entity.BizObjectBase;
-import net.paramount.framework.entity.EntityBase;
+import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.DataWorksheet;
@@ -61,9 +61,9 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 			dataWorkbook = (DataWorkbook)osxBucketContainer.get(dmxCollaborator.getConfiguredContactWorkbookId());
 		}
 
-		List<EntityBase> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()));
+		List<Entity> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()));
 		if (CommonUtility.isNotEmpty(marshalledObjects)) {
-			for (EntityBase entityBase :marshalledObjects) {
+			for (Entity entityBase :marshalledObjects) {
 				contactService.save((Contact)entityBase);
 			}
 		}
@@ -71,12 +71,8 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	public List<EntityBase> marshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
-		return marshallingContacts(dataWorkbook, datasheetIds);
-	}
-
-	private List<EntityBase> marshallingContacts(DataWorkbook dataWorkbook, List<String> datasheetIds){
-		List<EntityBase> results = ListUtility.createDataList();
+	protected List<Entity> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+		List<Entity> results = ListUtility.createDataList();
 		Contact currentContact = null;
 		if (null != datasheetIds) {
 			for (DataWorksheet dataWorksheet :dataWorkbook.datasheets()) {
@@ -112,7 +108,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	protected BizObjectBase marshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+	protected Entity doMarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
 		String firstName = "";
 		String lastName = "";
 		String fullName = (String)marshallingDataRow.get(1);
