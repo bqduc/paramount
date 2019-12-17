@@ -6,7 +6,7 @@ package net.paramount.css.specification;
 import org.springframework.data.jpa.domain.Specification;
 
 import lombok.Builder;
-import net.paramount.css.entity.org.BusinessUnit;
+import net.paramount.entity.general.BusinessUnit;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.model.SearchRequest;
 import net.paramount.framework.specification.CoreSpecifications;

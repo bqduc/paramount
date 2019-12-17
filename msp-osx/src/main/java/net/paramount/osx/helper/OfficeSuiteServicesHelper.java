@@ -41,11 +41,11 @@ public class OfficeSuiteServicesHelper extends ComponentBase {
 		Map<String, List<String>> sheetIdMap = ListUtility.createMap();
 		sheetIdMap.put("Vietbank_14.000.xlsx", ListUtility.arraysAsList(new String[] {"File Tổng hợp", "Các trưởng phó phòng", "9"}));
 
-		executionContext.put(OSXConstants.PARAM_COMPRESSED_FILE, zipFile);
-		executionContext.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
-		executionContext.put(OSXConstants.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {"Vietbank_14.000.xlsx", "data-catalog.xlsx"}));
-		executionContext.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
-		executionContext.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIdMap);
+		executionContext.put(OSXConstants.COMPRESSED_FILE, zipFile);
+		executionContext.put(OSXConstants.ENCRYPTION_KEYS, secretKeyMap);
+		executionContext.put(OSXConstants.ZIP_ENTRY, ListUtility.arraysAsList(new String[] {"Vietbank_14.000.xlsx", "data-catalog.xlsx"}));
+		executionContext.put(OSXConstants.OFFICE_EXCEL_MARSHALLING_DATA_METHOD, OfficeMarshalType.STREAMING);
+		executionContext.put(OSXConstants.PROCESSING_DATASHEET_IDS, sheetIdMap);
 		return executionContext;
 	}
 

@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import net.paramount.css.entity.config.Language;
-import net.paramount.css.entity.config.LocalizedItem;
-import net.paramount.css.entity.general.Item;
+import net.paramount.entity.general.Item;
+import net.paramount.entity.general.Language;
+import net.paramount.entity.general.LocalizedItem;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.service.GenericService;
 

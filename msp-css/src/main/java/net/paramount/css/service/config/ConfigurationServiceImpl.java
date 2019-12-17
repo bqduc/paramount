@@ -9,9 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.paramount.css.entity.config.Configuration;
 import net.paramount.css.repository.config.ConfigurationRepository;
 import net.paramount.css.specification.ConfigurationRepoSpecification;
+import net.paramount.entity.config.Configuration;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;

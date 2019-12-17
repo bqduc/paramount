@@ -25,18 +25,18 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import net.paramount.css.entity.contact.Contact;
-import net.paramount.css.entity.general.Category;
-import net.paramount.css.entity.general.Department;
-import net.paramount.css.entity.general.MeasureUnit;
-import net.paramount.css.entity.general.TaxGroup;
-import net.paramount.css.model.BindingType;
-import net.paramount.css.model.DustJacketType;
-import net.paramount.css.model.InventoryCodeType;
-import net.paramount.css.model.InventoryConditionType;
-import net.paramount.css.model.InventoryType;
+import net.paramount.entity.contact.Contact;
+import net.paramount.entity.general.Category;
+import net.paramount.entity.general.Department;
+import net.paramount.entity.general.MeasureUnit;
+import net.paramount.entity.general.TaxGroup;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.global.GlobalConstants;
+import net.paramount.model.BindingType;
+import net.paramount.model.DustJacketType;
+import net.paramount.model.InventoryCodeType;
+import net.paramount.model.InventoryConditionType;
+import net.paramount.model.InventoryType;
 
 /**
  * A Book.

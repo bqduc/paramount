@@ -18,8 +18,8 @@ import org.omnifaces.util.Faces;
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
 import net.paramount.auth.service.UserAuthenticationService;
-import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.service.contact.ContactService;
+import net.paramount.entity.contact.Contact;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;
 import net.paramount.msp.util.Utils;

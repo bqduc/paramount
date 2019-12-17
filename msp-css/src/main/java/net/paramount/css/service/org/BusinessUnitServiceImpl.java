@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.paramount.css.entity.org.BusinessUnit;
 import net.paramount.css.repository.org.BusinessUnitRepository;
 import net.paramount.css.specification.BusinessUnitSpecification;
+import net.paramount.entity.general.BusinessUnit;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;

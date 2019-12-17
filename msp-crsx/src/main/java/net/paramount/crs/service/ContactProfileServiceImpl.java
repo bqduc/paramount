@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.paramount.crs.entity.cta.ContactProfile;
 import net.paramount.crs.repository.cta.ContactProfileRepository;
 import net.paramount.crs.repository.cta.ContactProfileSpecification;
+import net.paramount.entity.contact.ContactProfile;
 import net.paramount.exceptions.ExecutionContextException;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.ExecutionContext;

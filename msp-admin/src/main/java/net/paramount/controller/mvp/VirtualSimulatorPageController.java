@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.faces.application.FacesMessage;
@@ -21,12 +23,18 @@ import org.springframework.core.task.TaskExecutor;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
+import net.paramount.common.CommonConstants;
+import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
+import net.paramount.common.SimpleEncryptionEngine;
 import net.paramount.component.helper.ResourcesServicesHelper;
 import net.paramount.controller.GlobalWebConstants;
+import net.paramount.css.service.config.ConfigurationService;
 import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.dmx.repository.GlobalDmxRepositoryManager;
+import net.paramount.entity.config.Configuration;
+import net.paramount.entity.config.ConfigurationDetail;
 import net.paramount.framework.async.Asynchronous;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.framework.model.ExecutionContext;
@@ -75,6 +83,9 @@ public class VirtualSimulatorPageController extends BaseController {
   	@Inject 
   	private DmxCollaborator dmxCollaborator;
 
+  	@Inject
+  	private ConfigurationService configurationService;
+
   	@Override
     public void doPostConstruct() {
         allCities = Arrays.asList("São Paulo", "New York", "Tokyo", "Islamabad", "Chongqing", "Guayaquil", "Porto Alegre", "Hanoi", "Montevideo", "Shijiazhuang", "Guadalajara","Stockholm",
@@ -98,7 +109,8 @@ public class VirtualSimulatorPageController extends BaseController {
 
     public void marshallingData() {
       System.out.println("Remote user: " + FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-      this.marshallContacts();
+      //this.marshallContacts();
+      this.marshallMasterData();
     }
 
     public void clear() {
@@ -227,18 +239,18 @@ public class VirtualSimulatorPageController extends BaseController {
   			Resource resource = this.resourceLoader.getResource("classpath:" + dmxCollaborator.getConfiguredDataPackage());
 
   			executionContext = ExecutionContext.builder().build()
-  	  			.set(OSXConstants.PARAM_CONFIGURATION_ENTRY, dmxCollaborator.getConfiguredDataLoadingEntry())
-  	  			.set(OSXConstants.PARAM_MARSHALLING_OBJECTS, ListUtility.createDataList(
+  	  			.set(OSXConstants.CONFIGURATION_ENTRY, dmxCollaborator.getConfiguredDataLoadingEntry())
+  	  			.set(OSXConstants.MARSHALLING_OBJECTS, ListUtility.createDataList(
   	  					MarshallingObjects.CONTACTS, 
   	  					MarshallingObjects.ITEMS, 
   	  					MarshallingObjects.LOCALIZED_ITEMS, 
   	  					MarshallingObjects.LANGUAGES))
 
-  	  			.set(OSXConstants.PARAM_DATA_BOOK_IDS, ListUtility.createDataList(contactWorkBookId, itemWorkbookId))
-  	  			.set(OSXConstants.PARAM_DATA_SHEETS_MAP, ListUtility.createMap(
+  	  			.set(OSXConstants.PROCESSING_DATABOOK_IDS, ListUtility.createDataList(contactWorkBookId, itemWorkbookId))
+  	  			.set(OSXConstants.MAPPING_DATABOOKS_DATASHEETS, ListUtility.createMap(
   	  					contactWorkBookId, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()), 
   	  					itemWorkbookId, ListUtility.createDataList(dmxCollaborator.getConfiguredDataCatalogueWorksheetIds())))
-  	  			.set(OSXConstants.PARAM_DATA_BOOKS_SHEETS_MAP, ListUtility.createMap(
+  	  			.set(OSXConstants.DATABOOKS_DATASHEETS_MAP, ListUtility.createMap(
   	  					MarshallingObjects.CONTACTS, contactWorkBookId, 
   	  					MarshallingObjects.ITEMS, itemWorkbookId, 
   	  					MarshallingObjects.LANGUAGES, itemWorkbookId,
@@ -247,8 +259,8 @@ public class VirtualSimulatorPageController extends BaseController {
   	  			//.set(OSXConstants.PARAM_INPUT_RESOURCE_NAME, "data/marshall/develop_data.zip")
   	  			//.set(OSXConstants.PARAM_FROM_ATTACHMENT, Boolean.TRUE)
 
-  	  			.set(OSXConstants.PARAM_INPUT_STREAM, resource.getInputStream())
-  	  			.set(OSXConstants.PARAM_FROM_ATTACHMENT, Boolean.FALSE)
+  	  			.set(OSXConstants.INPUT_STREAM, resource.getInputStream())
+  	  			.set(OSXConstants.FROM_ATTACHMENT, Boolean.FALSE)
   			
   			;
   			globalDmxRepository.marshallData(executionContext);
@@ -269,7 +281,7 @@ public class VirtualSimulatorPageController extends BaseController {
   	protected DataWorkbook extractContacts(String archivedResourceName, String dataWorkbookId){
 			DataWorkbook dataWorkbook = null;
   		try {
-  			OsxBucketContainer osxBucketContainer = globalDmxRepository.marshallDataFromArchived(archivedResourceName, ListUtility.createDataList(dataWorkbookId), null);
+  			OsxBucketContainer osxBucketContainer = globalDmxRepository.marshallDataFromArchivedInAttachment(archivedResourceName, ListUtility.createDataList(dataWorkbookId), null);
 				if (null != osxBucketContainer){
 					dataWorkbook = (DataWorkbook)osxBucketContainer.get(dataWorkbookId);
 				}
@@ -278,4 +290,85 @@ public class VirtualSimulatorPageController extends BaseController {
 			}
   		return dataWorkbook;
   	}
+
+  	protected void marshallMasterData() {
+  		ExecutionContext executionContext = null;
+  		List<String> marshallingObjects = null;
+  		try {
+  			Optional<Configuration> optConfigDataWorkbooks = configurationService.getOne("dataWokbooks");
+  			if (!optConfigDataWorkbooks.isPresent()) {
+  				log.info("There is no configuration of data workbooks!");
+  				return;
+  			}
+
+  			Resource resource = this.resourceLoader.getResource("classpath:" + optConfigDataWorkbooks.get().getValueExtended());
+
+  			List<String> marshallingDatasheetIds = null;
+  			String[] parts = null;
+  			String[] databookIds = null;
+
+  			if (CommonUtility.isNotEmpty(optConfigDataWorkbooks.get().getValue())) {
+    			databookIds = optConfigDataWorkbooks.get().getValue().split(CommonConstants.SEPARATOR_PIPELINE);
+  			}
+
+  			Map<String, String> encryptionKeyMap = ListUtility.createMap();
+  			Map<String, List<?>> databooksDatasheetsMap = ListUtility.createMap();
+  			marshallingObjects = ListUtility.createDataList();
+  			for (String databookId :databookIds) {
+  				for (ConfigurationDetail configDetail :optConfigDataWorkbooks.get().getConfigurationDetails()) {
+  					if (databookId.equalsIgnoreCase(configDetail.getName())) {
+  						parts = configDetail.getValue().split(CommonConstants.SEPARATOR_PIPELINE);
+  						marshallingDatasheetIds = ListUtility.createDataList(parts);
+  						databooksDatasheetsMap.put(databookId, marshallingDatasheetIds);
+  						marshallingObjects.addAll(marshallingDatasheetIds);
+  						if (CommonUtility.isNotEmpty(configDetail.getValueExtended())) {
+    						encryptionKeyMap.put(databookId, SimpleEncryptionEngine.decode(configDetail.getValueExtended()));
+  						}
+  					}
+  				}
+  			}
+
+  			executionContext = ExecutionContext.builder().build()
+  					.set(OSXConstants.MASTER_ARCHIVED_FILE_NAME, optConfigDataWorkbooks.get().getValueExtended()) // For creating working data file
+  	  			.set(OSXConstants.INPUT_STREAM, resource.getInputStream())
+  	  			.set(OSXConstants.FROM_ATTACHMENT, Boolean.FALSE)
+  	  			.set(OSXConstants.ENCRYPTION_KEYS, encryptionKeyMap)
+
+  	  			.set(OSXConstants.CONFIGURATION_ENTRY, dmxCollaborator.getConfiguredDataLoadingEntry())
+  	  			.set(OSXConstants.MARSHALLING_OBJECTS, marshallingObjects)
+
+  	  			.set(OSXConstants.PROCESSING_DATABOOK_IDS, ListUtility.createDataList(databookIds))
+  	  			.set(OSXConstants.MAPPING_DATABOOKS_DATASHEETS, databooksDatasheetsMap)
+
+  	  			/*.set(OSXConstants.MAPPING_DATABOOKS_DATASHEETS, ListUtility.createMap(
+  	  					contactWorkBookId, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()), 
+  	  					itemWorkbookId, marshallingObjects))
+  	  			.set(OSXConstants.DATABOOKS_DATASHEETS_MAP, ListUtility.createMap(
+  	  					MarshallingObjects.CONTACTS, contactWorkBookId, 
+  	  					MarshallingObjects.ITEMS, itemWorkbookId, 
+  	  					MarshallingObjects.LANGUAGES, itemWorkbookId,
+  	  					MarshallingObjects.LOCALIZED_ITEMS, itemWorkbookId, 
+  	  					MarshallingObjects.INVENTORY_ITEMS, itemWorkbookId, 
+  	  					MarshallingObjects.MEASURE_UNITS, itemWorkbookId))*/
+
+  	  			//.set(OSXConstants.PARAM_INPUT_RESOURCE_NAME, "data/marshall/develop_data.zip")
+  	  			//.set(OSXConstants.PARAM_FROM_ATTACHMENT, Boolean.TRUE)
+
+  			
+  			;
+  			globalDmxRepository.marshallData(executionContext);
+
+  			/*List<Contact> contacts = globalDmxRepository.marshallContacts(resourceName, "Vietbank_14.000.xlsx", ListUtility.createDataList("File Tổng hợp"));
+  			System.out.println(contacts);*/
+  			/*dataWorkbook = extractContacts(resourceName, "Vietbank_14.000.xlsx");
+				System.out.println(dataWorkbook); 
+				for (Object sheetId :dataWorkbook.getKeys()) {
+					dataWorksheet = dataWorkbook.getWorksheet(sheetId);
+					System.out.println(dataWorksheet);
+				}*/
+			} catch (Exception e) {
+				log.error(e);
+			}
+  	}
+
 }

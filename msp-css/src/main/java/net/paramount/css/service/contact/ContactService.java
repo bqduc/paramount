@@ -2,7 +2,7 @@ package net.paramount.css.service.contact;
 
 import org.springframework.data.domain.Page;
 
-import net.paramount.css.entity.contact.Contact;
+import net.paramount.entity.contact.Contact;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.service.GenericService;

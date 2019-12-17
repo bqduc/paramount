@@ -2,7 +2,7 @@ package net.paramount.crs.service;
 
 import org.springframework.data.domain.Page;
 
-import net.paramount.crs.entity.cta.ContactProfile;
+import net.paramount.entity.contact.ContactProfile;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.service.GenericService;

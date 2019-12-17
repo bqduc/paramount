@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
-import net.paramount.css.entity.config.Configuration;
+import net.paramount.entity.config.Configuration;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.service.GenericService;

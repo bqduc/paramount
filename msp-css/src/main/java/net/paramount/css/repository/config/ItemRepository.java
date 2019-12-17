@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import net.paramount.css.entity.general.Item;
+import net.paramount.entity.general.Item;
 import net.paramount.framework.repository.BaseRepository;
 
 @Repository

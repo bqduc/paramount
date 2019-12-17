@@ -22,13 +22,19 @@
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>msp-aux</artifactId>
+			<artifactId>msp-aux-domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>msp-css</artifactId>
+			<version>${project.version}</version>
+		</dependency>	
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>msp-css-domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 

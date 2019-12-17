@@ -22,11 +22,11 @@ import net.paramount.common.ListUtility;
 import net.paramount.common.MimeTypes;
 import net.paramount.common.SimpleEncryptionEngine;
 import net.paramount.component.helper.ResourcesServicesHelper;
-import net.paramount.css.entity.config.Configuration;
-import net.paramount.css.entity.config.ConfigurationDetail;
 import net.paramount.css.service.config.ConfigurationService;
 import net.paramount.css.service.general.AttachmentService;
 import net.paramount.entity.Attachment;
+import net.paramount.entity.config.Configuration;
+import net.paramount.entity.config.ConfigurationDetail;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.MspRuntimeException;
 import net.paramount.exceptions.ResourcesException;
@@ -49,25 +49,25 @@ public class ResourcesStorageServiceHelper {
 	@Inject
 	private ConfigurationService configurationService;
 
-	public ExecutionContext buildExecutionContext(Configuration config, byte[] dataBytes) throws ResourcesException {
+	public ExecutionContext syncExecutionContext(Configuration config, byte[] dataBytes) throws ResourcesException {
 		if (null == config) {
 			return null;
 		}
 
 		ExecutionContext executionContext = ExecutionContext.builder().build();
 
-		String masterFileName = config.getValue();
+		/*String masterFileName = config.getValue();
 		Map<String, String> secretKeyMap = ListUtility.createMap();
 		for (ConfigurationDetail configDetail :config.getConfigurationDetails()) {
-			if (OSXConstants.PARAM_ENCRYPTION_KEY.equalsIgnoreCase(configDetail.getValueExtended())) {
+			if (OSXConstants.ENCRYPTION_KEYS.equalsIgnoreCase(configDetail.getValueExtended())) {
 				secretKeyMap.put(configDetail.getName(), SimpleEncryptionEngine.decode(configDetail.getValue()));
 			}
-		}
+		}*/
 
-		executionContext.put(OSXConstants.PARAM_MASTER_BUFFER, dataBytes);
-		executionContext.put(OSXConstants.PARAM_MASTER_FILE_NAME, masterFileName);
-		executionContext.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
-		executionContext.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
+		executionContext.put(OSXConstants.MASTER_BUFFER_DATA_BYTES, dataBytes);
+		//executionContext.put(OSXConstants.PARAM_MASTER_FILE_NAME, masterFileName);
+		//executionContext.put(OSXConstants.ENCRYPTION_KEYS, secretKeyMap);
+		executionContext.put(OSXConstants.OFFICE_EXCEL_MARSHALLING_DATA_METHOD, OfficeMarshalType.STREAMING);
 		return executionContext;
 	}
 
@@ -80,12 +80,12 @@ public class ResourcesStorageServiceHelper {
 		Map<String, List<String>> sheetIdMap = ListUtility.createMap();
 		sheetIdMap.put(defaultContactsData, ListUtility.arraysAsList(new String[] {"File Tổng hợp", "Các trưởng phó phòng", "9"}));
 
-		executionContext.put(OSXConstants.PARAM_MASTER_BUFFER, resourcesServicesHelper.loadClasspathResourceBytes("data/marshall/develop_data.zip"));
-		executionContext.put(OSXConstants.PARAM_MASTER_FILE_NAME, "data/marshall/develop_data.zip");
-		executionContext.put(OSXConstants.PARAM_ENCRYPTION_KEY, secretKeyMap);
-		executionContext.put(OSXConstants.PARAM_ZIP_ENTRY, ListUtility.arraysAsList(new String[] {defaultContactsData, defaultCataloguesData}));
-		executionContext.put(OSXConstants.PARAM_EXCEL_MARSHALLING_TYPE, OfficeMarshalType.STREAMING);
-		executionContext.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIdMap);
+		executionContext.put(OSXConstants.MASTER_BUFFER_DATA_BYTES, resourcesServicesHelper.loadClasspathResourceBytes("data/marshall/develop_data.zip"));
+		executionContext.put(OSXConstants.MASTER_ARCHIVED_FILE_NAME, "data/marshall/develop_data.zip");
+		executionContext.put(OSXConstants.ENCRYPTION_KEYS, secretKeyMap);
+		executionContext.put(OSXConstants.ZIP_ENTRY, ListUtility.arraysAsList(new String[] {defaultContactsData, defaultCataloguesData}));
+		executionContext.put(OSXConstants.OFFICE_EXCEL_MARSHALLING_DATA_METHOD, OfficeMarshalType.STREAMING);
+		executionContext.put(OSXConstants.PROCESSING_DATASHEET_IDS, sheetIdMap);
 		return executionContext;
 	}
 
@@ -98,16 +98,16 @@ public class ResourcesStorageServiceHelper {
 		String masterDataFileName = null;
 		Optional<Configuration> archivedConfigChecker = null;
 		try {
-			if (!(executionContextParams.containKey(OSXConstants.PARAM_MASTER_BUFFER) || executionContextParams.containKey(OSXConstants.PARAM_MASTER_FILE_NAME)))
+			if (!(executionContextParams.containKey(OSXConstants.MASTER_BUFFER_DATA_BYTES) || executionContextParams.containKey(OSXConstants.MASTER_ARCHIVED_FILE_NAME)))
 				throw new MspDataException("There is no archiving file!");
 
-			masterDataFileName = (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_NAME);
+			masterDataFileName = (String)executionContextParams.get(OSXConstants.MASTER_ARCHIVED_FILE_NAME);
 			attachmentChecker = this.attachmentService.getByName(masterDataFileName);
 			if (attachmentChecker.isPresent())
 				return; //throw new MspDataException("The archiving file is persisted already!");
 
-			masterDataBuffer = (byte[]) executionContextParams.get(OSXConstants.PARAM_MASTER_BUFFER);
-			attachment = this.buidAttachment(masterDataFileName, masterDataBuffer, (String)executionContextParams.get(OSXConstants.PARAM_MASTER_FILE_ENCRYPTION_KEY));
+			masterDataBuffer = (byte[]) executionContextParams.get(OSXConstants.MASTER_BUFFER_DATA_BYTES);
+			attachment = this.buidAttachment(masterDataFileName, masterDataBuffer, (String)executionContextParams.get(OSXConstants.MASTER_FILE_ENCRYPTION_KEY));
 			this.attachmentService.save(attachment);
 			//Build configuration & dependencies accordingly
 			archivedConfigChecker = this.configurationService.getOne(masterDataFileName);
@@ -120,10 +120,10 @@ public class ResourcesStorageServiceHelper {
 					.value(masterDataFileName)
 					.build();
 
-			secretKeyMap = (Map)executionContextParams.get(OSXConstants.PARAM_ENCRYPTION_KEY);
+			secretKeyMap = (Map)executionContextParams.get(OSXConstants.ENCRYPTION_KEYS);
 			for (String key :secretKeyMap.keySet()) {
 				archivedConfig.addConfigurationDetail(ConfigurationDetail.builder()
-						.name(OSXConstants.PARAM_ENCRYPTION_KEY)
+						.name(OSXConstants.ENCRYPTION_KEYS)
 						.value(SimpleEncryptionEngine.encode(secretKeyMap.get(key)))
 						.valueExtended(key)
 						.build())

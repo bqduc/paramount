@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import net.paramount.css.entity.contact.Contact;
-import net.paramount.css.entity.contact.ContactAddress;
+import net.paramount.entity.contact.Contact;
+import net.paramount.entity.contact.ContactAddress;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.service.GenericService;

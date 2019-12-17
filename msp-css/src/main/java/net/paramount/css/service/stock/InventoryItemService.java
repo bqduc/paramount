@@ -2,7 +2,7 @@ package net.paramount.css.service.stock;
 
 import org.springframework.data.domain.Page;
 
-import net.paramount.css.entity.stock.InventoryItem;
+import net.paramount.entity.stock.InventoryItem;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.service.GenericService;

@@ -46,6 +46,19 @@
 			<version>${version.jackson-jaxrs-base}<!--2.4.2--></version>
 		</dependency>
 
+    <dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${version.joda-time}</version>
+			<scope>provided</scope>
+    </dependency>
+
+		<dependency>
+		    <groupId>javax.validation</groupId>
+		    <artifactId>validation-api</artifactId>
+		    <version>${version.javax.validation}</version>
+		</dependency>		
+
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>

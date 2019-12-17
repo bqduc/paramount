@@ -31,10 +31,10 @@ public class DmxCollaborator {
 
 	public String[] getConfiguredDataCatalogueWorksheetIds() {
 		return new String[] {
-				MarshallingObjects.ITEMS.getObjectName(), 
-				MarshallingObjects.LOCALIZED_ITEMS.getObjectName(), 
-				MarshallingObjects.LANGUAGES.getObjectName(),
-				MarshallingObjects.INVENTORY_ITEMS.getObjectName()
+				MarshallingObjects.ITEMS.getName(), 
+				MarshallingObjects.LOCALIZED_ITEMS.getName(), 
+				MarshallingObjects.LANGUAGES.getName(),
+				MarshallingObjects.INVENTORY_ITEMS.getName()
 		};
 	}
 

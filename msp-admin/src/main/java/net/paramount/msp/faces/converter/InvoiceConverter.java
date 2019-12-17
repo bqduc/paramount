@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.Invoice;
+import net.paramount.entity.emx.Invoice;
 import net.paramount.repository.InvoiceFacade;
 import net.paramount.utility.JsfUtil;
 

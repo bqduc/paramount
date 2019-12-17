@@ -45,8 +45,9 @@ public abstract class ContextBase implements Serializable{
 		return context.isEmpty();
 	}
 
-	public void putAll(ContextBase executionContext){
+	public ContextBase putAll(ContextBase executionContext){
 		this.context.putAll(executionContext.getContext());
+		return this;
 	}
 
 	public ContextBase context(String key, Object value){

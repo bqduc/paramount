@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.crs.entity.cta.ContactProfile;
 import net.paramount.crs.service.ContactProfileService;
-import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.service.contact.ContactService;
+import net.paramount.entity.contact.Contact;
+import net.paramount.entity.contact.ContactProfile;
 import net.paramount.framework.controller.BaseRestController;
 
 /**

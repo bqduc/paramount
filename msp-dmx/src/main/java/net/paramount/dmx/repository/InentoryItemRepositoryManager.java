@@ -11,24 +11,25 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.css.entity.config.ConfigurationDetail;
-import net.paramount.css.entity.contact.Contact;
-import net.paramount.css.entity.general.Catalogue;
-import net.paramount.css.entity.general.Item;
-import net.paramount.css.entity.stock.InventoryItem;
 import net.paramount.css.service.general.CatalogueService;
 import net.paramount.css.service.stock.InventoryItemService;
 import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.helper.DmxConfigurationHelper;
 import net.paramount.dmx.repository.base.DmxRepositoryBase;
+import net.paramount.entity.config.ConfigurationDetail;
+import net.paramount.entity.contact.Contact;
+import net.paramount.entity.general.Catalogue;
+import net.paramount.entity.general.Item;
+import net.paramount.entity.stock.InventoryItem;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
+import net.paramount.osx.model.ConfigureMarshallObjects;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.DataWorksheet;
+import net.paramount.osx.model.MarshallingObjects;
 import net.paramount.osx.model.OSXConstants;
 import net.paramount.osx.model.OsxBucketContainer;
 
@@ -52,6 +53,9 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 	@Inject
 	private InventoryItemService inventoryItemService; 
 	
+	@Inject
+	private MeasureUnitRepositoryManager measureUnitRepositoryManager; 
+
 	@Inject 
 	private DmxConfigurationHelper dmxConfigurationHelper;
 
@@ -61,21 +65,38 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 
 	@Override
 	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
+		List<String> marshallingObjects = null;
 		DataWorkbook dataWorkbook = null;
-		OsxBucketContainer osxBucketContainer = (OsxBucketContainer)executionContext.get(OSXConstants.PARAM_MARSHALLED_CONTAINER);
-		if (CommonUtility.isEmpty(osxBucketContainer))
-			throw new DataLoadingException("There is no data in OSX container!");
+		OsxBucketContainer osxBucketContainer = null;
+		try {
+			marshallingObjects = (List<String>)executionContext.get(OSXConstants.MARSHALLING_OBJECTS);
+			if (CommonUtility.isEmpty(executionContext.get(OSXConstants.MARSHALLED_CONTAINER)))
+				return executionContext;
 
-		if (osxBucketContainer.containsKey(dmxCollaborator.getConfiguredContactWorkbookId())){
-			dataWorkbook = (DataWorkbook)osxBucketContainer.get(dmxCollaborator.getConfiguredContactWorkbookId());
-		}
-
-		List<Entity> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()));
-		if (CommonUtility.isNotEmpty(marshalledObjects)) {
-			for (Entity entityBase :marshalledObjects) {
-				inventoryItemService.saveOrUpdate((InventoryItem)entityBase);
+			if (marshallingObjects.contains(MarshallingObjects.MEASURE_UNITS.getName())){
+				//Should be a thread
+				measureUnitRepositoryManager.marshallingBusinessObjects(executionContext);
 			}
+
+			String workingDatabookId = dmxCollaborator.getConfiguredDataCatalogueWorkbookId();
+			osxBucketContainer = (OsxBucketContainer)executionContext.get(OSXConstants.MARSHALLED_CONTAINER);
+			if (CommonUtility.isEmpty(osxBucketContainer))
+				throw new DataLoadingException("There is no data in OSX container!");
+
+			if (osxBucketContainer.containsKey(workingDatabookId)){
+				dataWorkbook = (DataWorkbook)osxBucketContainer.get(workingDatabookId);
+			}
+
+			List<Entity> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(workingDatabookId));
+			if (CommonUtility.isNotEmpty(marshalledObjects)) {
+				for (Entity entityBase :marshalledObjects) {
+					inventoryItemService.saveOrUpdate((InventoryItem)entityBase);
+				}
+			}
+		} catch (Exception e) {
+			throw new DataLoadingException(e);
 		}
+
 		return executionContext;
 	}
 
@@ -83,7 +104,7 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 	protected List<Entity> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
 		Map<String, ConfigurationDetail> configDetailMap = null;
 		if (CommonUtility.isEmpty(configDetailIndexMap)) {
-			configDetailMap = dmxConfigurationHelper.fetchInventoryItemConfig("load-inventory-items");
+			configDetailMap = dmxConfigurationHelper.fetchInventoryItemConfig(ConfigureMarshallObjects.INVENTORY_ITEMS.getConfigName());
 			for (String key :configDetailMap.keySet()) {
 				configDetailIndexMap.put(key, Byte.valueOf(configDetailMap.get(key).getValue()));
 			}
@@ -91,12 +112,26 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 
 		List<Entity> results = ListUtility.createDataList();
 		Contact currentContact = null;
-		if (null != datasheetIds) {
+		DataWorksheet dataWorksheet = dataWorkbook.getDatasheet(ConfigureMarshallObjects.INVENTORY_ITEMS.getName());
+		if (CommonUtility.isNotEmpty(dataWorksheet)) {
+			System.out.println("Processing sheet: " + dataWorksheet.getId());
+			for (Integer key :dataWorksheet.getKeys()) {
+				try {
+					currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
+				} catch (DataLoadingException e) {
+					e.printStackTrace();
+				}
+				if (null != currentContact) {
+					results.add(currentContact);
+				}
+			}
+		}
+		/*if (null != datasheetIds) {
 			for (DataWorksheet dataWorksheet :dataWorkbook.datasheets()) {
 				if (!datasheetIds.contains(dataWorksheet.getId()))
 					continue;
 
-				System.out.println("==================" + dataWorksheet.getId() + "==================");
+				System.out.println("Processing sheet: " + dataWorksheet.getId());
 				for (Integer key :dataWorksheet.getKeys()) {
 					try {
 						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
@@ -110,7 +145,7 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 			}
 		} else {
 			for (DataWorksheet dataWorksheet :dataWorkbook.datasheets()) {
-				System.out.println("==================" + dataWorksheet.getId() + "==================");
+				System.out.println("Processing sheet: " + dataWorksheet.getId());
 				for (Integer key :dataWorksheet.getKeys()) {
 					try {
 						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
@@ -120,15 +155,12 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 					results.add(currentContact);
 				}
 			}
-		}
+		}*/
 		return results;
 	}
 
 	@Override
 	protected Entity doMarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
-		String fullName = (String)marshallingDataRow.get(1);
-		int lastStringSpacePos = fullName.lastIndexOf(CommonConstants.STRING_SPACE);
-
 		Item masterUsageDirection = null, masterGenericDrug = null;
 		InventoryItem marshalledObject = null;
 		Catalogue bindingCategory = null;

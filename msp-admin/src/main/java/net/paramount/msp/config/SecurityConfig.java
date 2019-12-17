@@ -57,8 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    */
 	    // form login
 		http.authorizeRequests()
+		
 		//.antMatchers("/", "/login.xhtml", "/javax.faces.resource/**").permitAll()
-    	.antMatchers(buildUnauthorizedMatchers()).permitAll()
+    .antMatchers(buildUnauthorizedMatchers()).permitAll()
 		.anyRequest()
 		.fullyAuthenticated().and().formLogin().loginPage("/login.xhtml").defaultSuccessUrl("/index.xhtml")
 		.failureUrl("/login.xhtml?authfailed=true").permitAll().and().logout().logoutSuccessUrl("/index.xhtml"/*"/login.xhtml"*/)

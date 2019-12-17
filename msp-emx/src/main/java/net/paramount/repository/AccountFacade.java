@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.EnterpriseAccount;
+import net.paramount.entity.emx.EnterpriseAccount;
 import net.paramount.framework.repository.BaseDAO;
 
 /**

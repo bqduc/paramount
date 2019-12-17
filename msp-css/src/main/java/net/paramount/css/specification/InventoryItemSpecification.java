@@ -6,7 +6,7 @@ package net.paramount.css.specification;
 import org.springframework.data.jpa.domain.Specification;
 
 import lombok.Builder;
-import net.paramount.css.entity.stock.InventoryItem;
+import net.paramount.entity.stock.InventoryItem;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.model.SearchRequest;
 import net.paramount.framework.specification.CoreSpecifications;

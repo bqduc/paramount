@@ -3,7 +3,6 @@
  */
 package net.paramount.common;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 
@@ -28,7 +27,8 @@ public interface CommonConstants {
 	final static String PROPERTY_NAME = "name";
 	final static String PROPERTY_NAME_LOCAL = "nameLocal";
 
-	final static String SEPARATOR = ";";
+	final static String SEPARATOR_SEMICOLON = ";";
+	final static String SEPARATOR_PIPELINE = "\\|";
 	final static String SEQUENCE_SEPARATOR = ".";
 	final static String ZERO_PATTERN = "000000000000000";
 
@@ -61,8 +61,6 @@ public interface CommonConstants {
 	final static String SEPARATOR_PHONE = "-";
 	final static String SEPARATOR_ADDRESS = ", ";
 	
-	final static String SEMICOLON = ";";
-
 	final static String LEFT_BRACKET = "[";
 	final static String RIGHT_BRACKET = "]";
 	final static String STRING_BLANK_CAPTION = LEFT_BRACKET + RIGHT_BRACKET;

@@ -3,13 +3,17 @@ package net.paramount.framework.entity;
 import java.beans.Transient;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 public abstract class BizObjectBase extends ObjectBase implements BizEntity {
 	private static final long serialVersionUID = -6323358535657100144L;
 
+  @Basic(optional = false)
+  @NotNull
 	@Column(name="activated")
 	private java.lang.Boolean activated = Boolean.FALSE;
 

@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.paramount.css.entity.system.SystemSequence;
 import net.paramount.css.repository.system.SystemSequenceRepository;
 import net.paramount.css.specification.SystemSequenceSpecification;
+import net.paramount.entity.system.SystemSequence;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;

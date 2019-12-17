@@ -17,14 +17,13 @@ import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.GenderTypeUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.css.entity.contact.Contact;
-import net.paramount.css.entity.general.Office;
 import net.paramount.css.service.contact.ContactService;
 import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.repository.base.DmxRepositoryBase;
 import net.paramount.embeddable.Address;
+import net.paramount.entity.contact.Contact;
+import net.paramount.entity.general.Office;
 import net.paramount.exceptions.DataLoadingException;
-import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.model.DataWorkbook;
@@ -53,7 +52,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 	@Override
 	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
 		DataWorkbook dataWorkbook = null;
-		OsxBucketContainer osxBucketContainer = (OsxBucketContainer)executionContext.get(OSXConstants.PARAM_MARSHALLED_CONTAINER);
+		OsxBucketContainer osxBucketContainer = (OsxBucketContainer)executionContext.get(OSXConstants.MARSHALLED_CONTAINER);
 		if (CommonUtility.isEmpty(osxBucketContainer))
 			throw new DataLoadingException("There is no data in OSX container!");
 
@@ -79,7 +78,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 				if (!datasheetIds.contains(dataWorksheet.getId()))
 					continue;
 
-				System.out.println("==================" + dataWorksheet.getId() + "==================");
+				System.out.println("Processing sheet: " + dataWorksheet.getId());
 				for (Integer key :dataWorksheet.getKeys()) {
 					try {
 						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
@@ -93,7 +92,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 			}
 		} else {
 			for (DataWorksheet dataWorksheet :dataWorkbook.datasheets()) {
-				System.out.println("==================" + dataWorksheet.getId() + "==================");
+				System.out.println("Processing sheet: " + dataWorksheet.getId());
 				for (Integer key :dataWorksheet.getKeys()) {
 					try {
 						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));

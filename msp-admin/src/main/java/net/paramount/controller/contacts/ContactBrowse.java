@@ -9,13 +9,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.css.entity.contact.Contact;
 import net.paramount.css.service.contact.ContactService;
 import net.paramount.dmx.repository.ContactRepositoryManager;
+import net.paramount.entity.contact.Contact;
 import net.paramount.framework.controller.BaseController;
 import net.paramount.msp.faces.model.FacesCar;
+import net.paramount.msp.faces.model.FacesTeamFacade;
 import net.paramount.msp.faces.model.Stats;
-import net.paramount.msp.faces.model.Team;
 import net.paramount.msp.faces.service.FacesCarService;
 import net.paramount.msp.model.Car;
 
@@ -30,7 +30,7 @@ public class ContactBrowse extends BaseController {
 	 */
 	private static final long serialVersionUID = 265858846501330811L;
 
-		private List<Team> teams;
+		private List<FacesTeamFacade> teams;
     private List<FacesCar> cars;
     private FacesCar selectedCar;
     private List<String> selectedColors;
@@ -59,9 +59,9 @@ public class ContactBrowse extends BaseController {
     		contactService.saveObjects(businessObjects);
     	}
     	//System.out.println("Business objects: " + this.businessObjects);
-        teams = new ArrayList<Team>();
+        teams = new ArrayList<FacesTeamFacade>();
         selectedColors = new ArrayList<>();
-        Team lakers = new Team("Los Angeles Lakers");
+        FacesTeamFacade lakers = new FacesTeamFacade("Los Angeles Lakers");
         lakers.getStats().add(new Stats("2005-2006", 50, 32));
         lakers.getStats().add(new Stats("2006-2007", 44, 38));
         lakers.getStats().add(new Stats("2007-2008", 40, 42));
@@ -70,7 +70,7 @@ public class ContactBrowse extends BaseController {
         lakers.getStats().add(new Stats("2010-2011", 42, 42));
         teams.add(lakers);
 
-        Team celtics = new Team("Boston Celtics");
+        FacesTeamFacade celtics = new FacesTeamFacade("Boston Celtics");
         celtics.getStats().add(new Stats("2005-2006", 46, 36));
         celtics.getStats().add(new Stats("2006-2007", 50, 32));
         celtics.getStats().add(new Stats("2007-2008", 41, 41));
@@ -125,7 +125,7 @@ public class ContactBrowse extends BaseController {
     }
 
 
-    public List<Team> getTeams() {
+    public List<FacesTeamFacade> getTeams() {
         return teams;
     }
 

@@ -7,8 +7,8 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Journal;
-import net.paramount.entity.JournalItem;
+import net.paramount.entity.emx.Journal;
+import net.paramount.entity.emx.JournalItem;
 import net.paramount.framework.repository.BaseDAO;
 
 /**

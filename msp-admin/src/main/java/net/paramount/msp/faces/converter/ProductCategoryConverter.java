@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.ProductCategory;
+import net.paramount.entity.stock.ProductCategory;
 import net.paramount.repository.ProductCategoryFacade;
 import net.paramount.utility.JsfUtil;
 
@@ -21,13 +21,13 @@ import net.paramount.utility.JsfUtil;
  */
 
 @FacesConverter(value = "productCategoryConverter")
-public class ProductCategoryConverter implements Converter {
+public class ProductCategoryConverter implements Converter<ProductCategory> {
 
     @Inject
     private ProductCategoryFacade ejbFacade;
 
     @Override
-    public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
+    public ProductCategory getAsObject(FacesContext facesContext, UIComponent component, String value) {
         if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value)) {
             return null;
         }
@@ -47,14 +47,14 @@ public class ProductCategoryConverter implements Converter {
     }
 
     @Override
-    public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-        if (object == null
-                || (object instanceof String && ((String) object).length() == 0)) {
+    public String getAsString(FacesContext facesContext, UIComponent component, ProductCategory object) {
+        if (object == null) {
             return null;
         }
+
         if (object instanceof ProductCategory) {
             ProductCategory o = (ProductCategory) object;
-            return getStringKey(o.getId());
+            return getStringKey(o.getId().intValue());
         } else {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), ProductCategory.class.getName()});
             return null;

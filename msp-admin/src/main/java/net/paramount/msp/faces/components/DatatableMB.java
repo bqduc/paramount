@@ -13,7 +13,7 @@ import javax.inject.Named;
 import net.paramount.dmx.repository.GlobalDmxRepositoryManager;
 import net.paramount.msp.faces.model.FacesCar;
 import net.paramount.msp.faces.model.Stats;
-import net.paramount.msp.faces.model.Team;
+import net.paramount.msp.faces.model.FacesTeamFacade;
 import net.paramount.msp.faces.service.FacesCarService;
 
 /**
@@ -27,7 +27,7 @@ public class DatatableMB implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 5645994641946028804L;
-		private List<Team> teams;
+		private List<FacesTeamFacade> teams;
     private List<FacesCar> cars;
     private FacesCar selectedCar;
     private List<String> selectedColors;
@@ -43,9 +43,9 @@ public class DatatableMB implements Serializable {
     @PostConstruct
     public void init() {
     	//System.out.println(globalDmxRepository.generateFakeOfficeData());
-        teams = new ArrayList<Team>();
+        teams = new ArrayList<FacesTeamFacade>();
         selectedColors = new ArrayList<>();
-        Team lakers = new Team("Los Angeles Lakers");
+        FacesTeamFacade lakers = new FacesTeamFacade("Los Angeles Lakers");
         lakers.getStats().add(new Stats("2005-2006", 50, 32));
         lakers.getStats().add(new Stats("2006-2007", 44, 38));
         lakers.getStats().add(new Stats("2007-2008", 40, 42));
@@ -54,7 +54,7 @@ public class DatatableMB implements Serializable {
         lakers.getStats().add(new Stats("2010-2011", 42, 42));
         teams.add(lakers);
 
-        Team celtics = new Team("Boston Celtics");
+        FacesTeamFacade celtics = new FacesTeamFacade("Boston Celtics");
         celtics.getStats().add(new Stats("2005-2006", 46, 36));
         celtics.getStats().add(new Stats("2006-2007", 50, 32));
         celtics.getStats().add(new Stats("2007-2008", 41, 41));
@@ -102,7 +102,7 @@ public class DatatableMB implements Serializable {
     }
 
 
-    public List<Team> getTeams() {
+    public List<FacesTeamFacade> getTeams() {
         return teams;
     }
 

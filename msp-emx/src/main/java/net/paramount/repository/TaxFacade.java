@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.EnterpriseTax;
+import net.paramount.entity.emx.EnterpriseTax;
 import net.paramount.framework.repository.BaseDAO;
 
 /**

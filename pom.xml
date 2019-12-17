@@ -59,14 +59,17 @@
       <module>msp-core</module>
       <module>msp-core-eux</module>
 			<module>msp-aux</module>
+			<module>msp-aux-domain</module>
 			<module>msp-ase</module>
 			<module>msp-emx</module>
 			<module>msp-crsx</module>
 			<module>msp-css</module>
+			<module>msp-css-domain</module>
 			<module>msp-osx</module>
 			<module>msp-dmx</module>
 			<module>msp-imx</module>
 			<module>msp-posx</module>
+			<module>msp-esmx</module>
 			<module>msp-admin</module>
     </modules>
 	

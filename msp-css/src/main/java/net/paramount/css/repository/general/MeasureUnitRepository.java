@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import net.paramount.css.entity.general.MeasureUnit;
+import net.paramount.entity.general.MeasureUnit;
 import net.paramount.framework.repository.BaseRepository;
 
 @Repository

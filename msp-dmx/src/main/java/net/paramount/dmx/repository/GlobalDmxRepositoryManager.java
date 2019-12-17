@@ -15,12 +15,12 @@ import org.springframework.util.FileCopyUtils;
 
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.css.entity.config.Configuration;
-import net.paramount.css.entity.general.Item;
 import net.paramount.css.service.config.ConfigurationService;
 import net.paramount.css.service.general.AttachmentService;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.entity.Attachment;
+import net.paramount.entity.config.Configuration;
+import net.paramount.entity.general.Item;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.framework.component.ComponentBase;
@@ -30,6 +30,7 @@ import net.paramount.osx.helper.OfficeSuiteServiceProvider;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.MarshallingObjects;
 import net.paramount.osx.model.OSXConstants;
+import net.paramount.osx.model.OfficeMarshalType;
 import net.paramount.osx.model.OsxBucketContainer;
 
 /**
@@ -67,31 +68,34 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 
 	@SuppressWarnings("unchecked")
 	public ExecutionContext marshallData(ExecutionContext executionContext) throws DataLoadingException {
-		OsxBucketContainer osxBucketContainer = null;
 		List<String> databookIdList = null;
 		Map<String, List<String>> datasheetIdMap = null;
 		String archivedResourceName = null;
 		List<String> marshallingObjects = null;
 		try {
-			if (!executionContext.containKey(OSXConstants.PARAM_MARSHALLING_OBJECTS))
+			if (!executionContext.containKey(OSXConstants.MARSHALLING_OBJECTS))
 				return executionContext;
 
-			databookIdList = (List<String>)executionContext.get(OSXConstants.PARAM_DATA_BOOK_IDS);
-			datasheetIdMap = (Map<String, List<String>>)executionContext.get(OSXConstants.PARAM_DATA_SHEETS_MAP);
+			databookIdList = (List<String>)executionContext.get(OSXConstants.PROCESSING_DATABOOK_IDS);
+			datasheetIdMap = (Map<String, List<String>>)executionContext.get(OSXConstants.MAPPING_DATABOOKS_DATASHEETS);
 
-			if (Boolean.TRUE.equals(executionContext.get(OSXConstants.PARAM_FROM_ATTACHMENT))) {
-				archivedResourceName = (String)executionContext.get(OSXConstants.PARAM_INPUT_RESOURCE_NAME);
-				osxBucketContainer = this.marshallDataFromArchived(archivedResourceName, databookIdList, datasheetIdMap);
+			if (Boolean.TRUE.equals(executionContext.get(OSXConstants.FROM_ATTACHMENT))) {
+				archivedResourceName = (String)executionContext.get(OSXConstants.INPUT_RESOURCE_NAME);
+				this.marshallDataFromArchivedInAttachment(archivedResourceName, databookIdList, datasheetIdMap);
 			} else {
-				marshallDataExt(executionContext);
+				marshallDataFromArchived(executionContext);
 			}
-			marshallingObjects = (List)executionContext.get(OSXConstants.PARAM_MARSHALLING_OBJECTS);
-			if (null != executionContext.get(OSXConstants.PARAM_MARSHALLED_CONTAINER) && marshallingObjects.contains(MarshallingObjects.LANGUAGES)){
+
+			marshallingObjects = (List<String>)executionContext.get(OSXConstants.MARSHALLING_OBJECTS);
+			if (null == executionContext.get(OSXConstants.MARSHALLED_CONTAINER))
+				return executionContext;
+
+			if (marshallingObjects.contains(MarshallingObjects.INVENTORY_ITEMS.getName()) || marshallingObjects.contains(MarshallingObjects.MEASURE_UNITS.getName())){
 				//Should be a thread
 				itemDmxRepository.marshallingBusinessObjects(executionContext);
 			}
 
-			if (null != executionContext.get(OSXConstants.PARAM_MARSHALLED_CONTAINER) && marshallingObjects.contains(MarshallingObjects.CONTACTS)){
+			if (marshallingObjects.contains(MarshallingObjects.CONTACTS.name())){
 				//Should be a thread
 				contactDmxRepository.marshallingBusinessObjects(executionContext);
 			}
@@ -120,7 +124,7 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 		}
 	}
 
-	public OsxBucketContainer marshallDataFromArchived(String archivedName, List<String> databookIds, Map<String, List<String>> datasheetIds) throws MspDataException {
+	public OsxBucketContainer marshallDataFromArchivedInAttachment(String archivedName, List<String> databookIds, Map<String, List<String>> datasheetIds) throws MspDataException {
 		Optional<Attachment> optAttachment = this.attachmentService.getByName(archivedName);
 		if (!optAttachment.isPresent())
 			return null;
@@ -136,12 +140,12 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 
 			optConfig = configurationService.getOne(archivedName);
 			if (optConfig.isPresent()) {
-				defaultExecutionContext = resourcesStorageServiceHelper.buildExecutionContext(optConfig.get(), optAttachment.get().getData());
+				defaultExecutionContext = resourcesStorageServiceHelper.syncExecutionContext(optConfig.get(), optAttachment.get().getData());
 			}
 
-			defaultExecutionContext.put(OSXConstants.PARAM_DATA_BOOK_IDS, databookIds);
+			defaultExecutionContext.put(OSXConstants.PROCESSING_DATABOOK_IDS, databookIds);
 			if (CommonUtility.isNotEmpty(datasheetIds)) {
-				defaultExecutionContext.put(OSXConstants.PARAM_DATA_SHEET_IDS, datasheetIds);
+				defaultExecutionContext.put(OSXConstants.PROCESSING_DATASHEET_IDS, datasheetIds);
 			}
 			osxBucketContainer = officeSuiteServiceProvider.extractOfficeDataFromZip(defaultExecutionContext);
 		} catch (Exception e) {
@@ -150,25 +154,17 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 		return osxBucketContainer;
 	}
 
-	public ExecutionContext marshallDataExt(ExecutionContext executionContext) throws MspDataException {
-		Optional<Configuration> optConfig = null;
+	public ExecutionContext marshallDataFromArchived(ExecutionContext executionContext) throws MspDataException {
 		InputStream inputStream;
 		OsxBucketContainer osxBucketContainer = null;
 		ExecutionContext workingExecutionContext = null;
-		byte[] bytesData = null;
 		try {
-			inputStream = (InputStream)executionContext.get(OSXConstants.PARAM_INPUT_STREAM);
-			bytesData = FileCopyUtils.copyToByteArray(inputStream);
-			optConfig = configurationService.getOne((String)executionContext.get(OSXConstants.PARAM_CONFIGURATION_ENTRY));
-			if (optConfig.isPresent()) {
-				workingExecutionContext = resourcesStorageServiceHelper.buildExecutionContext(optConfig.get(), bytesData);
-			} else {
-				workingExecutionContext = ExecutionContext.builder().build();
-			}
-
-			workingExecutionContext.putAll(executionContext);
+			inputStream = (InputStream)executionContext.get(OSXConstants.INPUT_STREAM);
+			workingExecutionContext = (ExecutionContext)ExecutionContext.builder().build().putAll(executionContext);
+			workingExecutionContext.put(OSXConstants.MASTER_BUFFER_DATA_BYTES, FileCopyUtils.copyToByteArray(inputStream));
+			workingExecutionContext.put(OSXConstants.OFFICE_EXCEL_MARSHALLING_DATA_METHOD, OfficeMarshalType.STREAMING);
 			osxBucketContainer = officeSuiteServiceProvider.extractOfficeDataFromZip(workingExecutionContext);
-			executionContext.put(OSXConstants.PARAM_MARSHALLED_CONTAINER, osxBucketContainer);
+			executionContext.put(OSXConstants.MARSHALLED_CONTAINER, osxBucketContainer);
 		} catch (Exception e) {
 			 throw new MspDataException(e);
 		}
@@ -184,7 +180,7 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 		try {
 			databookIdList = ListUtility.createDataList(dataWorkbookId);
 			datasheetIdMap = ListUtility.createMap(dataWorkbookId, datasheetIdList);
-			osxBucketContainer = this.marshallDataFromArchived(archivedResourceName, databookIdList, datasheetIdMap);
+			osxBucketContainer = this.marshallDataFromArchivedInAttachment(archivedResourceName, databookIdList, datasheetIdMap);
 			if (null != osxBucketContainer && osxBucketContainer.containsKey(dataWorkbookId)){
 				dataWorkbook = (DataWorkbook)osxBucketContainer.get(dataWorkbookId);
 			}

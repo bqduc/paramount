@@ -7,10 +7,10 @@ import javax.inject.Inject;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import net.paramount.css.entity.contact.Contact;
-import net.paramount.css.entity.contact.ContactAddress;
 import net.paramount.css.repository.contact.ContactAddressRepository;
 import net.paramount.css.specification.ContactAddressSpecification;
+import net.paramount.entity.contact.Contact;
+import net.paramount.entity.contact.ContactAddress;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;

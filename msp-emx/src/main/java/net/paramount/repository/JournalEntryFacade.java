@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.JournalEntry;
+import net.paramount.entity.emx.JournalEntry;
 import net.paramount.framework.repository.BaseDAO;
 
 /**

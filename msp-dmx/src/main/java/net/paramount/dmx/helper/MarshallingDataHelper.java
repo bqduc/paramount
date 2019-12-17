@@ -11,9 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import net.paramount.common.CommonConstants;
-import net.paramount.css.entity.config.LocalizedItem;
-import net.paramount.css.entity.general.Item;
 import net.paramount.css.service.config.ItemService;
+import net.paramount.entity.general.Item;
+import net.paramount.entity.general.LocalizedItem;
 
 /**
  * @author ducbq

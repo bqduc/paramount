@@ -6,7 +6,7 @@ package net.paramount.crs.repository.cta;
 import org.springframework.data.jpa.domain.Specification;
 
 import lombok.Builder;
-import net.paramount.crs.entity.cta.ContactProfile;
+import net.paramount.entity.contact.ContactProfile;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.model.SearchRequest;
 import net.paramount.framework.specification.CoreSpecifications;

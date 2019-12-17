@@ -45,17 +45,17 @@ public class MvpDataManager extends ComponentBase {
 		try {
 			//Query marshaling objects
 			executionContext = ExecutionContext.builder().build()
-	  			.set(OSXConstants.PARAM_CONFIGURATION_ENTRY, dmxCollaborator.getConfiguredDataLoadingEntry())
-	  			.set(OSXConstants.PARAM_MARSHALLING_OBJECTS, ListUtility.createDataList(
+	  			.set(OSXConstants.CONFIGURATION_ENTRY, dmxCollaborator.getConfiguredDataLoadingEntry())
+	  			.set(OSXConstants.MARSHALLING_OBJECTS, ListUtility.createDataList(
 	  					MarshallingObjects.INVENTORY_ITEMS))
 
-	  			.set(OSXConstants.PARAM_DATA_BOOK_IDS, ListUtility.createDataList(masterWorkBookId))
-	  			.set(OSXConstants.PARAM_DATA_SHEETS_MAP, ListUtility.createMap(
+	  			.set(OSXConstants.PROCESSING_DATABOOK_IDS, ListUtility.createDataList(masterWorkBookId))
+	  			.set(OSXConstants.MAPPING_DATABOOKS_DATASHEETS, ListUtility.createMap(
 	  						masterWorkBookId, ListUtility.createDataList(dmxCollaborator.getConfiguredDataCatalogueWorksheetIds()))
 	  			)
-	  			.set(OSXConstants.PARAM_DATA_BOOKS_SHEETS_MAP, ListUtility.createMap(MarshallingObjects.INVENTORY_ITEMS, masterWorkBookId))
-	  			.set(OSXConstants.PARAM_INPUT_STREAM, resource.getInputStream())
-	  			.set(OSXConstants.PARAM_FROM_ATTACHMENT, Boolean.FALSE)
+	  			.set(OSXConstants.DATABOOKS_DATASHEETS_MAP, ListUtility.createMap(MarshallingObjects.INVENTORY_ITEMS, masterWorkBookId))
+	  			.set(OSXConstants.INPUT_STREAM, resource.getInputStream())
+	  			.set(OSXConstants.FROM_ATTACHMENT, Boolean.FALSE)
 			
 			;
 			globalDmxRepository.marshallData(executionContext);

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import net.paramount.css.entity.stock.InventoryItem;
+import net.paramount.entity.stock.InventoryItem;
 import net.paramount.framework.repository.CodeNameBaseRepository;
 
 @Repository

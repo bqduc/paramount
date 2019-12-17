@@ -38,4 +38,8 @@ public class DataWorkbook extends DataPackage {
 	public Collection<DataWorksheet> datasheets(){
 		return this.worksheets.values();
 	}
+
+	public DataWorksheet getDatasheet(Object key){
+		return this.worksheets.get(key);
+	}
 }

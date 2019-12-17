@@ -12,11 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.css.entity.config.Language;
-import net.paramount.css.entity.config.LocalizedItem;
-import net.paramount.css.entity.general.Item;
 import net.paramount.css.repository.config.ItemRepository;
 import net.paramount.css.repository.config.LocalizedItemRepository;
+import net.paramount.entity.general.Item;
+import net.paramount.entity.general.Language;
+import net.paramount.entity.general.LocalizedItem;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.repository.BaseRepository;
 import net.paramount.framework.service.GenericServiceImpl;

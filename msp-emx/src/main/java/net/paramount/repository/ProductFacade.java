@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.Inventory;
-import net.paramount.entity.EnterpriseProduct;
-import net.paramount.entity.ProductCategory;
-import net.paramount.entity.ProductUom;
+import net.paramount.entity.emx.EnterpriseProduct;
+import net.paramount.entity.emx.Inventory;
+import net.paramount.entity.emx.ProductUom;
+import net.paramount.entity.stock.ProductCategory;
 import net.paramount.framework.repository.BaseDAO;
 
 /**

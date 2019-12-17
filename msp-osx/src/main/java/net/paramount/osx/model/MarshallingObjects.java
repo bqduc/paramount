@@ -12,12 +12,13 @@ public enum MarshallingObjects {
 	ITEMS("items"),
 	LOCALIZED_ITEMS("localizedItems"),
 	LANGUAGES("languages"),
-	INVENTORY_ITEMS("inventoryItems"),
+	INVENTORY_ITEMS("inventory-items"),
+	MEASURE_UNITS("Measure Units"),
 
 	;
 	private String object;
 
-	public String getObjectName() {
+	public String getName() {
 		return object;
 	}
 

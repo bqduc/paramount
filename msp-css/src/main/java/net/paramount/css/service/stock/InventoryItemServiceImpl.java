@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.paramount.css.entity.stock.InventoryItem;
 import net.paramount.css.repository.stock.InventoryItemRepository;
 import net.paramount.css.specification.InventoryItemSpecification;
+import net.paramount.entity.stock.InventoryItem;
 import net.paramount.exceptions.ExecutionContextException;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.ExecutionContext;

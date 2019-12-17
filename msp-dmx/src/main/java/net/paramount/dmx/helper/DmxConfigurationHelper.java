@@ -11,9 +11,9 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
 import net.paramount.common.ListUtility;
-import net.paramount.css.entity.config.Configuration;
-import net.paramount.css.entity.config.ConfigurationDetail;
 import net.paramount.css.service.config.ConfigurationService;
+import net.paramount.entity.config.Configuration;
+import net.paramount.entity.config.ConfigurationDetail;
 
 /**
  * @author ducbq

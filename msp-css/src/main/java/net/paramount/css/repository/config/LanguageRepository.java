@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import net.paramount.css.entity.config.Language;
+import net.paramount.entity.general.Language;
 import net.paramount.framework.repository.BaseRepository;
 
 @Repository("languageRepository")

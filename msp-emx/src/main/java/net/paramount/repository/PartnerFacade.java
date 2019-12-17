@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.EnterpriseAccount;
-import net.paramount.entity.Partner;
+import net.paramount.entity.emx.EnterpriseAccount;
+import net.paramount.entity.emx.Partner;
 import net.paramount.framework.repository.BaseDAO;
 
 /**

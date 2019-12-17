@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.ProductCategory;
+import net.paramount.entity.stock.ProductCategory;
 import net.paramount.framework.repository.BaseDAO;
 
 /**

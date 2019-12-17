@@ -31,9 +31,9 @@ public class OSXTestMain {
 		OsxBucketContainer dataBucket = null;
 		String dataSheet = "D:\\workspace\\aquariums.git\\aquarium\\aquarium-admin\\src\\main\\resources\\config\\data\\data-catalog.xlsx";
 		try {
-			params.put(OSXConstants.PARAM_INPUT_STREAM, new FileInputStream(dataSheet));
-			params.put(OSXConstants.PARAM_DATA_SHEET_IDS, sheetIds);
-			params.put(OSXConstants.PARAM_STARTED_ROW_INDEX, new Integer[] {1, 1, 1});
+			params.put(OSXConstants.INPUT_STREAM, new FileInputStream(dataSheet));
+			params.put(OSXConstants.PROCESSING_DATASHEET_IDS, sheetIds);
+			params.put(OSXConstants.STARTED_ROW_INDEX, new Integer[] {1, 1, 1});
 			DataWorkbook workbookContainer = OfficeSuiteServiceProvider.builder()
 			.build()
 			.readExcelFile(params);

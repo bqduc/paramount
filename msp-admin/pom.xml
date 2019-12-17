@@ -61,6 +61,12 @@
             <artifactId>msp-core</artifactId>
             <version>${project.version}</version>
         </dependency>	
+<!-- 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>msp-aux-domain</artifactId>
+            <version>${project.version}</version>
+        </dependency>	 -->
 
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -108,7 +114,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>msp-imx</artifactId>
             <version>${project.version}</version>
-        </dependency>	
+        </dependency>
+	
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>msp-esmx</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

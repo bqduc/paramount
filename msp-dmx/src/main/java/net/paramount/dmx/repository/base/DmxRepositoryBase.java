@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.hibernate.engine.config.spi.ConfigurationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -16,16 +17,14 @@ import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.GUUISequenceGenerator;
 import net.paramount.common.ListUtility;
-import net.paramount.css.entity.general.Item;
-import net.paramount.css.entity.org.BusinessUnit;
-import net.paramount.css.service.config.ConfigurationService;
 import net.paramount.css.service.config.ItemService;
 import net.paramount.css.service.org.BusinessUnitService;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.embeddable.Phone;
+import net.paramount.entity.general.BusinessUnit;
+import net.paramount.entity.general.Item;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.framework.component.ComponentBase;
-import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.framework.model.SearchParameter;

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.paramount.css.entity.general.MeasureUnit;
 import net.paramount.css.repository.general.MeasureUnitRepository;
 import net.paramount.css.specification.MeasureUnitSpecification;
+import net.paramount.entity.general.MeasureUnit;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;

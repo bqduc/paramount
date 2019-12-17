@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import net.paramount.entity.ProductUomCategory;
+import net.paramount.entity.emx.ProductUomCategory;
 import net.paramount.repository.ProductUomCategoryFacade;
 import net.paramount.utility.JsfUtil;
 

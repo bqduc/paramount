@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import net.paramount.entity.EnterpriseAccount;
-import net.paramount.entity.DeliveryOrder;
-import net.paramount.entity.Invoice;
-import net.paramount.entity.Journal;
-import net.paramount.entity.Partner;
-import net.paramount.entity.EnterpriseProduct;
-import net.paramount.entity.PurchaseOrder;
-import net.paramount.entity.PurchaseOrderLine;
+import net.paramount.entity.emx.DeliveryOrder;
+import net.paramount.entity.emx.EnterpriseAccount;
+import net.paramount.entity.emx.EnterpriseProduct;
+import net.paramount.entity.emx.Invoice;
+import net.paramount.entity.emx.Journal;
+import net.paramount.entity.emx.Partner;
+import net.paramount.entity.emx.PurchaseOrder;
+import net.paramount.entity.emx.PurchaseOrderLine;
 import net.paramount.framework.repository.BaseDAO;
 import net.paramount.utility.IdGenerator;
 

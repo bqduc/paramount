@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.entity.EnterpriseAccount;
+import net.paramount.entity.emx.EnterpriseAccount;
 import net.paramount.framework.controller.BaseRestController;
 import net.paramount.repository.AccountFacade;
 
