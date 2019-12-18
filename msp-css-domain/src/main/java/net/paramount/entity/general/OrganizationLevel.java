@@ -12,14 +12,11 @@
 
 package net.paramount.entity.general;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+
+import net.paramount.framework.entity.ObjectBase;
 
 /**
  *
@@ -27,51 +24,20 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="ORGANIZATION_LEVEL")
-public class OrganizationLevel implements Serializable {
+@Table(name = "ORGANIZATION_LEVEL")
+public class OrganizationLevel extends ObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
+	@Column(name = "NAME")
+	private String name;
 
-    @Column(name="NAME")
-    private String name;
-    
-    @Column(name="LEVEL")
-    private Integer level;
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
+	@Column(name = "LEVEL")
+	private Integer level;
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OrganizationLevel)) {
-            return false;
-        }
-        OrganizationLevel other = (OrganizationLevel)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return getName();
-    }
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return getName();
 	}
 
 	public String getName() {
@@ -89,5 +55,5 @@ public class OrganizationLevel implements Serializable {
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
-	
+
 }

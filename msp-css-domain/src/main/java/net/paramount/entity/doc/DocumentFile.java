@@ -12,16 +12,12 @@
 
 package net.paramount.entity.doc;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -30,6 +26,7 @@ import javax.persistence.TemporalType;
 
 import net.paramount.entity.contact.Contact;
 import net.paramount.entity.trade.OwnerType;
+import net.paramount.framework.entity.ObjectBase;
 
 
 /**
@@ -38,13 +35,9 @@ import net.paramount.entity.trade.OwnerType;
  */
 @Entity
 @Table(name="DOCUMENT_FILE")
-public class DocumentFile implements  Serializable {
+public class DocumentFile extends ObjectBase {
     
 	private static final long serialVersionUID = 1L;
-
-	@Id 
-	@GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    private Long id = 0L;
 
     @ManyToOne
 	@JoinColumn(name="CONTACT_ID")
@@ -70,7 +63,7 @@ public class DocumentFile implements  Serializable {
     @Column(name="INFO")
     private String info;
     
-    @Column(name="USER") // dosyayı upload eden user
+    @Column(name="user_info") // dosyayı upload eden user
     private String user;
     
     @Column(name="URL")
@@ -89,14 +82,6 @@ public class DocumentFile implements  Serializable {
     @Enumerated(EnumType.ORDINAL)
     private OwnerType ownerType;
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -198,25 +183,6 @@ public class DocumentFile implements  Serializable {
         int hash = 0;
         hash += (this.getId() != null ? this.getId().hashCode() : 0);
         return hash;
-    }
-
-    /**
-     * Determines whether another object is equal to this Contact.  The result is 
-     * <code>true</code> if and only if the argument is not null and is a Customer object that 
-     * has the same id field values as this object.
-     * @param object the reference object with which to compare
-     * @return <code>true</code> if this object is the same as the argument;
-     * <code>false</code> otherwise.
-     */
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DocumentFile)) {
-            return false;
-        }
-        DocumentFile other = (DocumentFile)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
     }
 
     /**

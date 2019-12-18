@@ -130,7 +130,9 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 					.businessUnit(getBusinessUnit(marshallingDataRow))
 					.jobInfo(this.parseJobInfo(marshallingDataRow))
 					.gender(GenderTypeUtility.getGenderType((String)marshallingDataRow.get(IDX_GENDER)))
-					.phone(this.parsePhone(marshallingDataRow))
+					.phone(this.parsePhone(CommonConstants.STRING_BLANK, CommonConstants.STRING_BLANK, (String)marshallingDataRow.get(IDX_PHONE_OFFICE), CommonConstants.STRING_BLANK))
+					.mobilePhone(this.parsePhone(CommonConstants.STRING_BLANK, CommonConstants.STRING_BLANK, (String)marshallingDataRow.get(IDX_PHONE_MOBILE), CommonConstants.STRING_BLANK))
+					.homePhone(this.parsePhone(CommonConstants.STRING_BLANK, CommonConstants.STRING_BLANK, (String)marshallingDataRow.get(IDX_PHONE_HOME), CommonConstants.STRING_BLANK))
 					.fax((String)marshallingDataRow.get(IDX_FAX))
 					.build();
 		} catch (Exception e) {

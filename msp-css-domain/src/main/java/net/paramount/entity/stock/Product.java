@@ -12,7 +12,6 @@
 
 package net.paramount.entity.stock;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -30,9 +29,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -44,8 +41,6 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.ForeignKey;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -67,380 +62,364 @@ import net.paramount.global.GlobalConstants;
  * @author haky
  */
 @Entity
-@Table(name="PRODUCT")
-public class Product extends AuditBase implements Serializable {
+@Table(name = "PRODUCT")
+public class Product extends AuditBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
+	@Column(name = "PRODUCT_TYPE")
+	@Enumerated(EnumType.ORDINAL)
+	private ProductType productType = ProductType.Product;
 
-    @Column(name="PRODUCT_TYPE")
-    @Enumerated(EnumType.ORDINAL)
-    private ProductType productType = ProductType.Product; 
-    
-    @Column(name="CODE", nullable=false, unique=true, length=20)
-    private String code;
-    
-    @Size(max = 25, message = "{LongString}")
-    @Column(name = "default_code")
-    private String defaultCode;
+	@Column(name = "CODE", nullable = false, unique = true, length = 20)
+	private String code;
 
-    @Column(name="NAME", length=80)
-    private String name;
-    
-    @Column(name="INFO")
-    private String info;
-    
-    @Column(name="OPEN_DATE")
-    @Temporal(TemporalType.DATE)
-    private Date openDate = new Date();
-    
-    @ManyToOne
-    @JoinColumn(name="PRODUCT_CATEGORY_ID")
-    private ProductCategory category;
-    
-    @Column(name="SYSTEM")
-    private Boolean system;
-    
-    @Column(name="ISACTIVE")
-    private Boolean active = Boolean.TRUE;
-    
-    @Column(name="UNIT", length=10)
-    private String unit;
-        
-    @Column(name="BARCODE1", length=80)
-    private String barcode1;
-    
-    @Column(name="BARCODE2", length=80)
-    private String barcode2;
-    
-    @Column(name="BARCODE3", length=80)
-    private String barcode3;
-    
-    @Column(name="IMAGE")
-    private String image;
+	@Size(max = 25, message = "{LongString}")
+	@Column(name = "default_code")
+	private String defaultCode;
 
-    @Basic(fetch = FetchType.LAZY)
-    @Lob
-    @Column(name = "master_image")
-    private byte[] masterImage;
-    
-    @Basic(fetch = FetchType.LAZY)
-    @Lob
-    @Column(name = "image_medium")
-    private byte[] imageMedium;
+	@Column(name = "NAME", length = 80)
+	private String name;
 
-    @ManyToOne
-  	@JoinColumn(name="ExpenseType_ID")
-  	private ExpenseType expenseType;
+	@Column(name = "INFO")
+	private String info;
 
-    // KDV - VAT
-    @ManyToOne
-    @JoinColumn(name="BUY_TAX_ID")
-    private Tax buyTax;
-    
-    @ManyToOne
-    @JoinColumn(name="SELL_TAX_ID")
-    private Tax sellTax;
-    
-    @Column(name="TAX_INCLUDED")
-    private Boolean taxIncluded = Boolean.TRUE;
+	@Column(name = "OPEN_DATE")
+	@Temporal(TemporalType.DATE)
+	private Date openDate = new Date();
 
-    // OIV / OTV
-    @ManyToOne
-    @JoinColumn(name="BUY_TAX2_ID")
-    private Tax buyTax2;
+	@ManyToOne
+	@JoinColumn(name = "PRODUCT_CATEGORY_ID")
+	private ProductCategory category;
 
-    @ManyToOne
-    @JoinColumn(name="SELL_TAX2_ID")
-    private Tax sellTax2;
+	@Column(name = "SYSTEM")
+	private Boolean system;
 
-    @Column(name="TAX2_INCLUDED")
-    private Boolean tax2Included = Boolean.TRUE;
-    
-    @ManyToOne
-    @JoinColumn(name="BUY_TAX3_ID")
-    private Tax buyTax3;
+	@Column(name = "ISACTIVE")
+	private Boolean active = Boolean.TRUE;
 
-    @ManyToOne
-    @JoinColumn(name="SELL_TAX3_ID")
-    private Tax sellTax3;
+	@Column(name = "UNIT", length = 10)
+	private String unit;
 
-    @Column(name="TAX3_INCLUDED")
-    private Boolean tax3Included = Boolean.TRUE;
-    
-    @ManyToOne
-    @JoinColumn(name="BUY_TAX4_ID")
-    private Tax buyTax4;
+	@Column(name = "BARCODE1", length = 80)
+	private String barcode1;
 
-    @ManyToOne
-    @JoinColumn(name="SELL_TAX4_ID")
-    private Tax sellTax4;
+	@Column(name = "BARCODE2", length = 80)
+	private String barcode2;
 
-    @Column(name="TAX4_INCLUDED")
-    private Boolean tax4Included = Boolean.TRUE;
-    
-    @ManyToOne
-    @JoinColumn(name="BUY_TAX5_ID")
-    private Tax buyTax5;
+	@Column(name = "BARCODE3", length = 80)
+	private String barcode3;
 
-    @ManyToOne
-    @JoinColumn(name="SELL_TAX5_ID")
-    private Tax sellTax5;
+	@Column(name = "IMAGE")
+	private String image;
 
-    @Column(name="TAX5_INCLUDED")
-    private Boolean tax5Included = Boolean.TRUE;
+	@Basic(fetch = FetchType.LAZY)
+	@Lob
+	@Column(name = "master_image")
+	private byte[] masterImage;
 
-    @OneToMany(mappedBy="product",cascade=CascadeType.ALL )
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-    private List<ProductUnit> productUnitList= new ArrayList<ProductUnit>();
+	@Basic(fetch = FetchType.LAZY)
+	@Lob
+	@Column(name = "image_medium")
+	private byte[] imageMedium;
 
-    @OneToMany(mappedBy="owner",cascade=CascadeType.ALL )
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-    private List<ProductDetail> detailList= new ArrayList<ProductDetail>();
-    
-    @Column(name="SHELF_PLACE")
-    private String shelfPlace;
+	@ManyToOne
+	@JoinColumn(name = "ExpenseType_ID")
+	private ExpenseType expenseType;
 
-    /**
-     * Eğer ürün masraf veya indirim olarak işaretlenmişse indirim/masraf 
-     * bilgileri tutar.
-     */
-    @Embedded
-    @Valid
-    @AttributeOverrides( {
-    	@AttributeOverride(name="percentage", column=@Column(name="DISCOUNT_EXPENSE_PERCENTAGE")),
-    	@AttributeOverride(name="rate", column=@Column(name="DISCOUNT_EXPENSE_RATE")),
-        @AttributeOverride(name="currency", column=@Column(name="DISCOUNT_EXPENSE_CCY")),
-        @AttributeOverride(name="value",    column=@Column(name="DISCOUNT_EXPENSE_VALUE")),
-        @AttributeOverride(name="localAmount",    column=@Column(name="DISCOUNT_EXPENSE_LCYVAL"))
-    })
-    private DiscountOrExpense discountOrExpense;
+	// KDV - VAT
+	@ManyToOne
+	@JoinColumn(name = "BUY_TAX_ID")
+	private Tax buyTax;
 
-    /**
-     * Son alış fiyat bilgileridir.
-     */
-    @Embedded
-    @Valid
-    @AttributeOverrides( {
-        @AttributeOverride(name="currency", column=@Column(name="LAST_PURCHASE_PRICE_CCY")),
-        @AttributeOverride(name="value",    column=@Column(name="LAST_PURCHASE_PRICE_VALUE")),
-        @AttributeOverride(name="localAmount",    column=@Column(name="LAST_PURCHASE_PRICE_LCYVAL"))
-    })
-    private MoneySet lastPurchasePrice = new UnitPriceMoneySet();
+	@ManyToOne
+	@JoinColumn(name = "SELL_TAX_ID")
+	private Tax sellTax;
 
-    /**
-     * Son satış fiyat bilgileridir.
-     */
-    @Embedded
-    @Valid
-    @AttributeOverrides( {
-    	@AttributeOverride(name="currency", column=@Column(name="LAST_SALE_PRICE_CCY")),
-    	@AttributeOverride(name="value",    column=@Column(name="LAST_SALE_PRICE_VALUE")),
-    	@AttributeOverride(name="localAmount",    column=@Column(name="LAST_SALE_PRICE_LCYVAL"))
-    })
-    private MoneySet lastSalePrice = new UnitPriceMoneySet();
-    
-    /**
-     * Etiketin üzerine basılacak olan yazı bilgisini tutar.
-     */
-    @Column(name="LABEL_NAME")
-    private String labelName;
-    
-    /**
-     * Marka bilgisini tutar.
-     */
-    @ManyToOne
-    @JoinColumn(name="GROUP_ID")
-    private ProductGroup group;
+	@Column(name = "TAX_INCLUDED")
+	private Boolean taxIncluded = Boolean.TRUE;
 
-    /**
-     * Kurum bilgisini tutar.
-     */
-    @ManyToOne
-    @JoinColumn(name="FOUNDATION_ID")
-    @ForeignKey(name="FK_PRODUCT_FOUNDATIONID")
-    private Foundation foundation;
+	// OIV / OTV
+	@ManyToOne
+	@JoinColumn(name = "BUY_TAX2_ID")
+	private Tax buyTax2;
 
-    @ManyToOne
-    @JoinColumn(name="PAYMENT_ACTION_TYPE_ID")
-    @ForeignKey(name="FK_PRODUCT_PAYMENTACTIONTYPEID")
-    private PaymentActionType paymentActionType;
-    
-    /**
-     * Katkı masraf veya indirimlerinin yansıtılacağı hizmeti tutar.
-     */
-    @ManyToOne
-    @JoinColumn(name="REFERENCE_PRODUCT_ID")
-    @ForeignKey(name="FK_PRODUCT_REFERENCEPRODUCTID")
-    private Product referenceProduct;
-    
-    public enum UnitPriceScale{ High(6), Low(2);
-    	
-    	private int scale;
-    	UnitPriceScale(int scale) {
-    		this.scale = scale;
-    	}
-    	
-    	public int getScale() {
-    		return scale;
-    	}
-    	
-    	public static int defaultScale() {
-    		return Low.scale;
-    	}
-    };
-    
-    /**
-     * Ürün veya hizmetin birim fiyatının scale(virgülden sonrası) 
-     * bilgisini tutar.
-     */
-    @Column(name="UNIT_PRICE_SCALE")
-    @Enumerated(EnumType.ORDINAL)
-    private UnitPriceScale unitPriceScale = UnitPriceScale.Low;
+	@ManyToOne
+	@JoinColumn(name = "SELL_TAX2_ID")
+	private Tax sellTax2;
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	@Column(name = "barcode", length=GlobalConstants.SIZE_BARCODE)
-  	private String barcode;
+	@Column(name = "TAX2_INCLUDED")
+	private Boolean tax2Included = Boolean.TRUE;
 
-  	@Size(max = GlobalConstants.SIZE_NAME)
-  	@Column(name="translated_name")
-  	private String translatedName;
+	@ManyToOne
+	@JoinColumn(name = "BUY_TAX3_ID")
+	private Tax buyTax3;
 
-  	@Column(name="composition", length=150)
-  	private String composition; //Content also
+	@ManyToOne
+	@JoinColumn(name = "SELL_TAX3_ID")
+	private Tax sellTax3;
 
-  	@Column(name="active_principle", length=150)
-  	private String activePrinciple;	
+	@Column(name = "TAX3_INCLUDED")
+	private Boolean tax3Included = Boolean.TRUE;
 
-  	@Column(name="processing_type", length=50)
-  	private String processingType;
+	@ManyToOne
+	@JoinColumn(name = "BUY_TAX4_ID")
+	private Tax buyTax4;
 
-  	@Column(name="packaging", length=50)
-  	private String packaging;
+	@ManyToOne
+	@JoinColumn(name = "SELL_TAX4_ID")
+	private Tax sellTax4;
 
-  	@Basic(fetch = FetchType.LAZY)
-  	@Column(name = "master_photo", columnDefinition="TEXT")
-  	private String masterPhoto;
+	@Column(name = "TAX4_INCLUDED")
+	private Boolean tax4Included = Boolean.TRUE;
 
-  	@Column(name = "description", columnDefinition="TEXT")
-  	private String description;
+	@ManyToOne
+	@JoinColumn(name = "BUY_TAX5_ID")
+	private Tax buyTax5;
 
-  	@Column(name = "manufacturing_date")
-  	private Date manufacturingDate;
+	@ManyToOne
+	@JoinColumn(name = "SELL_TAX5_ID")
+	private Tax sellTax5;
 
-  	@Column(name = "available_date")
-  	private Date availableDate;
+	@Column(name = "TAX5_INCLUDED")
+	private Boolean tax5Included = Boolean.TRUE;
 
-  	@Column(name = "master_vendor_id")
-  	private Long masterVendorId;
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductUnit> productUnitList = new ArrayList<ProductUnit>();
 
-  	@Column(name="vendor_part_number", length=GlobalConstants.SIZE_CODE)
-  	private String vendorPartNumber;
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductDetail> detailList = new ArrayList<ProductDetail>();
 
-  	@Column(name = "manufacturer_id")
-  	private Long manufacturerId;
+	@Column(name = "SHELF_PLACE")
+	private String shelfPlace;
 
-  	@Column(name="manufacturer_part_number", length=GlobalConstants.SIZE_CODE)
-  	private String manufacturerPartNumber;
+	/**
+	 * Eğer ürün masraf veya indirim olarak işaretlenmişse indirim/masraf bilgileri tutar.
+	 */
+	@Embedded
+	@Valid
+	@AttributeOverrides({ @AttributeOverride(name = "percentage", column = @Column(name = "DISCOUNT_EXPENSE_PERCENTAGE")),
+			@AttributeOverride(name = "rate", column = @Column(name = "DISCOUNT_EXPENSE_RATE")),
+			@AttributeOverride(name = "currency", column = @Column(name = "DISCOUNT_EXPENSE_CCY")),
+			@AttributeOverride(name = "value", column = @Column(name = "DISCOUNT_EXPENSE_VALUE")),
+			@AttributeOverride(name = "localAmount", column = @Column(name = "DISCOUNT_EXPENSE_LCYVAL")) })
+	private DiscountOrExpense discountOrExpense;
 
-  	@ManyToOne
-  	@JoinColumn(name = "parent_id")
-  	private InventoryItem parent;
+	/**
+	 * Son alış fiyat bilgileridir.
+	 */
+	@Embedded
+	@Valid
+	@AttributeOverrides({ @AttributeOverride(name = "currency", column = @Column(name = "LAST_PURCHASE_PRICE_CCY")),
+			@AttributeOverride(name = "value", column = @Column(name = "LAST_PURCHASE_PRICE_VALUE")),
+			@AttributeOverride(name = "localAmount", column = @Column(name = "LAST_PURCHASE_PRICE_LCYVAL")) })
+	private MoneySet lastPurchasePrice = new UnitPriceMoneySet();
 
-  	@Column(name="minimum_options")
-  	private Integer minimumOptions;
+	/**
+	 * Son satış fiyat bilgileridir.
+	 */
+	@Embedded
+	@Valid
+	@AttributeOverrides({ @AttributeOverride(name = "currency", column = @Column(name = "LAST_SALE_PRICE_CCY")),
+			@AttributeOverride(name = "value", column = @Column(name = "LAST_SALE_PRICE_VALUE")),
+			@AttributeOverride(name = "localAmount", column = @Column(name = "LAST_SALE_PRICE_LCYVAL")) })
+	private MoneySet lastSalePrice = new UnitPriceMoneySet();
 
-  	@Column(name="maximum_options")
-  	private Integer maximumOptions;
-  	
-  	@Column(name = "servicing_code", length=GlobalConstants.SIZE_SERIAL)
-  	private String servicingCode;
+	/**
+	 * Etiketin üzerine basılacak olan yazı bilgisini tutar.
+	 */
+	@Column(name = "LABEL_NAME")
+	private String labelName;
 
-  	@Column(name = "cross_servicing_code", length=GlobalConstants.SIZE_SERIAL)
-  	private String crossServicingCode;
+	/**
+	 * Marka bilgisini tutar.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "GROUP_ID")
+	private ProductGroup group;
 
-  	@Column(name = "govenment_decision_no", length=GlobalConstants.SIZE_SERIAL)
-  	private String govenmentDecisionNo;
+	/**
+	 * Kurum bilgisini tutar.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "FOUNDATION_ID", foreignKey = @ForeignKey(name = "FK_PRODUCT_FOUNDATIONID"))
+	private Foundation foundation;
 
-  	@Column(name = "published_code", length=GlobalConstants.SIZE_SERIAL)
-  	private String publishedCode;
-  	
-  	@Column(name="standard", length=50)
-  	private String standard;
+	@ManyToOne
+	@JoinColumn(name = "PAYMENT_ACTION_TYPE_ID", foreignKey = @ForeignKey(name = "FK_PRODUCT_PAYMENTACTIONTYPEID"))
+	private PaymentActionType paymentActionType;
 
-  	@Column(name="expectation_of_life", length=50)
-  	private String expectationOfLife;
+	/**
+	 * Katkı masraf veya indirimlerinin yansıtılacağı hizmeti tutar.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "REFERENCE_PRODUCT_ID", foreignKey = @ForeignKey(name = "FK_PRODUCT_REFERENCEPRODUCTID"))
+	private Product referenceProduct;
 
-  	@Column(name="production_company", length=150)
-  	private String productionCompany;
+	public enum UnitPriceScale {
+		High(6), Low(2);
 
-  	@Column(name="production_country", length=50)
-  	private String productionCountry;
+		private int scale;
 
-  	@Column(name="production_address", length=250)
-  	private String productionAddress;
+		UnitPriceScale(int scale) {
+			this.scale = scale;
+		}
 
-  	@Column(name="registration_company", length=80)
-  	private String registrationCompany;
+		public int getScale() {
+			return scale;
+		}
 
-  	@Column(name="registrationCountry", length=50)
-  	private String registrationCountry;
+		public static int defaultScale() {
+			return Low.scale;
+		}
+	};
 
-  	@Column(name="registration_address", length=250)
-  	private String registrationAddress;
+	/**
+	 * Ürün veya hizmetin birim fiyatının scale(virgülden sonrası) bilgisini tutar.
+	 */
+	@Column(name = "UNIT_PRICE_SCALE")
+	@Enumerated(EnumType.ORDINAL)
+	private UnitPriceScale unitPriceScale = UnitPriceScale.Low;
 
-  	@Column(name="root")
-  	private String root;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@Column(name = "barcode", length = GlobalConstants.SIZE_BARCODE)
+	private String barcode;
 
-  	@Column(name="circular_no")
-  	private String nationalCircularNo;
+	@Size(max = GlobalConstants.SIZE_NAME)
+	@Column(name = "translated_name")
+	private String translatedName;
 
-  	@Column(name="maintenance_level")
-  	private String maintenanceLevel;
+	@Column(name = "composition", length = 150)
+	private String composition; // Content also
 
-  	@DateTimeFormat(iso = ISO.DATE)
-  	@Column(name = "issue_date")
-  	private Date issueDate;
+	@Column(name = "active_principle", length = 150)
+	private String activePrinciple;
 
-  	@Column(name="reset_date")
-  	private ZonedDateTime resetDate = null;
+	@Column(name = "processing_type", length = 50)
+	private String processingType;
 
-    @Column(name = "sale_price")
-    @StrictlyPositiveNumber(message = "{PositiveSalePrice}")
-    private Double salePrice = 2d;
+	@Column(name = "packaging", length = 50)
+	private String packaging;
 
-    @Column(name = "purchase_price")
-    @StrictlyPositiveNumber(message = "{PositiveCost}")
-    private Double purchasePrice = 1d;
-  	
-    @Column(name = "weight")
-    private Double weight = 0d;
+	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "master_photo", columnDefinition = "TEXT")
+	private String masterPhoto;
 
-    @Column(name = "volume")
-    private Double volume = 0d;
+	@Column(name = "description", columnDefinition = "TEXT")
+	private String description;
 
-    @Column(name = "lenght")
-    private Double length = 0d;
+	@Column(name = "manufacturing_date")
+	private Date manufacturingDate;
 
-    @Column(name = "sale_ok")
-    private Boolean saleOk;
+	@Column(name = "available_date")
+	private Date availableDate;
 
-    @Column(name = "purchase_ok")
-    private Boolean purchaseOk;
+	@Column(name = "master_vendor_id")
+	private Long masterVendorId;
 
-  	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Tax getOTVTax() {
+	@Column(name = "vendor_part_number", length = GlobalConstants.SIZE_CODE)
+	private String vendorPartNumber;
+
+	@Column(name = "manufacturer_id")
+	private Long manufacturerId;
+
+	@Column(name = "manufacturer_part_number", length = GlobalConstants.SIZE_CODE)
+	private String manufacturerPartNumber;
+
+	@ManyToOne
+	@JoinColumn(name = "parent_id")
+	private InventoryItem parent;
+
+	@Column(name = "minimum_options")
+	private Integer minimumOptions;
+
+	@Column(name = "maximum_options")
+	private Integer maximumOptions;
+
+	@Column(name = "servicing_code", length = GlobalConstants.SIZE_SERIAL)
+	private String servicingCode;
+
+	@Column(name = "cross_servicing_code", length = GlobalConstants.SIZE_SERIAL)
+	private String crossServicingCode;
+
+	@Column(name = "govenment_decision_no", length = GlobalConstants.SIZE_SERIAL)
+	private String govenmentDecisionNo;
+
+	@Column(name = "published_code", length = GlobalConstants.SIZE_SERIAL)
+	private String publishedCode;
+
+	@Column(name = "standard", length = 50)
+	private String standard;
+
+	@Column(name = "expectation_of_life", length = 50)
+	private String expectationOfLife;
+
+	@Column(name = "production_company", length = 150)
+	private String productionCompany;
+
+	@Column(name = "production_country", length = 50)
+	private String productionCountry;
+
+	@Column(name = "production_address", length = 250)
+	private String productionAddress;
+
+	@Column(name = "registration_company", length = 80)
+	private String registrationCompany;
+
+	@Column(name = "registrationCountry", length = 50)
+	private String registrationCountry;
+
+	@Column(name = "registration_address", length = 250)
+	private String registrationAddress;
+
+	@Column(name = "root")
+	private String root;
+
+	@Column(name = "circular_no")
+	private String nationalCircularNo;
+
+	@Column(name = "maintenance_level")
+	private String maintenanceLevel;
+
+	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "issue_date")
+	private Date issueDate;
+
+	@Column(name = "reset_date")
+	private ZonedDateTime resetDate = null;
+
+	@Column(name = "sale_price")
+	@StrictlyPositiveNumber(message = "{PositiveSalePrice}")
+	private Double salePrice = 2d;
+
+	@Column(name = "purchase_price")
+	@StrictlyPositiveNumber(message = "{PositiveCost}")
+	private Double purchasePrice = 1d;
+
+	@Column(name = "weight")
+	private Double weight = 0d;
+
+	@Column(name = "volume")
+	private Double volume = 0d;
+
+	@Column(name = "lenght")
+	private Double length = 0d;
+
+	@Column(name = "sale_ok")
+	private Boolean saleOk;
+
+	@Column(name = "purchase_ok")
+	private Boolean purchaseOk;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public Tax getOTVTax() {
 		try {
 			Method taxGetter = null;
 			Tax tax = null;
 
 			for (int i = 1; i <= 5; i++) {
 				taxGetter = getClass().getMethod("getSellTax" + i);
-				tax = (Tax)taxGetter.invoke(this);
+				tax = (Tax) taxGetter.invoke(this);
 
 				if (tax != null && tax.getType().equals(TaxType.OTV)) {
 					return tax;
@@ -449,20 +428,21 @@ public class Product extends AuditBase implements Serializable {
 		} catch (Exception e) {
 			System.out.println("Hata" + e.getMessage());
 		}
-    	return null;
-    }
-    
+		return null;
+	}
+
 	public boolean isHasLowerPriceThanCent() {
-    	if (unitPriceScale.equals(UnitPriceScale.High)) return true;
-    	return false;
+		if (unitPriceScale.equals(UnitPriceScale.High))
+			return true;
+		return false;
 	}
 
 	public void setHasLowerPriceThanCent(boolean aValue) {
-    	if (aValue) {
-    		unitPriceScale = UnitPriceScale.High;
-    	} else {
-    		unitPriceScale = UnitPriceScale.Low;
-    	}
+		if (aValue) {
+			unitPriceScale = UnitPriceScale.High;
+		} else {
+			unitPriceScale = UnitPriceScale.Low;
+		}
 	}
 
 	/**
@@ -470,52 +450,45 @@ public class Product extends AuditBase implements Serializable {
 	 */
 	@Transient
 	private List<ProductTax> taxList;
-	
-    public List<ProductTax> taxesAsList() {
-    	if (taxList == null) {
-    		taxList = new ArrayList<ProductTax>();
 
-			taxList.add(new ProductTax(getBuyTax1(),getTax1Included()));
-			taxList.add(new ProductTax(getBuyTax2(),getTax2Included()));
-			taxList.add(new ProductTax(getBuyTax3(),getTax3Included()));
-			taxList.add(new ProductTax(getBuyTax4(),getTax4Included()));
-			taxList.add(new ProductTax(getBuyTax5(),getTax5Included()));
-    	}
-    	return taxList;
-    }
+	public List<ProductTax> taxesAsList() {
+		if (taxList == null) {
+			taxList = new ArrayList<ProductTax>();
 
-    public ProductTax getWitholdingTax() {
-    	for (ProductTax productTax : taxesAsList()) {
-    		if (productTax.getTax() != null && productTax.getTax().getType().equals(TaxType.STOPAJ)) return productTax;
-    	}
-    	return null;
-    }
-    
-    public Long getId() {
-        return id;
-    }
+			taxList.add(new ProductTax(getBuyTax1(), getTax1Included()));
+			taxList.add(new ProductTax(getBuyTax2(), getTax2Included()));
+			taxList.add(new ProductTax(getBuyTax3(), getTax3Included()));
+			taxList.add(new ProductTax(getBuyTax4(), getTax4Included()));
+			taxList.add(new ProductTax(getBuyTax5(), getTax5Included()));
+		}
+		return taxList;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public ProductTax getWitholdingTax() {
+		for (ProductTax productTax : taxesAsList()) {
+			if (productTax.getTax() != null && productTax.getTax().getType().equals(TaxType.STOPAJ))
+				return productTax;
+		}
+		return null;
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public List<ProductDetail> getDetailList() {
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<ProductDetail> getDetailList() {
 		return detailList;
 	}
 
@@ -524,119 +497,101 @@ public class Product extends AuditBase implements Serializable {
 	}
 
 	public String getInfo() {
-        return info;
-    }
+		return info;
+	}
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
+	public void setInfo(String info) {
+		this.info = info;
+	}
 
-    public ProductCategory getCategory() {
-        return category;
-    }
+	public ProductCategory getCategory() {
+		return category;
+	}
 
-    public void setCategory(ProductCategory category) {
-        this.category = category;
-    }
+	public void setCategory(ProductCategory category) {
+		this.category = category;
+	}
 
-    public Boolean getSystem() {
-        return system;
-    }
+	public Boolean getSystem() {
+		return system;
+	}
 
-    public void setSystem(Boolean system) {
-        this.system = system;
-    }
+	public void setSystem(Boolean system) {
+		this.system = system;
+	}
 
-    public Boolean getActive() {
-        return active;
-    }
+	public Boolean getActive() {
+		return active;
+	}
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
-    public String getUnit() {
-        return unit;
-    }
+	public String getUnit() {
+		return unit;
+	}
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
 
-    public Tax getBuyTax() {
-        return buyTax;
-    }
+	public Tax getBuyTax() {
+		return buyTax;
+	}
 
-    public Tax getBuyTax1() {
-    	return buyTax;
-    }
-    
-    public void setBuyTax(Tax buyTax) {
-        this.buyTax = buyTax;
-    }
+	public Tax getBuyTax1() {
+		return buyTax;
+	}
 
-    public Tax getSellTax() {
-        return sellTax;
-    }
+	public void setBuyTax(Tax buyTax) {
+		this.buyTax = buyTax;
+	}
 
-    public Tax getSellTax1() {
-    	return sellTax;
-    }
+	public Tax getSellTax() {
+		return sellTax;
+	}
 
-    public void setSellTax(Tax sellTax) {
-        this.sellTax = sellTax;
-    }
+	public Tax getSellTax1() {
+		return sellTax;
+	}
 
-    public String getBarcode1() {
-        return barcode1;
-    }
+	public void setSellTax(Tax sellTax) {
+		this.sellTax = sellTax;
+	}
 
-    public void setBarcode1(String barcode1) {
-        this.barcode1 = barcode1;
-    }
+	public String getBarcode1() {
+		return barcode1;
+	}
 
-    public Boolean getTaxIncluded() {
-        return taxIncluded;
-    }
+	public void setBarcode1(String barcode1) {
+		this.barcode1 = barcode1;
+	}
 
-    public Boolean getTax1Included() {
-    	return taxIncluded;
-    }
+	public Boolean getTaxIncluded() {
+		return taxIncluded;
+	}
 
-    public void setTaxIncluded(Boolean taxIncluded) {
-        this.taxIncluded = taxIncluded;
-    }
-    
-    @Transient
-    public String getCaption(){
-        return "[" + getCode() + "] " + getName();
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
+	public Boolean getTax1Included() {
+		return taxIncluded;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Product)) {
-            return false;
-        }
-        Product other = (Product)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
+	public void setTaxIncluded(Boolean taxIncluded) {
+		this.taxIncluded = taxIncluded;
+	}
 
-    @Override
-    public String toString() {
-        return getName();
-    }
+	@Transient
+	public String getCaption() {
+		return "[" + getCode() + "] " + getName();
+	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 	public DiscountOrExpense getDiscountOrExpense() {
-		if(discountOrExpense == null){
+		if (discountOrExpense == null) {
 			discountOrExpense = new DiscountOrExpense();
 		}
 		return discountOrExpense;
@@ -654,47 +609,50 @@ public class Product extends AuditBase implements Serializable {
 		this.expenseType = expenseType;
 	}
 
-    /**
-     * @return the buyTax2
-     */
-    public Tax getBuyTax2() {
-        return buyTax2;
-    }
+	/**
+	 * @return the buyTax2
+	 */
+	public Tax getBuyTax2() {
+		return buyTax2;
+	}
 
-    /**
-     * @param buyTax2 the buyTax2 to set
-     */
-    public void setBuyTax2(Tax buyTax2) {
-        this.buyTax2 = buyTax2;
-    }
+	/**
+	 * @param buyTax2
+	 *          the buyTax2 to set
+	 */
+	public void setBuyTax2(Tax buyTax2) {
+		this.buyTax2 = buyTax2;
+	}
 
-    /**
-     * @return the sellTax2
-     */
-    public Tax getSellTax2() {
-        return sellTax2;
-    }
+	/**
+	 * @return the sellTax2
+	 */
+	public Tax getSellTax2() {
+		return sellTax2;
+	}
 
-    /**
-     * @param sellTax2 the sellTax2 to set
-     */
-    public void setSellTax2(Tax sellTax2) {
-        this.sellTax2 = sellTax2;
-    }
+	/**
+	 * @param sellTax2
+	 *          the sellTax2 to set
+	 */
+	public void setSellTax2(Tax sellTax2) {
+		this.sellTax2 = sellTax2;
+	}
 
-    /**
-     * @return the tax2Included
-     */
-    public Boolean getTax2Included() {
-        return tax2Included;
-    }
+	/**
+	 * @return the tax2Included
+	 */
+	public Boolean getTax2Included() {
+		return tax2Included;
+	}
 
-    /**
-     * @param tax2Included the tax2Included to set
-     */
-    public void setTax2Included(Boolean tax2Included) {
-        this.tax2Included = tax2Included;
-    }
+	/**
+	 * @param tax2Included
+	 *          the tax2Included to set
+	 */
+	public void setTax2Included(Boolean tax2Included) {
+		this.tax2Included = tax2Included;
+	}
 
 	public void setBuyTax3(Tax buyTax3) {
 		this.buyTax3 = buyTax3;
@@ -862,20 +820,21 @@ public class Product extends AuditBase implements Serializable {
 		this.group = group;
 	}
 
-    public BigDecimal getLastPurchasePriceValue(){
-        return lastPurchasePrice.getValue();
-    }
+	public BigDecimal getLastPurchasePriceValue() {
+		return lastPurchasePrice.getValue();
+	}
 
-    public void setLastPurchasePriceValue(BigDecimal lastPurchasePriceValue){
-        this.lastPurchasePrice.setValue(lastPurchasePriceValue);
-    }
-	public BigDecimal getLastSalePriceValue(){
-        return lastSalePrice.getValue();
-    }
+	public void setLastPurchasePriceValue(BigDecimal lastPurchasePriceValue) {
+		this.lastPurchasePrice.setValue(lastPurchasePriceValue);
+	}
 
-    public void setLastSalePriceValue(BigDecimal lastSalePriceValue){
-        this.lastSalePrice.setValue(lastSalePriceValue);
-    }
+	public BigDecimal getLastSalePriceValue() {
+		return lastSalePrice.getValue();
+	}
+
+	public void setLastSalePriceValue(BigDecimal lastSalePriceValue) {
+		this.lastSalePrice.setValue(lastSalePriceValue);
+	}
 
 	public Foundation getFoundation() {
 		return foundation;

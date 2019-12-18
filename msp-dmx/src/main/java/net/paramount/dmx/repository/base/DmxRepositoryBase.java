@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.hibernate.engine.config.spi.ConfigurationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +16,7 @@ import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.GUUISequenceGenerator;
 import net.paramount.common.ListUtility;
+import net.paramount.css.service.config.ConfigurationService;
 import net.paramount.css.service.config.ItemService;
 import net.paramount.css.service.org.BusinessUnitService;
 import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
@@ -192,11 +192,12 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		return fetchedObject;
 	}
 
-	protected Phone parsePhone(List<?> contactDataRow) {
+	protected Phone parsePhone(String countryCode, String areaCode, String number, String extention) {
 		Phone phone = new Phone();
-		phone.setMobile((String)contactDataRow.get(IDX_PHONE_MOBILE));
-		phone.setOffice((String)contactDataRow.get(IDX_PHONE_OFFICE));
-		phone.setHome((String)contactDataRow.get(IDX_PHONE_HOME));
+		phone.setCountryCode(countryCode);
+		phone.setAreaCode(areaCode);
+		phone.setExtention(extention);
+		phone.setNumber(number);
 		return phone;
 	}
 

@@ -45,14 +45,32 @@ public class Account extends BizObjectBase{
 	@Column(name = "name", nullable = false, length=200)
 	private String name;
 
-	@Embedded
+  @Embedded
   @AttributeOverrides({
-    @AttributeOverride(name="office", column=@Column(name="phone_office")),
-    @AttributeOverride(name="mobile", column=@Column(name="phone_mobile")),
-    @AttributeOverride(name="home", column=@Column(name="phone_home")),
-    @AttributeOverride(name="others", column=@Column(name="phone_others")),
+		@AttributeOverride(name = "countryCode", column = @Column(name = "PHONE_COUNTRYCODE")),
+		@AttributeOverride(name = "areaCode", column = @Column(name = "PHONE_AREACODE")),
+		@AttributeOverride(name = "number", column = @Column(name = "PHONE_NUMBER")),
+		@AttributeOverride(name = "extention", column = @Column(name = "PHONE_EXTENTION"))
   })
-  private Phone phone;
+  private Phone phone; // office - working phone
+
+  @Embedded
+  @AttributeOverrides({
+		@AttributeOverride(name = "countryCode", column = @Column(name = "HOME_PHONE_COUNTRYCODE")),
+		@AttributeOverride(name = "areaCode", column = @Column(name = "HOME_PHONE_AREACODE")),
+		@AttributeOverride(name = "number", column = @Column(name = "HOME_PHONE_NUMBER")),
+		@AttributeOverride(name = "extention", column = @Column(name = "HOME_PHONE_EXTENTION"))
+  })
+  private Phone homePhone;
+
+  @Embedded
+  @AttributeOverrides({
+		@AttributeOverride(name = "countryCode", column = @Column(name = "MOBILE_PHONE_COUNTRYCODE")),
+		@AttributeOverride(name = "areaCode", column = @Column(name = "MOBILE_PHONE_AREACODE")),
+		@AttributeOverride(name = "number", column = @Column(name = "MOBILE_PHONE_NUMBER")),
+		@AttributeOverride(name = "extention", column = @Column(name = "MOBILE_PHONE_EXTENTION"))
+  })
+  private Phone mobilePhone;
 
 	@Column(name = "website", length=100)
 	private String website;
@@ -146,14 +164,6 @@ public class Account extends BizObjectBase{
 
 	public void setTeam(Team team) {
 		this.team = team;
-	}
-
-	public Phone getPhone() {
-		return phone;
-	}
-
-	public void setPhone(Phone phone) {
-		this.phone = phone;
 	}
 
 	public String getWebsite() {
@@ -282,5 +292,29 @@ public class Account extends BizObjectBase{
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Phone getPhone() {
+		return phone;
+	}
+
+	public void setPhone(Phone phone) {
+		this.phone = phone;
+	}
+
+	public Phone getHomePhone() {
+		return homePhone;
+	}
+
+	public void setHomePhone(Phone homePhone) {
+		this.homePhone = homePhone;
+	}
+
+	public Phone getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public void setMobilePhone(Phone mobilePhone) {
+		this.mobilePhone = mobilePhone;
 	}
 }

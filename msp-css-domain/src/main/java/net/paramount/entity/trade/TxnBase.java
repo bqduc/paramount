@@ -12,7 +12,6 @@
 
 package net.paramount.entity.trade;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.AttributeOverride;
@@ -21,9 +20,6 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,13 +36,8 @@ import net.paramount.framework.entity.AuditBase;
  *
  */
 @MappedSuperclass
-public class TxnBase extends AuditBase implements Serializable {
+public class TxnBase extends AuditBase {
 	private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
 
     @Column(name="TXN_DATE")
     @Temporal(value=TemporalType.DATE)
@@ -114,37 +105,11 @@ public class TxnBase extends AuditBase implements Serializable {
     @Column(name="REFERENCE_DOC_TYPE")
     @Enumerated(EnumType.ORDINAL)
     private DocumentType referenceDocumentType;
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TxnBase)) {
-            return false;
-        }
-        TxnBase other = (TxnBase)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
 
     @Override
     public String toString() {
         return "com.ut.tekir.entities.TxnBase[id=" + getId() + "]";
     }
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Date getDate() {
 		return date;

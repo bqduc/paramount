@@ -24,6 +24,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import net.paramount.framework.entity.ObjectBase;
+
 /**
  * Entity class Province
  * 
@@ -31,14 +33,9 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name="PROVINCE")
-public class Province implements Serializable {
+public class Province extends ObjectBase {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
 
     @Column(name="PLATE", length=6, nullable=false )
 	@Size(max=6, min=1)
@@ -60,14 +57,6 @@ public class Province implements Serializable {
 	
     @Column(name="ISACTIVE")
 	private Boolean active = Boolean.TRUE;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getPlate() {
 		return plate;
@@ -118,26 +107,8 @@ public class Province implements Serializable {
 	}
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Province)) {
-            return false;
-        }
-        Province other = (Province)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return "com.ut.tekir.entities.Province[id=" + id + "]";
+        return "com.ut.tekir.entities.Province[id=" + getId() + "]";
     }
 
 }

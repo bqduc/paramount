@@ -20,15 +20,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,7 +32,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.entity.doc.Document;
 import net.paramount.model.GenderType;
 
 /**
@@ -89,7 +84,7 @@ public class ContactProfile extends Contact {
 	@Transient
 	private Set<ContactTeam> contactTeams = ListUtility.newHashSet();
 
-	@ManyToMany(cascade = {
+	/*@ManyToMany(cascade = {
       CascadeType.PERSIST,
       CascadeType.MERGE
   })
@@ -97,7 +92,7 @@ public class ContactProfile extends Contact {
       joinColumns = @JoinColumn(name = "contact_id"),
       inverseJoinColumns = @JoinColumn(name = "document_id")
   )
-  private List<Document> documents = ListUtility.createArrayList();
+  private List<Document> documents = ListUtility.createArrayList();*/
 	
 	public String getSaluation() {
 		return saluation;
@@ -187,14 +182,6 @@ public class ContactProfile extends Contact {
 
 	public void setBirthplace(String birthplace) {
 		this.birthplace = birthplace;
-	}
-
-	public List<Document> getDocuments() {
-		return documents;
-	}
-
-	public void setDocuments(List<Document> documents) {
-		this.documents = documents;
 	}
 
 	public String getFirstName() {

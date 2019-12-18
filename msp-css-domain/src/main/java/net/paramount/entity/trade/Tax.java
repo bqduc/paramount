@@ -30,8 +30,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Cascade;
-
 /**
  * Entity class Tax
  * 
@@ -73,8 +71,7 @@ public class Tax implements Serializable {
     @Column(name="IS_TRANSPORT_TAX")
     private Boolean isTransportTax = Boolean.FALSE;
     
-    @OneToMany(mappedBy="tax", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    @OneToMany(mappedBy="tax", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval=true)
     private List<TaxRate> rates = new ArrayList<TaxRate>();
     
     public Long getId() {

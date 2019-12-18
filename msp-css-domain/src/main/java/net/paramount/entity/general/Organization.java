@@ -12,7 +12,6 @@
 
 package net.paramount.entity.general;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +19,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -30,10 +26,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.Valid;
 
-import org.hibernate.annotations.Cascade;
-
 import net.paramount.embeddable.Address;
 import net.paramount.entity.contact.ContactPerson;
+import net.paramount.framework.entity.ObjectBase;
 
 /**
  * Holds hierarchy information of company.
@@ -43,15 +38,10 @@ import net.paramount.entity.contact.ContactPerson;
  */
 @Entity
 @Table(name="ORGANIZATION")
-public class Organization implements Serializable {
+public class Organization extends ObjectBase {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
-	
     @Column(name="CODE", nullable=false, unique=true, length=20)
     private String code;
     
@@ -105,41 +95,14 @@ public class Organization implements Serializable {
 	@Embedded
     private ContactPerson contactPerson;
     
-    @OneToMany(mappedBy="parentOrganization", cascade=CascadeType.ALL)
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    @OneToMany(mappedBy="parentOrganization", cascade=CascadeType.ALL, orphanRemoval=true)
     @OrderBy("id ASC")
     private List<Organization> childOrganizationList = new ArrayList<Organization>();
 
-	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Organization)) {
-            return false;
-        }
-        Organization other = (Organization)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-
     @Override
     public String toString() {
-        return "com.ut.tekir.entities.Organization[id=" + id + "]";
+        return "com.ut.tekir.entities.Organization[id=" + getId() + "]";
     }
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public City getCity() {
 		return city;

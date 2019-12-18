@@ -12,19 +12,15 @@
 
 package net.paramount.entity.doc;
 
-import java.io.Serializable;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.Valid;
 
 import net.paramount.entity.general.MoneySet;
+import net.paramount.framework.entity.ObjectBase;
 
 /**
  * Dökümanların satırlarındaki ortak bilgileri tutar.
@@ -33,17 +29,12 @@ import net.paramount.entity.general.MoneySet;
  * 
  */
 @MappedSuperclass
-public abstract class DocumentItemBase implements Serializable {
+public abstract class DocumentItemBase  extends ObjectBase {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5883594273417546375L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-	@Column(name = "ID")
-	private Long id;
 
     @Embedded
     @Valid
@@ -57,14 +48,6 @@ public abstract class DocumentItemBase implements Serializable {
 //	public abstract DocumentBase getOwner();
 //	public abstract void setOwner(DocumentBase document);
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public MoneySet getAmount() {
 		return amount;
 	}

@@ -20,14 +20,13 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
-
-import org.hibernate.annotations.ForeignKey;
 
 import net.paramount.entity.general.MoneySet;
 import net.paramount.entity.general.WorkBunch;
@@ -46,8 +45,7 @@ public class FoundationTxn extends TxnBase {
      * işlemin yapıldığı kurum bilgisidir.
      */
     @ManyToOne
-    @JoinColumn(name="FOUNDATION_ID")
-    @ForeignKey(name="FK_FOUNDATIONTXN_FOUNDATIONID")
+    @JoinColumn(name="FOUNDATION_ID", foreignKey = @ForeignKey(name = "FK_FOUNDATIONTXN_FOUNDATIONID"))
     private Foundation foundation;
     
 	/**
@@ -89,21 +87,18 @@ public class FoundationTxn extends TxnBase {
 	private BigDecimal added = BigDecimal.ZERO;
 	
 	@ManyToOne
-	@JoinColumn(name="PAYMENT_ACTION_TYPE_ID")
-	@ForeignKey(name="FK_FOUNDATIONTXN_PAYMENTACTIONTYPEID")
+	@JoinColumn(name="PAYMENT_ACTION_TYPE_ID", foreignKey = @ForeignKey(name = "FK_FOUNDATIONTXN_PAYMENTACTIONTYPEID"))
     private PaymentActionType paymentActionType;
     
 	/**
 	 * Satırı oluşturan masraf veya indirim bilgisini tutar.
 	 */
 	@ManyToOne
-	@JoinColumn(name="PRODUCT_ID")
-	@ForeignKey(name="FK_FOUNDATIONTXN_PRODUCTID")
+	@JoinColumn(name="PRODUCT_ID", foreignKey = @ForeignKey(name = "FK_FOUNDATIONTXN_PRODUCTID"))
 	private Product product;
 	
 	@ManyToOne
-    @JoinColumn(name="WORK_BUNCH_ID")
-    @ForeignKey(name="FK_FOUNDATIONTXN_WORKBUNCHID")
+    @JoinColumn(name="WORK_BUNCH_ID", foreignKey = @ForeignKey(name = "FK_FOUNDATIONTXN_WORKBUNCHID"))
 	private WorkBunch workBunch;
 	
     @Override

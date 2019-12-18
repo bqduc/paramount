@@ -36,15 +36,11 @@ import net.paramount.entity.general.Organization;
 import net.paramount.framework.entity.AuditBase;
 
 @Entity
-@Table(name="BANK_BRACNHES")
-public class BankBranch extends AuditBase implements Serializable {
+@Table(name="BANK_BRANCH")
+public class BankBranch extends AuditBase {
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-	private Long id;
 	
     @Column(name="CODE", length=20, unique=true, nullable=false)
     @Size(max=20, min=1)
@@ -92,18 +88,9 @@ public class BankBranch extends AuditBase implements Serializable {
 	@Embedded
 	private ContactPerson contactPerson = new ContactPerson();
 	/* s
-    @OneToMany(mappedBy = "bankBranch", cascade=CascadeType.ALL )
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    @OneToMany(mappedBy = "bankBranch", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<BankAccount> items = new ArrayList<BankAccount>();
 	 */
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
 	public Organization getOrganization() {
 		return organization;
@@ -202,26 +189,8 @@ public class BankBranch extends AuditBase implements Serializable {
 	}
 
 	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-	
-	@Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BankBranch)) {
-            return false;
-        }
-        BankBranch other = (BankBranch)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-	
-	@Override
     public String toString() {
-        return "com.ut.tekir.entities.BankBranch[id=" + id + "]";
+        return "com.ut.tekir.entities.BankBranch[id=" + getId() + "]";
     }
 /*
 	public List<BankAccount> getItems() {

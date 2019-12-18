@@ -12,14 +12,10 @@
 
 package net.paramount.entity.trade;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,15 +34,10 @@ import net.paramount.framework.entity.AuditBase;
  */
 @Entity
 @Table(name="BANKS")
-public class Bank extends AuditBase implements Serializable {
+public class Bank extends AuditBase {
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-	private Long id;
-	
     @Column(name="CODE", length=20, unique=true, nullable=false)
     @Size(max=20, min=1)
     @NotNull
@@ -85,18 +76,9 @@ public class Bank extends AuditBase implements Serializable {
     @Column(name="WEIGHT")
     private Integer weight;
     /*
-    @OneToMany(mappedBy = "bank", cascade=CascadeType.ALL )
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    @OneToMany(mappedBy = "bank", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<BankBranch> items = new ArrayList<BankBranch>();
      */
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCode() {
 		return code;
@@ -161,28 +143,10 @@ public class Bank extends AuditBase implements Serializable {
 	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
 	}
-
-	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-	
-	@Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Bank)) {
-            return false;
-        }
-        Bank other = (Bank)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
 	
 	@Override
     public String toString() {
-        return "com.ut.tekir.entities.Bank[id=" + id + "]";
+        return "com.ut.tekir.entities.Bank[id=" + getId() + "]";
     }
 
 	public String getSwiftCode() {

@@ -12,90 +12,57 @@
 
 package net.paramount.entity.stock;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import net.paramount.framework.entity.ObjectBase;
 
 /**
  * @author bilga
  *
  */
 @Entity
-@Table(name="PRODUCT_UNIT")
-public class ProductUnit implements Serializable {
-	
-    private static final long serialVersionUID = 1L;
+@Table(name = "PRODUCT_UNIT")
+public class ProductUnit extends ObjectBase {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
-    
-    @ManyToOne
-    @JoinColumn(name="PRODUCT_ID")
-    private Product product;
- 
-    @Column(name="CHANGE_UNIT")
-    private String changeUnit;
- 
-    @Column(name="CHANGE_UNIT_VALUE")
-    private BigDecimal changeUnitValue;
-    
-    @Column(name="MAIN_UNIT")
-    private String mainUnit;
-    
-    @Column(name="MAIN_UNIT_VALUE")
-    private BigDecimal mainUnitValue = BigDecimal.ONE;
-    
-    @Column(name="BARCODE1")
-    private String barcode1;
-    
-    @Column(name="BARCODE2")
-    private String barcode2;
-    
-    @Column(name="BARCODE3")
-    private String barcode3;
-    
-    @Column(name="DEFAULT_UNIT")
-    private Boolean defaultUnit = false;
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductUnit)) {
-            return false;
-        }
-        ProductUnit other = (ProductUnit)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
+	@ManyToOne
+	@JoinColumn(name = "PRODUCT_ID")
+	private Product product;
 
-    @Override
-    public String toString() {
-        return getChangeUnit();
-    }
+	@Column(name = "CHANGE_UNIT")
+	private String changeUnit;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@Column(name = "CHANGE_UNIT_VALUE")
+	private BigDecimal changeUnitValue;
 
-	public Long getId() {
-		return id;
+	@Column(name = "MAIN_UNIT")
+	private String mainUnit;
+
+	@Column(name = "MAIN_UNIT_VALUE")
+	private BigDecimal mainUnitValue = BigDecimal.ONE;
+
+	@Column(name = "BARCODE1")
+	private String barcode1;
+
+	@Column(name = "BARCODE2")
+	private String barcode2;
+
+	@Column(name = "BARCODE3")
+	private String barcode3;
+
+	@Column(name = "DEFAULT_UNIT")
+	private Boolean defaultUnit = false;
+
+	@Override
+	public String toString() {
+		return getChangeUnit();
 	}
 
 	public void setProduct(Product product) {

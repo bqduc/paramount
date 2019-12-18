@@ -22,7 +22,6 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -34,9 +33,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -54,7 +51,6 @@ import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.embeddable.Phone;
-import net.paramount.entity.doc.Document;
 import net.paramount.entity.general.BusinessUnit;
 import net.paramount.entity.general.Item;
 import net.paramount.framework.entity.BizObjectBase;
@@ -101,14 +97,32 @@ public class Contact extends BizObjectBase {
 
   @Embedded
   @AttributeOverrides({
-    @AttributeOverride(name="office", column=@Column(name="phone_office")),
-    @AttributeOverride(name="mobile", column=@Column(name="phone_mobile")),
-    @AttributeOverride(name="home", column=@Column(name="phone_home")),
-    @AttributeOverride(name="others", column=@Column(name="phone_others")),
+		@AttributeOverride(name = "countryCode", column = @Column(name = "PHONE_COUNTRYCODE")),
+		@AttributeOverride(name = "areaCode", column = @Column(name = "PHONE_AREACODE")),
+		@AttributeOverride(name = "number", column = @Column(name = "PHONE_NUMBER")),
+		@AttributeOverride(name = "extention", column = @Column(name = "PHONE_EXTENTION"))
   })
-  private Phone phone;
+  private Phone phone; // office - working phone
 
-	@Column(name="portal_name", length=50)
+  @Embedded
+  @AttributeOverrides({
+		@AttributeOverride(name = "countryCode", column = @Column(name = "HOME_PHONE_COUNTRYCODE")),
+		@AttributeOverride(name = "areaCode", column = @Column(name = "HOME_PHONE_AREACODE")),
+		@AttributeOverride(name = "number", column = @Column(name = "HOME_PHONE_NUMBER")),
+		@AttributeOverride(name = "extention", column = @Column(name = "HOME_PHONE_EXTENTION"))
+  })
+  private Phone homePhone;
+
+  @Embedded
+  @AttributeOverrides({
+		@AttributeOverride(name = "countryCode", column = @Column(name = "MOBILE_PHONE_COUNTRYCODE")),
+		@AttributeOverride(name = "areaCode", column = @Column(name = "MOBILE_PHONE_AREACODE")),
+		@AttributeOverride(name = "number", column = @Column(name = "MOBILE_PHONE_NUMBER")),
+		@AttributeOverride(name = "extention", column = @Column(name = "MOBILE_PHONE_EXTENTION"))
+  })
+  private Phone mobilePhone;
+
+  @Column(name="portal_name", length=50)
 	private String portalName;
 
 	@JsonIgnore
@@ -211,7 +225,7 @@ public class Contact extends BizObjectBase {
 	@Transient
 	private Set<ContactTeam> contactTeams = ListUtility.newHashSet();
 
-	@Builder.Default
+	/*@Builder.Default
 	@ManyToMany(cascade = {
       CascadeType.PERSIST,
       CascadeType.MERGE
@@ -220,7 +234,7 @@ public class Contact extends BizObjectBase {
       joinColumns = @JoinColumn(name = "contact_id"),
       inverseJoinColumns = @JoinColumn(name = "document_id")
   )
-  private List<Document> documents = ListUtility.createArrayList();
+  private List<Document> documents = ListUtility.createArrayList();*/
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_user_id")
@@ -451,14 +465,6 @@ public class Contact extends BizObjectBase {
 		this.birthplace = birthplace;
 	}
 
-	public List<Document> getDocuments() {
-		return documents;
-	}
-
-	public void setDocuments(List<Document> documents) {
-		this.documents = documents;
-	}
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -561,6 +567,22 @@ public class Contact extends BizObjectBase {
 
 	public void setJobInfo(Item jobInfo) {
 		this.jobInfo = jobInfo;
+	}
+
+	public Phone getHomePhone() {
+		return homePhone;
+	}
+
+	public void setHomePhone(Phone homePhone) {
+		this.homePhone = homePhone;
+	}
+
+	public Phone getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public void setMobilePhone(Phone mobilePhone) {
+		this.mobilePhone = mobilePhone;
 	}
 
 }

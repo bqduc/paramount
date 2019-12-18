@@ -12,14 +12,9 @@
 
 package net.paramount.entity.stock;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -27,6 +22,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import net.paramount.entity.general.Quantity;
+import net.paramount.framework.entity.ObjectBase;
 
 /**
  * Entity class ProductTransferItem
@@ -35,14 +31,9 @@ import net.paramount.entity.general.Quantity;
  */
 @Entity
 @Table(name="PRODUCT_TRANSFER_ITEM")
-public class ProductTransferItem implements Serializable {
+public class ProductTransferItem extends ObjectBase {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
 
     @ManyToOne
     @JoinColumn(name="OWNER_ID")
@@ -62,14 +53,6 @@ public class ProductTransferItem implements Serializable {
     @Embedded
     @Valid
     private Quantity quantity = new Quantity();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public ProductTransfer getOwner() {
         return owner;
@@ -109,24 +92,6 @@ public class ProductTransferItem implements Serializable {
 
     public void setQuantity(Quantity quantity) {
         this.quantity = quantity;
-    }
-        
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductTransferItem)) {
-            return false;
-        }
-        ProductTransferItem other = (ProductTransferItem)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
     }
 
     @Override

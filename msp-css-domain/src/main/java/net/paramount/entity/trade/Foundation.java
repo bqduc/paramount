@@ -16,6 +16,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,8 +25,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.ForeignKey;
 
 import net.paramount.entity.contact.Contact;
 import net.paramount.framework.entity.AuditBase;
@@ -37,14 +36,9 @@ import net.paramount.framework.entity.AuditBase;
  */
 @Entity
 @Table(name="FOUNDATION")
-public class Foundation extends AuditBase implements Serializable {
+public class Foundation extends AuditBase {
 
 	private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-	private Long id;
 	
     @Column(name="CODE", length=20, unique=true, nullable=false)
     @Size(max=20, min=1)
@@ -65,8 +59,7 @@ public class Foundation extends AuditBase implements Serializable {
 	 * Kurumun bağlı olduğu cari bilgisini tutar.
 	 */
 	@ManyToOne
-	@JoinColumn(name="CONTACT_ID")
-	@ForeignKey(name="FK_FOUNDATION_CONTACTID")
+	@JoinColumn(name="CONTACT_ID", foreignKey = @ForeignKey(name = "FK_FOUNDATION_CONTACTID"))
 	private Contact contact;
 	
 	/**
@@ -76,35 +69,9 @@ public class Foundation extends AuditBase implements Serializable {
 	private Integer maxPeriod = 1;
 
 	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-	
-	@Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Foundation)) {
-            return false;
-        }
-        Foundation other = (Foundation)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-	
-	@Override
     public String toString() {
-        return "com.ut.tekir.entities.Foundation[id=" + id + "]";
+        return "com.ut.tekir.entities.Foundation[id=" + getId() + "]";
     }
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCode() {
 		return code;

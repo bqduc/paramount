@@ -12,7 +12,6 @@
 
 package net.paramount.entity.doc;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.AttributeOverride;
@@ -30,6 +29,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import net.paramount.entity.general.MoneySet;
+import net.paramount.framework.entity.ObjectBase;
 
 
 /**
@@ -40,13 +40,8 @@ import net.paramount.entity.general.MoneySet;
  */
 @Entity
 @Table(name="DOCUMENT_MATCH")
-public class DocumentMatch implements Serializable {
+public class DocumentMatch extends ObjectBase {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-	private Long id;
 
 	@Column(name="DOCUMENT_TYPE")
 	@Enumerated(EnumType.ORDINAL)
@@ -84,14 +79,6 @@ public class DocumentMatch implements Serializable {
 
     @Column(name="MATCHED_DOCUMENT_ID")
     private Long matchedDocumentId;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Date getMatchDate() {
 		return matchDate;
@@ -134,26 +121,8 @@ public class DocumentMatch implements Serializable {
 	}
 
 	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-	@Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DocumentMatch)) {
-            return false;
-        }
-        DocumentMatch other = (DocumentMatch)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-
-	@Override
     public String toString() {
-        return "com.ut.tekir.entities.DocumentMatch[id=" + id + "]";
+        return "com.ut.tekir.entities.DocumentMatch[id=" + getId() + "]";
     }
 
     public Long getMatchedDocumentId() {

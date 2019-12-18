@@ -12,16 +12,13 @@
 
 package net.paramount.entity.general;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -29,9 +26,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.ForeignKey;
-
 import net.paramount.entity.contact.Contact;
+import net.paramount.framework.entity.ObjectBase;
 
 /**
  * İş takibi bilgilerini tutan model sınıfımızdır.
@@ -41,18 +37,12 @@ import net.paramount.entity.contact.Contact;
  */
 @Entity
 @Table(name="WORK_BUNCH")
-public class WorkBunch implements Serializable{
+public class WorkBunch extends ObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name="ID")
-    private Long id;
-
     @ManyToOne
-    @JoinColumn(name="CONTACT_ID")
-    @ForeignKey(name="FK_WORKBUNCH_CONTACTID")
+    @JoinColumn(name="CONTACT_ID", foreignKey = @ForeignKey(name = "FK_WORKBUNCH_CONTACTID"))
     private Contact contact;
     
     @Column(name="INFO")
@@ -92,24 +82,6 @@ public class WorkBunch implements Serializable{
 		getChildList().add(new WorkBunch(this));
 	}
  */
-    
-	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof WorkBunch)) {
-            return false;
-        }
-        WorkBunch other = (WorkBunch)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
 
     @Override
     public String toString() {
@@ -120,14 +92,6 @@ public class WorkBunch implements Serializable{
         return "[" + getCode() + "] " + getName();
     }
     
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Contact getContact() {
 		return contact;
 	}

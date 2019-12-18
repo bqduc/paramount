@@ -33,15 +33,10 @@ import net.paramount.framework.entity.AuditBase;
 
 @Entity
 @Table(name="BANK_ACCOUNTS")
-public class BankAccount extends AuditBase implements Serializable {
+public class BankAccount extends AuditBase {
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-	private Long id;
-	
 	@ManyToOne
 	@JoinColumn(name="BANK_BRANCH_ID")
 	private BankBranch bankBranch;
@@ -103,14 +98,6 @@ public class BankAccount extends AuditBase implements Serializable {
     @Column(name="WEIGHT")
     private Integer weight = 10;
     
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	public BankBranch getBankBranch() {
 		return bankBranch;
 	}
@@ -215,27 +202,10 @@ public class BankAccount extends AuditBase implements Serializable {
 		this.accountDepositType = accountDepositType;
 	}
 
-	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-	@Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BankAccount)) {
-            return false;
-        }
-        BankAccount other = (BankAccount)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
 	
 	@Override
     public String toString() {
-        return "com.ut.tekir.entities.BankAccount[id=" + id + "]";
+        return "com.ut.tekir.entities.BankAccount[id=" + getId() + "]";
     }
 
 	public AccountOwnerType getAccountOwnerType() {

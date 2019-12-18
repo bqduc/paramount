@@ -17,9 +17,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -38,84 +35,53 @@ import net.paramount.framework.entity.AuditBase;
  * @author haky
  */
 @Entity
-@Table(name="WAREHOUSE")
+@Table(name = "WAREHOUSE")
 public class Warehouse extends AuditBase implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
-    
-    @Column(name="CODE", length=20, nullable=false, unique=true) 
-    @Size(max=20, min=1)
-    private String code;
-    
-    @Column(name="NAME", length=50) 
-    @Size(max=50, min=1)
-    private String name;
-    
-    @Column(name="INFO") 
-    private String info;
-  
-    @Column(name="SYSTEM")
-    private Boolean system = Boolean.FALSE;
-    
-    @Column(name="ISACTIVE")
-    private Boolean active = Boolean.TRUE;
+	@Column(name = "CODE", length = 20, nullable = false, unique = true)
+	@Size(max = 20, min = 1)
+	private String code;
 
-    @Embedded
-    private Address address = new Address();
-    
-    @ManyToOne
-    @JoinColumn(name="CITY_ID")
-    private City city;
-    
-    @ManyToOne
-    @JoinColumn(name="PROVINCE_ID")
-    private Province province;
+	@Column(name = "NAME", length = 50)
+	@Size(max = 50, min = 1)
+	private String name;
 
-    // yetkili kisi
-    @Embedded
-    private ContactPerson contactPerson;
+	@Column(name = "INFO")
+	private String info;
 
-    @ManyToOne
-    @JoinColumn(name="ORGANIZATION_ID")
-    private Organization organization;
+	@Column(name = "SYSTEM")
+	private Boolean system = Boolean.FALSE;
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
+	@Column(name = "ISACTIVE")
+	private Boolean active = Boolean.TRUE;
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Warehouse)) {
-            return false;
-        }
-        Warehouse other = (Warehouse)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
+	@Embedded
+	private Address address = new Address();
 
-    @Override
-    public String toString() {
-        return "com.ut.tekir.entities.Warehouse[id=" + getId() + "]";
-    }
+	@ManyToOne
+	@JoinColumn(name = "CITY_ID")
+	private City city;
 
-    public Long getId() {
-        return id;
-    }
+	@ManyToOne
+	@JoinColumn(name = "PROVINCE_ID")
+	private Province province;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public Organization getOrganization() {
+	// yetkili kisi
+	@Embedded
+	private ContactPerson contactPerson;
+
+	@ManyToOne
+	@JoinColumn(name = "ORGANIZATION_ID")
+	private Organization organization;
+
+	@Override
+	public String toString() {
+		return "com.ut.tekir.entities.Warehouse[id=" + getId() + "]";
+	}
+
+	public Organization getOrganization() {
 		return organization;
 	}
 
@@ -124,52 +90,52 @@ public class Warehouse extends AuditBase implements Serializable {
 	}
 
 	public String getCode() {
-        return code;
-    }
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getInfo() {
-        return info;
-    }
+	public String getInfo() {
+		return info;
+	}
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
+	public void setInfo(String info) {
+		this.info = info;
+	}
 
-    public Boolean getSystem() {
-        return system;
-    }
+	public Boolean getSystem() {
+		return system;
+	}
 
-    public void setSystem(Boolean system) {
-        this.system = system;
-    }
+	public void setSystem(Boolean system) {
+		this.system = system;
+	}
 
-    public Boolean getActive() {
-        return active;
-    }
+	public Boolean getActive() {
+		return active;
+	}
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
-    public Address getAddress() {
-        return address;
-    }
+	public Address getAddress() {
+		return address;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
 	public City getCity() {
 		return city;
@@ -197,5 +163,5 @@ public class Warehouse extends AuditBase implements Serializable {
 	public void setContactPerson(ContactPerson contactPerson) {
 		this.contactPerson = contactPerson;
 	}
-    
+
 }

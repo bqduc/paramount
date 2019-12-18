@@ -23,6 +23,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,8 +34,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.ForeignKey;
 
 import net.paramount.entity.doc.DocumentType;
 import net.paramount.entity.general.MoneySet;
@@ -117,8 +116,7 @@ public class TaxTxn extends AuditBase implements Serializable{
     private BigDecimal rate = BigDecimal.ZERO;
     
     @ManyToOne
-    @JoinColumn(name="WORK_BUNCH_ID")
-    @ForeignKey(name="FK_TAXTXN_WORKBUNCHID")
+    @JoinColumn(name="WORK_BUNCH_ID", foreignKey = @ForeignKey(name = "FK_TAXTXN_WORKBUNCHID"))
     private WorkBunch workBunch;
 
     /**

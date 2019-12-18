@@ -22,6 +22,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,8 +34,6 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.ForeignKey;
-
 import net.paramount.entity.doc.DocumentType;
 import net.paramount.entity.general.MoneySet;
 import net.paramount.entity.general.WorkBunch;
@@ -42,15 +41,10 @@ import net.paramount.framework.entity.AuditBase;
 
 @Entity
 @Table(name="BANK_TXN")
-public class BankTxn extends AuditBase implements Serializable{
+public class BankTxn extends AuditBase {
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-	private Long id;
-	
     @ManyToOne
     @JoinColumn(name="BANK_ACCOUNT_ID")
     private BankAccount bankAccount;
@@ -116,17 +110,8 @@ public class BankTxn extends AuditBase implements Serializable{
     private AdvanceProcessType processType = AdvanceProcessType.Normal;
     
     @ManyToOne
-    @JoinColumn(name="WORK_BUNCH_ID")
-    @ForeignKey(name="FK_BANKTXN_WORKBUNCHID")
+    @JoinColumn(name="WORK_BUNCH_ID", foreignKey = @ForeignKey(name = "FK_BANKTXN_WORKBUNCHID"))
     private WorkBunch workBunch;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public BankAccount getBankAccount() {
 		return bankAccount;
@@ -225,26 +210,8 @@ public class BankTxn extends AuditBase implements Serializable{
     }
 
 	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-	
-	@Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BankTxn)) {
-            return false;
-        }
-        BankTxn other = (BankTxn)object;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-	
-	@Override
     public String toString() {
-        return "com.ut.tekir.entities.BankTxn[id=" + id + "]";
+        return "com.ut.tekir.entities.BankTxn[id=" + getId() + "]";
     }
 
 	public void setAdverseCode(String adverseCode) {

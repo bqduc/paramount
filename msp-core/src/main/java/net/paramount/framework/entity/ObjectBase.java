@@ -46,6 +46,14 @@ public abstract class ObjectBase implements Entity {
 		return result;
 	}
 
+  /**
+   * Determines whether another object is equal to this Contact.  The result is 
+   * <code>true</code> if and only if the argument is not null and is a Customer object that 
+   * has the same id field values as this object.
+   * @param object the reference object with which to compare
+   * @return <code>true</code> if this object is the same as the argument;
+   * <code>false</code> otherwise.
+   */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -13,21 +13,16 @@
 package net.paramount.entity.doc;
 
 import java.util.Date;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.Builder;
-import net.paramount.common.ListUtility;
 import net.paramount.framework.entity.AuditBase;
 import net.paramount.model.GeneralStatus;
 
@@ -126,17 +121,13 @@ public abstract class DocumentBase extends AuditBase implements Document {
     @Enumerated(EnumType.ORDINAL)
   	private GeneralStatus status;
 
-  	@Builder.Default
-  	@OneToMany(mappedBy="document", cascade = CascadeType.ALL)
-  	private Set<DocumentAttachment> attachments = ListUtility.newHashSet();
-
   	@Column(name = "description", columnDefinition="TEXT")
   	private String description;
     
     
     public abstract DocumentType getDocumentType();
 
-    public abstract Long getId();
+    //public abstract Long getId();
 
 	@Override
 	public String toString() {
@@ -147,25 +138,6 @@ public abstract class DocumentBase extends AuditBase implements Document {
 			  .append("]");
 		return result.toString();
 	}
-
-    @Override
-    public boolean equals(Object object) {
-    	// TODO: Warning - this method won't work in the case the id fields are not set
-        if ( !getClass().isInstance(object)) {
-            return false;
-        }
-
-        DocumentBase other = (DocumentBase)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.getId().equals(other.getId()))) return false;
-        return true;
-    }
-	
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
 
     /** Creates a new instance of DocumentBase */
     public DocumentBase() {
@@ -363,14 +335,6 @@ public abstract class DocumentBase extends AuditBase implements Document {
 
 	public void setStatus(GeneralStatus status) {
 		this.status = status;
-	}
-
-	public Set<DocumentAttachment> getAttachments() {
-		return attachments;
-	}
-
-	public void setAttachments(Set<DocumentAttachment> attachments) {
-		this.attachments = attachments;
 	}
 
 	public String getDescription() {

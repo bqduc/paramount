@@ -22,6 +22,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import net.paramount.framework.entity.ObjectBase;
+
 /**
  * 
  * @author ducbq
@@ -30,14 +32,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="EXPENSE_TYPE")
-public class ExpenseType implements Serializable {
+public class ExpenseType extends ObjectBase {
 
 	private static final long serialVersionUID = 1L;
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-	private Long id;
 	
     @Column(name="CODE", length=20, unique=true, nullable=false)
 	private String code;
@@ -50,14 +47,6 @@ public class ExpenseType implements Serializable {
     
     @Column(name="ISACTIVE")
 	private Boolean active = Boolean.TRUE;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCode() {
 		return code;
@@ -92,29 +81,8 @@ public class ExpenseType implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (this.id != null ? this.id.hashCode() : 0);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are
-		// not set
-		if (!(object instanceof ExpenseType)) {
-			return false;
-		}
-		ExpenseType other = (ExpenseType) object;
-		if (this.id != other.id
-				&& (this.id == null || !this.id.equals(other.id)))
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
-		return "com.ut.tekir.entities.ExpenseType[id=" + id + "]";
+		return "com.ut.tekir.entities.ExpenseType[id=" + getId() + "]";
 	}
 	
 	/**

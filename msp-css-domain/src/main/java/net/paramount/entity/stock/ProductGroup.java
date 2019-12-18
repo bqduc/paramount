@@ -12,97 +12,63 @@
 
 package net.paramount.entity.stock;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
+import net.paramount.framework.entity.ObjectBase;
+
 /**
- * Ürün/hizmet için stok grubu bilgisini tutan sınıfımızdır.
- * (Bilim optik için marka bilgisini tutuyor olacak.) 
+ * Ürün/hizmet için stok grubu bilgisini tutan sınıfımızdır. (Bilim optik için marka bilgisini tutuyor olacak.)
+ * 
  * @author sinan.yumak
  */
 @Entity
-@Table(name="PRODUCT_GROUP")
-public class ProductGroup implements Serializable {
+@Table(name = "PRODUCT_GROUP")
+public class ProductGroup extends ObjectBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,generator="genericSeq")
-    @Column(name="ID")
-    private Long id;
-	
-    @Column(name="CODE")
-    private String code;
+	@Column(name = "CODE")
+	private String code;
 
-    @Column(name="NAME")
-    private String name;
-    
-    @Column(name="INFO")
-    private String info;
-    
-    @Column(name="IS_ACTIVE")
-    private Boolean active = Boolean.TRUE;
-    
-    public Long getId() {
-        return id;
-    }
+	@Column(name = "NAME")
+	private String name;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getCode() {
-        return code;
-    }
+	@Column(name = "INFO")
+	private String info;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	@Column(name = "IS_ACTIVE")
+	private Boolean active = Boolean.TRUE;
 
-    public String getInfo() {
-        return info;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public Boolean getActive() {
-        return active;
-    }
+	public String getInfo() {
+		return info;
+	}
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
 	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductGroup)) {
-            return false;
-        }
-        ProductGroup other = (ProductGroup)object;
-        if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.ut.tekir.entities.ProductGroup[id=" + getId() + "]";
-    }
+	public String toString() {
+		return "com.ut.tekir.entities.ProductGroup[id=" + getId() + "]";
+	}
 
 	public String getName() {
 		return name;
