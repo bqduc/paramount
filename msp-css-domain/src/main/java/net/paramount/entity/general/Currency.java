@@ -24,6 +24,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.paramount.framework.entity.BizObjectBase;
@@ -34,6 +35,7 @@ import net.paramount.global.GlobalConstants;
  * 
  * @author bqduc
  */
+@Builder
 @Data
 @Entity
 @Table(name = "currency")
@@ -55,41 +57,7 @@ public class Currency extends BizObjectBase {
 	private String name;
 	
 	@Lob
-	@Column(name = "description", columnDefinition = "TEXT")
+	@Column(name = "info", columnDefinition = "TEXT")
 	@Type(type = "org.hibernate.type.TextType")
-	private String description;
-
-	public String getCode() {
-		return code;
-	}
-
-	public Currency setCode(String code) {
-		this.code = code;
-		return this;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public Currency setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Currency setName(String name) {
-		this.name = name;
-		return this;
-	}
-
-	public static Currency getInstance(String code, String name){
-		Currency fetchedObject = new Currency();
-		fetchedObject.setCode(code);
-		fetchedObject.setName(name);
-		return fetchedObject;
-	}
+	private String info;
 }

@@ -27,6 +27,7 @@ import net.paramount.framework.component.ComponentBase;
 import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.osx.helper.OfficeSuiteServiceProvider;
+import net.paramount.osx.model.ConfigureUnmarshallObjects;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.MarshallingObjects;
 import net.paramount.osx.model.OSXConstants;
@@ -66,6 +67,9 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 	@Inject
 	protected OfficeSuiteServiceProvider officeSuiteServiceProvider;
 
+	@Inject
+	protected BusinessUnitDataManager businessUnitDataManager;
+
 	@SuppressWarnings("unchecked")
 	public ExecutionContext marshallData(ExecutionContext executionContext) throws DataLoadingException {
 		List<String> databookIdList = null;
@@ -90,14 +94,19 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 			if (null == executionContext.get(OSXConstants.MARSHALLED_CONTAINER))
 				return executionContext;
 
+			if (marshallingObjects.contains(ConfigureUnmarshallObjects.BUSINESS_UNITS.getDataSheetId())){
+				//Should be a thread
+				businessUnitDataManager.unmarshallBusinessObjects(executionContext);
+			}
+			
 			if (marshallingObjects.contains(MarshallingObjects.INVENTORY_ITEMS.getName()) || marshallingObjects.contains(MarshallingObjects.MEASURE_UNITS.getName())){
 				//Should be a thread
-				itemDmxRepository.marshallingBusinessObjects(executionContext);
+				itemDmxRepository.unmarshallBusinessObjects(executionContext);
 			}
 
 			if (marshallingObjects.contains(MarshallingObjects.CONTACTS.name())){
 				//Should be a thread
-				contactDmxRepository.marshallingBusinessObjects(executionContext);
+				contactDmxRepository.unmarshallBusinessObjects(executionContext);
 			}
 		} catch (Exception e) {
 			 throw new DataLoadingException (e);
@@ -185,7 +194,7 @@ public class GlobalDmxRepositoryManager extends ComponentBase {
 				dataWorkbook = (DataWorkbook)osxBucketContainer.get(dataWorkbookId);
 			}
 
-			contacts = contactDmxRepository.marshallingBusinessObjects(dataWorkbook, datasheetIdList);
+			contacts = contactDmxRepository.unmarshallBusinessObjects(dataWorkbook, datasheetIdList);
 		} catch (Exception e) {
 			 throw new MspDataException (e);
 		}

@@ -14,6 +14,7 @@ public enum ConfigureMarshallObjects {
 	LANGUAGES("languages", ""),
 	INVENTORY_ITEMS("inventory-items", "load-inventory-items"),
 	MEASURE_UNITS("Measure Units", "load-measure-units"),
+	BUSINESS_UNITS("Business Units", "load-business-units"),
 
 	;
 	private String object;

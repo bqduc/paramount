@@ -75,7 +75,7 @@ public class ContactRestController extends BaseRestController<Contact> {
 				.code("CC0191019")
 				.accountName("Dummy Contact Clazz")
 				.title("Dummy Class")
-				.description("This is a dummy entity. ")
+				.info("This is a dummy entity. ")
 				.build();
 		doCreateBusinessObject(account);
 	}

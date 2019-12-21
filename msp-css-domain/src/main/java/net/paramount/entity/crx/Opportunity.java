@@ -96,8 +96,8 @@ public class Opportunity extends BizObjectBase{
 	@JoinColumn(name = "b2c_contact_id")
 	private Contact b2cContact;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
@@ -109,14 +109,6 @@ public class Opportunity extends BizObjectBase{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Currency getCurrency() {
@@ -229,5 +221,13 @@ public class Opportunity extends BizObjectBase{
 
 	public void setB2cContact(Contact b2cContact) {
 		this.b2cContact = b2cContact;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }

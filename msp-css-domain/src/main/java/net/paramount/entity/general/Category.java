@@ -28,6 +28,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.paramount.framework.entity.BizObjectBase;
@@ -38,6 +39,7 @@ import net.paramount.global.GlobalConstants;
  * 
  * @author bqduc
  */
+@Builder
 @Data
 @Entity
 @Table(name = "category")
@@ -58,8 +60,8 @@ public class Category extends BizObjectBase {
 	@Column(name="translated_name")
 	private String translatedName;
 
-	@Column(name = "description", length=2048)
-	private String description;
+	@Column(name = "info", length=2048)
+	private String info;
 
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "issue_date")
@@ -72,70 +74,4 @@ public class Category extends BizObjectBase {
 	@ManyToOne
 	@JoinColumn(name = "department_id")
 	private Department department;
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Date getIssueDate() {
-		return issueDate;
-	}
-
-	public String getTranslatedName() {
-		return translatedName;
-	}
-
-	public void setTranslatedName(String translatedName) {
-		this.translatedName = translatedName;
-	}
-
-	public void setIssueDate(Date dateOfPublication) {
-		this.issueDate = dateOfPublication;
-	}
-
-	public Category getParent() {
-		return parent;
-	}
-
-	public void setParent(Category parent) {
-		this.parent = parent;
-	}
-
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
-
-	public static Category getInstance(String code, String name, Department department){
-		Category fetchedObject = new Category();
-		fetchedObject.setCode(code);
-		fetchedObject.setName(name);
-		if (department != null){
-			fetchedObject.setDepartment(department);
-		}
-		return fetchedObject;
-	}
 }

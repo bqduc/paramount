@@ -17,6 +17,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,7 +49,8 @@ public abstract class DocumentBase extends AuditBase implements Document {
     @Size(max=15)
     private String code;
     
-    @Column(name="INFO")
+    @Lob
+    @Column(name="info", columnDefinition="TEXT")
     private String info;
     
     @Column(name="REFERENCE", length=10)
@@ -121,10 +123,6 @@ public abstract class DocumentBase extends AuditBase implements Document {
     @Enumerated(EnumType.ORDINAL)
   	private GeneralStatus status;
 
-  	@Column(name = "description", columnDefinition="TEXT")
-  	private String description;
-    
-    
     public abstract DocumentType getDocumentType();
 
     //public abstract Long getId();
@@ -335,14 +333,6 @@ public abstract class DocumentBase extends AuditBase implements Document {
 
 	public void setStatus(GeneralStatus status) {
 		this.status = status;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 }

@@ -69,9 +69,9 @@ public class Catalogue extends BizObjectBase {
 	private String translatedName;
 
 	@Lob
-	@Column(name = "description", columnDefinition = "TEXT")
+	@Column(name = "info", columnDefinition = "TEXT")
 	@Type(type = "org.hibernate.type.TextType")
-	private String description;
+	private String info;
 
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "issue_date")

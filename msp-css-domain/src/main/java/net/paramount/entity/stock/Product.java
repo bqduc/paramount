@@ -44,6 +44,9 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import lombok.Builder;
+import net.paramount.entity.general.Catalogue;
+import net.paramount.entity.general.Item;
 import net.paramount.entity.general.MoneySet;
 import net.paramount.entity.trade.DiscountOrExpense;
 import net.paramount.entity.trade.ExpenseType;
@@ -61,42 +64,43 @@ import net.paramount.global.GlobalConstants;
  * 
  * @author haky
  */
+@Builder
 @Entity
 @Table(name = "PRODUCT")
 public class Product extends AuditBase {
 
 	private static final long serialVersionUID = 1L;
 
+	@Builder.Default
 	@Column(name = "PRODUCT_TYPE")
 	@Enumerated(EnumType.ORDINAL)
 	private ProductType productType = ProductType.Product;
 
-	@Column(name = "CODE", nullable = false, unique = true, length = 20)
+	@Column(name = "CODE", nullable = false, unique = true, length = GlobalConstants.SIZE_CODE)
 	private String code;
 
 	@Size(max = 25, message = "{LongString}")
 	@Column(name = "default_code")
 	private String defaultCode;
 
-	@Column(name = "NAME", length = 80)
+	@Column(name = "NAME", length = GlobalConstants.SIZE_NAME)
 	private String name;
 
-	@Column(name = "INFO")
-	private String info;
-
+	@Builder.Default
 	@Column(name = "OPEN_DATE")
 	@Temporal(TemporalType.DATE)
 	private Date openDate = new Date();
 
 	@ManyToOne
-	@JoinColumn(name = "PRODUCT_CATEGORY_ID")
-	private ProductCategory category;
+	@JoinColumn(name = "product_category_id")
+	private ProductCategory productCategory;
+
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Catalogue category;
 
 	@Column(name = "SYSTEM")
 	private Boolean system;
-
-	@Column(name = "ISACTIVE")
-	private Boolean active = Boolean.TRUE;
 
 	@Column(name = "UNIT", length = 10)
 	private String unit;
@@ -110,13 +114,10 @@ public class Product extends AuditBase {
 	@Column(name = "BARCODE3", length = 80)
 	private String barcode3;
 
-	@Column(name = "IMAGE")
-	private String image;
-
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
-	@Column(name = "master_image")
-	private byte[] masterImage;
+	@Column(name = "image_default")
+	private byte[] imageDefault;
 
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
@@ -136,6 +137,7 @@ public class Product extends AuditBase {
 	@JoinColumn(name = "SELL_TAX_ID")
 	private Tax sellTax;
 
+	@Builder.Default
 	@Column(name = "TAX_INCLUDED")
 	private Boolean taxIncluded = Boolean.TRUE;
 
@@ -148,6 +150,7 @@ public class Product extends AuditBase {
 	@JoinColumn(name = "SELL_TAX2_ID")
 	private Tax sellTax2;
 
+	@Builder.Default
 	@Column(name = "TAX2_INCLUDED")
 	private Boolean tax2Included = Boolean.TRUE;
 
@@ -159,6 +162,7 @@ public class Product extends AuditBase {
 	@JoinColumn(name = "SELL_TAX3_ID")
 	private Tax sellTax3;
 
+	@Builder.Default
 	@Column(name = "TAX3_INCLUDED")
 	private Boolean tax3Included = Boolean.TRUE;
 
@@ -170,6 +174,7 @@ public class Product extends AuditBase {
 	@JoinColumn(name = "SELL_TAX4_ID")
 	private Tax sellTax4;
 
+	@Builder.Default
 	@Column(name = "TAX4_INCLUDED")
 	private Boolean tax4Included = Boolean.TRUE;
 
@@ -181,12 +186,15 @@ public class Product extends AuditBase {
 	@JoinColumn(name = "SELL_TAX5_ID")
 	private Tax sellTax5;
 
+	@Builder.Default
 	@Column(name = "TAX5_INCLUDED")
 	private Boolean tax5Included = Boolean.TRUE;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductUnit> productUnitList = new ArrayList<ProductUnit>();
 
+	@Builder.Default
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductDetail> detailList = new ArrayList<ProductDetail>();
 
@@ -208,6 +216,7 @@ public class Product extends AuditBase {
 	/**
 	 * Son alış fiyat bilgileridir.
 	 */
+	@Builder.Default
 	@Embedded
 	@Valid
 	@AttributeOverrides({ @AttributeOverride(name = "currency", column = @Column(name = "LAST_PURCHASE_PRICE_CCY")),
@@ -218,6 +227,7 @@ public class Product extends AuditBase {
 	/**
 	 * Son satış fiyat bilgileridir.
 	 */
+	@Builder.Default
 	@Embedded
 	@Valid
 	@AttributeOverrides({ @AttributeOverride(name = "currency", column = @Column(name = "LAST_SALE_PRICE_CCY")),
@@ -253,30 +263,25 @@ public class Product extends AuditBase {
 	 * Katkı masraf veya indirimlerinin yansıtılacağı hizmeti tutar.
 	 */
 	@ManyToOne
-	@JoinColumn(name = "REFERENCE_PRODUCT_ID", foreignKey = @ForeignKey(name = "FK_PRODUCT_REFERENCEPRODUCTID"))
+	@JoinColumn(name = "REF_PRODUCT_ID", foreignKey = @ForeignKey(name = "FK_PRODUCT_REFERENCEPRODUCTID"))
 	private Product referenceProduct;
 
-	public enum UnitPriceScale {
-		High(6), Low(2);
+	@ManyToOne
+	@JoinColumn(name = "ref_active_ingredient_id", foreignKey = @ForeignKey(name = "FK_active_ingredient"))
+	private Item activeIngredient;
 
-		private int scale;
+	@ManyToOne
+	@JoinColumn(name = "ref_usage_direction_id", foreignKey = @ForeignKey(name = "fk_usage_direction"))
+	private Item usageDirection;
 
-		UnitPriceScale(int scale) {
-			this.scale = scale;
-		}
-
-		public int getScale() {
-			return scale;
-		}
-
-		public static int defaultScale() {
-			return Low.scale;
-		}
-	};
+	@ManyToOne
+	@JoinColumn(name = "ref_servicing_business_unit_id", foreignKey = @ForeignKey(name = "fk_servicing_business_unit_id"))
+	private Item servicingBusinessUnit;
 
 	/**
 	 * Ürün veya hizmetin birim fiyatının scale(virgülden sonrası) bilgisini tutar.
 	 */
+	@Builder.Default
 	@Column(name = "UNIT_PRICE_SCALE")
 	@Enumerated(EnumType.ORDINAL)
 	private UnitPriceScale unitPriceScale = UnitPriceScale.Low;
@@ -301,12 +306,9 @@ public class Product extends AuditBase {
 	@Column(name = "packaging", length = 50)
 	private String packaging;
 
-	@Basic(fetch = FetchType.LAZY)
-	@Column(name = "master_photo", columnDefinition = "TEXT")
-	private String masterPhoto;
-
-	@Column(name = "description", columnDefinition = "TEXT")
-	private String description;
+	@Lob
+	@Column(name = "info", columnDefinition = "TEXT")
+	private String info;
 
 	@Column(name = "manufacturing_date")
 	private Date manufacturingDate;
@@ -385,23 +387,29 @@ public class Product extends AuditBase {
 	@Column(name = "issue_date")
 	private Date issueDate;
 
+	@Builder.Default
 	@Column(name = "reset_date")
 	private ZonedDateTime resetDate = null;
 
+	@Builder.Default
 	@Column(name = "sale_price")
 	@StrictlyPositiveNumber(message = "{PositiveSalePrice}")
 	private Double salePrice = 2d;
 
+	@Builder.Default
 	@Column(name = "purchase_price")
 	@StrictlyPositiveNumber(message = "{PositiveCost}")
 	private Double purchasePrice = 1d;
 
+	@Builder.Default
 	@Column(name = "weight")
 	private Double weight = 0d;
 
+	@Builder.Default
 	@Column(name = "volume")
 	private Double volume = 0d;
 
+	@Builder.Default
 	@Column(name = "lenght")
 	private Double length = 0d;
 
@@ -504,12 +512,76 @@ public class Product extends AuditBase {
 		this.info = info;
 	}
 
-	public ProductCategory getCategory() {
-		return category;
+	public String getDefaultCode() {
+		return defaultCode;
 	}
 
-	public void setCategory(ProductCategory category) {
-		this.category = category;
+	public void setDefaultCode(String defaultCode) {
+		this.defaultCode = defaultCode;
+	}
+
+	public byte[] getImageMedium() {
+		return imageMedium;
+	}
+
+	public void setImageMedium(byte[] imageMedium) {
+		this.imageMedium = imageMedium;
+	}
+
+	public Double getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(Double salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public Double getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(Double purchasePrice) {
+		this.purchasePrice = purchasePrice;
+	}
+
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+		this.weight = weight;
+	}
+
+	public Double getVolume() {
+		return volume;
+	}
+
+	public void setVolume(Double volume) {
+		this.volume = volume;
+	}
+
+	public Double getLength() {
+		return length;
+	}
+
+	public void setLength(Double length) {
+		this.length = length;
+	}
+
+	public Boolean getSaleOk() {
+		return saleOk;
+	}
+
+	public void setSaleOk(Boolean saleOk) {
+		this.saleOk = saleOk;
+	}
+
+	public Boolean getPurchaseOk() {
+		return purchaseOk;
+	}
+
+	public void setPurchaseOk(Boolean purchaseOk) {
+		this.purchaseOk = purchaseOk;
 	}
 
 	public Boolean getSystem() {
@@ -518,14 +590,6 @@ public class Product extends AuditBase {
 
 	public void setSystem(Boolean system) {
 		this.system = system;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
 	}
 
 	public String getUnit() {
@@ -742,14 +806,6 @@ public class Product extends AuditBase {
 		return barcode3;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
 	public void setProductUnitList(List<ProductUnit> productUnitList) {
 		this.productUnitList = productUnitList;
 	}
@@ -914,22 +970,6 @@ public class Product extends AuditBase {
 
 	public void setPackaging(String packaging) {
 		this.packaging = packaging;
-	}
-
-	public String getMasterPhoto() {
-		return masterPhoto;
-	}
-
-	public void setMasterPhoto(String masterPhoto) {
-		this.masterPhoto = masterPhoto;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Date getManufacturingDate() {
@@ -1146,5 +1186,53 @@ public class Product extends AuditBase {
 
 	public void setTaxList(List<ProductTax> taxList) {
 		this.taxList = taxList;
+	}
+
+	public ProductCategory getProductCategory() {
+		return productCategory;
+	}
+
+	public void setProductCategory(ProductCategory productCategory) {
+		this.productCategory = productCategory;
+	}
+
+	public Catalogue getCategory() {
+		return category;
+	}
+
+	public void setCategory(Catalogue category) {
+		this.category = category;
+	}
+
+	public byte[] getImageDefault() {
+		return imageDefault;
+	}
+
+	public void setImageDefault(byte[] imageDefault) {
+		this.imageDefault = imageDefault;
+	}
+
+	public Item getActiveIngredient() {
+		return activeIngredient;
+	}
+
+	public void setActiveIngredient(Item activeIngredient) {
+		this.activeIngredient = activeIngredient;
+	}
+
+	public Item getUsageDirection() {
+		return usageDirection;
+	}
+
+	public void setUsageDirection(Item usageDirection) {
+		this.usageDirection = usageDirection;
+	}
+
+	public Item getServicingBusinessUnit() {
+		return servicingBusinessUnit;
+	}
+
+	public void setServicingBusinessUnit(Item servicingBusinessUnit) {
+		this.servicingBusinessUnit = servicingBusinessUnit;
 	}
 }

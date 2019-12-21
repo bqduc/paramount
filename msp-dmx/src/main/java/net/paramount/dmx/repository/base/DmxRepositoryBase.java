@@ -201,27 +201,27 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		return phone;
 	}
 
-	public ExecutionContext marshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
-		return doMarshallingBusinessObjects(executionContext);
+	public ExecutionContext unmarshallBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
+		return doUnmarshallBusinessObjects(executionContext);
 	}
 
-	public List<Entity> marshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
-		return doMarshallingBusinessObjects(dataWorkbook, datasheetIds);
+	public List<Entity> unmarshallBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+		return doUnmarshallBusinessObjects(dataWorkbook, datasheetIds);
 	}
 
-	public Entity marshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
-		return doMarshallBusinessObject(marshallingDataRow);
+	public Entity unmarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+		return doUnmarshallBusinessObject(marshallingDataRow);
 	}
 
-	protected List<Entity> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+	protected List<Entity> doUnmarshallBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
 		throw new DataLoadingException("Not implemented yet");
 	}
 
-	protected Entity doMarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+	protected Entity doUnmarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
 		throw new DataLoadingException("Not implemented yet");
 	}
 
-	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
+	protected ExecutionContext doUnmarshallBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
 		throw new DataLoadingException("Not implemented yet");
 	}
 }

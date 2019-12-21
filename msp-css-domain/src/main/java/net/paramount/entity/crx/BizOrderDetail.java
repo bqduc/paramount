@@ -130,8 +130,8 @@ public class BizOrderDetail extends BizObjectBase {
 	@Column(name = "serial_number", length=15)
 	private String serialNumber;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	public Product getEntry() {
 		return entry;
@@ -285,19 +285,19 @@ public class BizOrderDetail extends BizObjectBase {
 		this.serialNumber = serialNumber;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public BizOrder getBizOrder() {
 		return bizOrder;
 	}
 
 	public void setBizOrder(BizOrder bizOrder) {
 		this.bizOrder = bizOrder;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }

@@ -19,8 +19,8 @@ public interface BusinessUnitRepository extends BaseRepository<BusinessUnit, Lon
 			+ " LOWER(entity.code) like LOWER(CONCAT('%',:keyword,'%')) or "
 			+ " LOWER(entity.name) like LOWER(CONCAT('%',:keyword,'%')) or "
 			+ " LOWER(entity.nameLocal) like LOWER(CONCAT('%',:keyword,'%')) or "
-			+ " LOWER(entity.spoc.firstName) like LOWER(CONCAT('%',:keyword,'%')) or "
-			+ " LOWER(entity.spoc.lastName) like LOWER(CONCAT('%',:keyword,'%'))"
+			+ " LOWER(entity.spocUser.firstName) like LOWER(CONCAT('%',:keyword,'%')) or "
+			+ " LOWER(entity.spocUser.lastName) like LOWER(CONCAT('%',:keyword,'%'))"
 			+ ")"
 	)
 	Page<BusinessUnit> search(@Param("keyword") String keyword, Pageable pageable);

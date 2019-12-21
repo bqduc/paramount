@@ -100,8 +100,8 @@ public class Contract extends BizObjectBase{
 	@JoinColumn(name = "currency_id")
 	private Currency currency;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	public String getName() {
 		return name;
@@ -223,11 +223,11 @@ public class Contract extends BizObjectBase{
 		this.expirationNoticeDate = expirationNoticeDate;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getInfo() {
+		return info;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }

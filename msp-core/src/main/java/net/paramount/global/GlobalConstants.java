@@ -8,6 +8,8 @@ package net.paramount.global;
  *
  */
 public interface GlobalConstants {
+	final static short	SIZE_STRING_TINY = 50;
+
 	final static byte		SIZE_SERIAL = 15;
 	final static byte		SIZE_CODE_MIN = 3;
 	final static byte		SIZE_CODE = 20;//Including the backup part
@@ -22,4 +24,6 @@ public interface GlobalConstants {
 	final static byte		SIZE_ISBN_10 = 10;
 	final static byte		SIZE_ISBN_13 = 13;
 	final static byte		SIZE_BARCODE = 25;
+
+	final static short	SIZE_ADDRESS_DEFAULT = 250;
 }

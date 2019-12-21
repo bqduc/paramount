@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.Builder;
 import net.paramount.framework.entity.BizObjectBase;
 
 /**
@@ -28,6 +29,7 @@ import net.paramount.framework.entity.BizObjectBase;
  * 
  * @author bqduc
  */
+@Builder
 @Entity
 @Table(name = "aux_access_right")
 public class AccessRight extends BizObjectBase {
@@ -38,41 +40,23 @@ public class AccessRight extends BizObjectBase {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "description", columnDefinition="text")
-	private String description;
-
-	public AccessRight() {
-		super();
-	}
-
-	public AccessRight(String name) {
-		super();
-		this.name = name;
-	}
+	@Column(name = "info", columnDefinition="text")
+	private String info;
 
 	public String getName() {
 		return name;
 	}
 
-	public AccessRight setName(String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getInfo() {
+		return info;
 	}
 
-	public AccessRight setDescription(String description) {
-		this.description = description;
-		return this;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
-	public static AccessRight createInstance(String name, String description) {
-		AccessRight instance = new AccessRight()
-				.setName(name)
-				.setDescription(description);
-
-		return instance;
-	}
 }

@@ -30,8 +30,8 @@ public class Industry extends BizObjectBase{
 	@Column(name = "name", nullable = false, unique=true)
 	private String name;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	public String getName() {
 		return name;
@@ -41,12 +41,12 @@ public class Industry extends BizObjectBase{
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getInfo() {
+		return info;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 }

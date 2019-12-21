@@ -21,7 +21,7 @@ public interface CatalogueSubtypeRepository extends BaseRepository<CatalogueSubt
 			+ " LOWER(entity.code) like LOWER(CONCAT('%',:keyword,'%')) or "
 			+ " LOWER(entity.name) like LOWER(CONCAT('%',:keyword,'%')) or "
 			+ " LOWER(entity.translatedName) like LOWER(CONCAT('%',:keyword,'%')) or "
-			+ " LOWER(entity.description) like LOWER(CONCAT('%',:keyword,'%')) "
+			+ " LOWER(entity.info) like LOWER(CONCAT('%',:keyword,'%')) "
 			+ ")"
 	)
 	Page<CatalogueSubtype> search(@Param("keyword") String keyword, Pageable pageable);

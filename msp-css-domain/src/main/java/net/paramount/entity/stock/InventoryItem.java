@@ -26,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -94,8 +95,9 @@ public class InventoryItem extends BizObjectBase {
 	@Column(name = "master_photo", columnDefinition="TEXT")
 	private String masterPhoto;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Lob
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	@Column(name = "manufacturing_date")
 	private Date manufacturingDate;
@@ -239,14 +241,6 @@ public class InventoryItem extends BizObjectBase {
 
 	public void setPackaging(String packaging) {
 		this.packaging = packaging;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Date getManufacturingDate() {

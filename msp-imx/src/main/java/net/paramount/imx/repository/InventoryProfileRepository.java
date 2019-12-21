@@ -30,7 +30,7 @@ public interface InventoryProfileRepository extends BaseRepository<InventoryProf
 	@Query("SELECT entity FROM #{#entityName} entity WHERE ("
 			+ " LOWER(entity.code) like LOWER(CONCAT('%',:keyword,'%'))"
 			+ "or LOWER(entity.name) like LOWER(CONCAT('%',:keyword,'%')) "
-			+ "or LOWER(entity.description) like LOWER(CONCAT('%',:keyword,'%')) "
+			+ "or LOWER(entity.info) like LOWER(CONCAT('%',:keyword,'%')) "
 			+ ")"
 	)
 	Page<InventoryProfile> search(@Param("keyword") String keyword, Pageable pageable);

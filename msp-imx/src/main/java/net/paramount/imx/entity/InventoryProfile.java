@@ -132,8 +132,8 @@ public class InventoryProfile extends BizObjectBase {
 	@Column(name = "condition", columnDefinition="TEXT")
 	private String condition;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "photo", columnDefinition="TEXT")
@@ -363,14 +363,6 @@ public class InventoryProfile extends BizObjectBase {
 
 	public void setDateOfPublication(Date dateOfPublication) {
 		this.dateOfPublication = dateOfPublication;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getPhoto() {
@@ -993,5 +985,13 @@ public class InventoryProfile extends BizObjectBase {
 
 	public void setPrinterGroup(PrinterGroup printerGroup) {
 		this.printerGroup = printerGroup;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }

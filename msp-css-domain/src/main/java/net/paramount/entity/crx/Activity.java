@@ -31,6 +31,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.paramount.auth.entity.AuthenticateAccount;
@@ -43,6 +44,7 @@ import net.paramount.framework.entity.BizObjectBase;
  * 
  * @author bqduc
  */
+@Builder
 @Data
 @Entity
 @Table(name = "activity")
@@ -75,9 +77,9 @@ public class Activity extends BizObjectBase {
 	private String regarding;
 
 	@Lob
-	@Column(name = "description", columnDefinition = "TEXT")
+	@Column(name = "info", columnDefinition = "TEXT")
 	@Type(type = "org.hibernate.type.TextType")
-	private String description;
+	private String info;
 
 	@Column(name = "issue_date")
 	private Date dueDate;
@@ -125,33 +127,13 @@ public class Activity extends BizObjectBase {
 	@Column(name = "attachment3", columnDefinition="TEXT")
 	private String attachment3;
 
-	public String getDescription() {
-		return description;
-	}
-
-	public Activity setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public Activity setName(String name) {
-		this.name = name;
-		return this;
 	}
 
 	public Activity getParent() {
 		return parent;
 	}
-
-	public Activity setParent(Activity parent) {
-		this.parent = parent;
-		return this;
-	}
-
 	public String getSubject() {
 		return subject;
 	}
@@ -278,10 +260,5 @@ public class Activity extends BizObjectBase {
 
 	public void setCost(BigDecimal cost) {
 		this.cost = cost;
-	}
-
-	public static Activity instance(String code, String name){
-		return new Activity()
-				.setName(name);
 	}
 }

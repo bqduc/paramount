@@ -185,9 +185,9 @@ public class Contact extends BizObjectBase {
 	private ZonedDateTime resetDate;
 
 	@Lob
-	@Column(name = "description", columnDefinition = "TEXT")
+	@Column(name = "info", columnDefinition = "TEXT")
 	@Type(type = "org.hibernate.type.TextType")
-	private String description;
+	private String info;
 
 	@ManyToOne
 	@JoinColumn(name = "referal_contact_id")
@@ -325,14 +325,6 @@ public class Contact extends BizObjectBase {
 
 	public void setResetDate(ZonedDateTime resetDate) {
 		this.resetDate = resetDate;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public java.lang.Boolean getEmailOptOut() {
@@ -583,6 +575,14 @@ public class Contact extends BizObjectBase {
 
 	public void setMobilePhone(Phone mobilePhone) {
 		this.mobilePhone = mobilePhone;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 }

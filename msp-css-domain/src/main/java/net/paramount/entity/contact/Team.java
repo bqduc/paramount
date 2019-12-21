@@ -33,9 +33,9 @@ public class Team extends BizObjectBase {
 	private String name;
 
 	@Lob
-	@Column(name = "description", columnDefinition = "TEXT")
+	@Column(name = "info", columnDefinition = "TEXT")
 	@Type(type = "org.hibernate.type.TextType")
-	private String description;
+	private String info;
 
 	public String getName() {
 		return name;
@@ -45,11 +45,11 @@ public class Team extends BizObjectBase {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getInfo() {
+		return info;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }

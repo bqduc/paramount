@@ -50,7 +50,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 	private ContactService contactService;
 
 	@Override
-	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
+	protected ExecutionContext doUnmarshallBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
 		DataWorkbook dataWorkbook = null;
 		OsxBucketContainer osxBucketContainer = (OsxBucketContainer)executionContext.get(OSXConstants.MARSHALLED_CONTAINER);
 		if (CommonUtility.isEmpty(osxBucketContainer))
@@ -60,7 +60,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 			dataWorkbook = (DataWorkbook)osxBucketContainer.get(dmxCollaborator.getConfiguredContactWorkbookId());
 		}
 
-		List<Entity> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()));
+		List<Entity> marshalledObjects = unmarshallBusinessObjects(dataWorkbook, ListUtility.createDataList(dmxCollaborator.getConfiguredContactWorksheetIds()));
 		if (CommonUtility.isNotEmpty(marshalledObjects)) {
 			for (Entity entityBase :marshalledObjects) {
 				contactService.save((Contact)entityBase);
@@ -70,7 +70,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	protected List<Entity> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+	protected List<Entity> doUnmarshallBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
 		List<Entity> results = ListUtility.createDataList();
 		Contact currentContact = null;
 		if (null != datasheetIds) {
@@ -81,7 +81,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 				System.out.println("Processing sheet: " + dataWorksheet.getId());
 				for (Integer key :dataWorksheet.getKeys()) {
 					try {
-						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
+						currentContact = (Contact)unmarshallBusinessObject(dataWorksheet.getDataRow(key));
 					} catch (DataLoadingException e) {
 						e.printStackTrace();
 					}
@@ -95,7 +95,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 				System.out.println("Processing sheet: " + dataWorksheet.getId());
 				for (Integer key :dataWorksheet.getKeys()) {
 					try {
-						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
+						currentContact = (Contact)unmarshallBusinessObject(dataWorksheet.getDataRow(key));
 					} catch (DataLoadingException e) {
 						e.printStackTrace();
 					}
@@ -107,7 +107,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	protected Entity doMarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+	protected Entity doUnmarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
 		String firstName = "";
 		String lastName = "";
 		String fullName = (String)marshallingDataRow.get(1);
@@ -169,7 +169,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 						.code(faker.code().ean13())
 						.name(CommonUtility.stringTruncate(faker.company().name(), 200))
 						.phones(faker.phoneNumber().phoneNumber())
-						.description(faker.company().industry() + "\n" + faker.commerce().department() + "\n" + faker.company().profession())
+						.info(faker.company().industry() + "\n" + faker.commerce().department() + "\n" + faker.company().profession())
 						.address(addresses[i])
 						.build();
 				results.add(currentObject);
@@ -192,7 +192,7 @@ public class ContactRepositoryManager extends DmxRepositoryBase {
 						.firstName(CommonUtility.stringTruncate(faker.name().firstName(), 50))
 						.lastName(CommonUtility.stringTruncate(faker.name().lastName(), 150))
 						.code(CommonUtility.stringTruncate(faker.code().ean13(), 200))
-						.description(faker.company().industry() + "\n" + faker.commerce().department() + "\n" + faker.company().profession())
+						.info(faker.company().industry() + "\n" + faker.commerce().department() + "\n" + faker.company().profession())
 						.birthdate(faker.date().birthday())
 						.build();
 				currentObject.setId(i+28192L);

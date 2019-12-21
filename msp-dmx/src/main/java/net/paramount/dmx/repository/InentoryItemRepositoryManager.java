@@ -15,14 +15,17 @@ import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
 import net.paramount.css.service.general.CatalogueService;
 import net.paramount.css.service.stock.InventoryItemService;
+import net.paramount.css.service.stock.ProductService;
 import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.helper.DmxConfigurationHelper;
 import net.paramount.dmx.repository.base.DmxRepositoryBase;
 import net.paramount.entity.config.ConfigurationDetail;
 import net.paramount.entity.contact.Contact;
+import net.paramount.entity.general.BusinessUnit;
 import net.paramount.entity.general.Catalogue;
 import net.paramount.entity.general.Item;
 import net.paramount.entity.stock.InventoryItem;
+import net.paramount.entity.stock.Product;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
@@ -54,6 +57,9 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 	private InventoryItemService inventoryItemService; 
 	
 	@Inject
+	private ProductService productService; 
+
+	@Inject
 	private MeasureUnitRepositoryManager measureUnitRepositoryManager; 
 
 	@Inject 
@@ -64,7 +70,7 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 	private Map<String, Catalogue> catalogueMap = ListUtility.createMap();
 
 	@Override
-	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
+	protected ExecutionContext doUnmarshallBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
 		List<String> marshallingObjects = null;
 		DataWorkbook dataWorkbook = null;
 		OsxBucketContainer osxBucketContainer = null;
@@ -75,7 +81,7 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 
 			if (marshallingObjects.contains(MarshallingObjects.MEASURE_UNITS.getName())){
 				//Should be a thread
-				measureUnitRepositoryManager.marshallingBusinessObjects(executionContext);
+				measureUnitRepositoryManager.unmarshallBusinessObjects(executionContext);
 			}
 
 			String workingDatabookId = dmxCollaborator.getConfiguredDataCatalogueWorkbookId();
@@ -87,7 +93,7 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 				dataWorkbook = (DataWorkbook)osxBucketContainer.get(workingDatabookId);
 			}
 
-			List<Entity> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(workingDatabookId));
+			List<Entity> marshalledObjects = unmarshallBusinessObjects(dataWorkbook, ListUtility.createDataList(workingDatabookId));
 			if (CommonUtility.isNotEmpty(marshalledObjects)) {
 				for (Entity entityBase :marshalledObjects) {
 					inventoryItemService.saveOrUpdate((InventoryItem)entityBase);
@@ -101,7 +107,7 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	protected List<Entity> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+	protected List<Entity> doUnmarshallBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
 		Map<String, ConfigurationDetail> configDetailMap = null;
 		if (CommonUtility.isEmpty(configDetailIndexMap)) {
 			configDetailMap = dmxConfigurationHelper.fetchInventoryItemConfig(ConfigureMarshallObjects.INVENTORY_ITEMS.getConfigName());
@@ -111,18 +117,18 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 		}
 
 		List<Entity> results = ListUtility.createDataList();
-		Contact currentContact = null;
+		Contact currentBizObject = null;
 		DataWorksheet dataWorksheet = dataWorkbook.getDatasheet(ConfigureMarshallObjects.INVENTORY_ITEMS.getName());
 		if (CommonUtility.isNotEmpty(dataWorksheet)) {
 			System.out.println("Processing sheet: " + dataWorksheet.getId());
 			for (Integer key :dataWorksheet.getKeys()) {
 				try {
-					currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
+					currentBizObject = (Contact)unmarshallBusinessObject(dataWorksheet.getDataRow(key));
 				} catch (DataLoadingException e) {
 					e.printStackTrace();
 				}
-				if (null != currentContact) {
-					results.add(currentContact);
+				if (null != currentBizObject) {
+					results.add(currentBizObject);
 				}
 			}
 		}
@@ -160,7 +166,7 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	protected Entity doMarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+	protected Entity doUnmarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
 		Item masterUsageDirection = null, masterGenericDrug = null;
 		InventoryItem marshalledObject = null;
 		Catalogue bindingCategory = null;
@@ -185,6 +191,40 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 					.packaging((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")))
 					.masterGenericDrug(masterGenericDrug)
 					.masterUsageDirection(masterUsageDirection)
+					.build();
+		} catch (Exception e) {
+			log.error(e);
+		}
+
+		return marshalledObject;
+	}
+
+	protected Entity marshallProduct(List<?> marshallingDataRow) throws DataLoadingException {
+		Item usageDirection = null, activeIngredient = null;
+		BusinessUnit servicingBusinessUnit = null;
+		Product marshalledObject = null;
+		Catalogue bindingCategory = null;
+		try {
+			usageDirection = this.marshallItem((String)marshallingDataRow.get(DmxConfigurationHelper.idxUsageDirectionCode), 
+					(String)marshallingDataRow.get(DmxConfigurationHelper.idxUsageDirectionName), 
+					null, null);
+
+			activeIngredient = this.marshallItem((String)marshallingDataRow.get(DmxConfigurationHelper.idxGenericDrugCode), 
+					(String)marshallingDataRow.get(DmxConfigurationHelper.idxGenericDrugName), 
+					(String)marshallingDataRow.get(DmxConfigurationHelper.idxGenericDrugNameRegistered), 
+					null);
+
+			bindingCategory = this.marshallingCatalogue((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxGroupPath")));
+	
+			marshalledObject = Product.builder()
+					.category(bindingCategory)
+					.code((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))
+					.barcode((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")))
+					.name((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxName")))
+					.composition((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxComposition"))) //Hàm lượng
+					.packaging((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")))
+					.activeIngredient(activeIngredient)
+					.usageDirection(usageDirection)
 					.build();
 		} catch (Exception e) {
 			log.error(e);
@@ -225,5 +265,10 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 			}
 		}
 		return currentCatalogue;
+	}
+
+	private BusinessUnit unmarshalBusinessUnit() {
+		BusinessUnit unmarshalledObject = null;
+		return unmarshalledObject;
 	}
 }

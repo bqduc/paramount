@@ -52,7 +52,7 @@ public class MeasureUnitRepositoryManager extends DmxRepositoryBase {
 	private Map<String, Byte> configDetailIndexMap = ListUtility.createMap();
 
 	@Override
-	protected ExecutionContext doMarshallingBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
+	protected ExecutionContext doUnmarshallBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {
 		DataWorkbook dataWorkbook = null;
 		OsxBucketContainer osxBucketContainer = (OsxBucketContainer)executionContext.get(OSXConstants.MARSHALLED_CONTAINER);
 		if (CommonUtility.isEmpty(osxBucketContainer))
@@ -63,7 +63,7 @@ public class MeasureUnitRepositoryManager extends DmxRepositoryBase {
 			dataWorkbook = (DataWorkbook)osxBucketContainer.get(workingDatabookId);
 		}
 
-		List<Entity> marshalledObjects = marshallingBusinessObjects(dataWorkbook, ListUtility.createDataList(MarshallingObjects.MEASURE_UNITS.getName()));
+		List<Entity> marshalledObjects = unmarshallBusinessObjects(dataWorkbook, ListUtility.createDataList(MarshallingObjects.MEASURE_UNITS.getName()));
 		if (CommonUtility.isNotEmpty(marshalledObjects)) {
 			for (Entity entityBase :marshalledObjects) {
 				measureUnitService.saveOrUpdate((MeasureUnit)entityBase);
@@ -73,7 +73,7 @@ public class MeasureUnitRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	protected List<Entity> doMarshallingBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
+	protected List<Entity> doUnmarshallBusinessObjects(DataWorkbook dataWorkbook, List<String> datasheetIds) throws DataLoadingException {
 		Map<String, ConfigurationDetail> configDetailMap = null;
 		if (CommonUtility.isEmpty(configDetailIndexMap)) {
 			configDetailMap = dmxConfigurationHelper.fetchInventoryItemConfig(ConfigureMarshallObjects.MEASURE_UNITS.getConfigName());
@@ -88,7 +88,7 @@ public class MeasureUnitRepositoryManager extends DmxRepositoryBase {
 		if (CommonUtility.isNotEmpty(dataWorksheet)) {
 			for (Integer key :dataWorksheet.getKeys()) {
 				try {
-					marshallingObject = (MeasureUnit)marshallBusinessObject(dataWorksheet.getDataRow(key));
+					marshallingObject = (MeasureUnit)unmarshallBusinessObject(dataWorksheet.getDataRow(key));
 				} catch (DataLoadingException e) {
 					log.error(e);
 				}
@@ -101,7 +101,7 @@ public class MeasureUnitRepositoryManager extends DmxRepositoryBase {
 	}
 
 	@Override
-	protected Entity doMarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
+	protected Entity doUnmarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
 		MeasureUnit marshalledObject = null;
 		try {
 			if (1 > measureUnitService.count("code", marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))) {

@@ -88,8 +88,8 @@ public class EnterpriseProduct implements Serializable {
     private Double purchasePrice = 1d;
 
     @Size(max = 75, message = "{LongString}")
-    @Column(name = "description")
-    private String description;
+    @Column(name = "info")
+    private String info;
 
     @Column(name = "weight")
     private Double weight = 0d;
@@ -210,14 +210,6 @@ public class EnterpriseProduct implements Serializable {
 
     public void setPurchasePrice(Double purchasePrice) {
         this.purchasePrice = purchasePrice;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Double getWeight() {
@@ -359,5 +351,13 @@ public class EnterpriseProduct implements Serializable {
     public String toString() {
         return "Product[ id=" + id + " ]";
     }
+
+		public String getInfo() {
+			return info;
+		}
+
+		public void setInfo(String info) {
+			this.info = info;
+		}
 
 }

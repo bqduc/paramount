@@ -57,9 +57,9 @@ public class LocalizedItem extends BizObjectBase {
 	private String value;
 
 	@Lob
-	@Column(name = "description", columnDefinition = "TEXT")
+	@Column(name = "info", columnDefinition = "TEXT")
 	@Type(type = "org.hibernate.type.TextType")
-	private String description;
+	private String info;
 
 	public String getValue() {
 		return value;
@@ -67,15 +67,6 @@ public class LocalizedItem extends BizObjectBase {
 
 	public LocalizedItem setValue(String value) {
 		this.value = value;
-		return this;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public LocalizedItem setDescription(String description) {
-		this.description = description;
 		return this;
 	}
 
@@ -90,18 +81,5 @@ public class LocalizedItem extends BizObjectBase {
 
 	public Language getLanguage() {
 		return language;
-	}
-
-	public LocalizedItem setLanguage(Language language) {
-		this.language = language;
-		return this;
-	}
-
-	public static LocalizedItem instance(Item item, Language language, String value, String desc){
-		return new LocalizedItem()
-				.setItem(item)
-				.setLanguage(language)
-				.setValue(value)
-				.setDescription(desc);
 	}
 }

@@ -110,8 +110,8 @@ public class Office extends BizObjectBase{
 	@JoinColumn(name = "managing_user_id")
 	private AuthenticateAccount manager;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	public String getAddressPrimary() {
 		return this.address.getAddress();

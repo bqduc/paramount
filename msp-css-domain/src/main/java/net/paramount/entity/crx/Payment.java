@@ -92,8 +92,8 @@ public class Payment extends BizObjectBase{
 	@Column(name = "customer_reference", length=120)
 	private String customerReference;
 
-	@Column(name = "description", columnDefinition="TEXT")
-	private String description;
+	@Column(name = "info", columnDefinition="TEXT")
+	private String info;
 
 	public String getName() {
 		return name;
@@ -183,12 +183,12 @@ public class Payment extends BizObjectBase{
 		this.customerReference = customerReference;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getInfo() {
+		return info;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 }
