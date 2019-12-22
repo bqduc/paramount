@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,17 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
   	return this.em;
   }
 
+  protected String getLoggedInUsername() {
+  	String loggedInUsername = null;
+  	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  	if (principal instanceof UserDetails) {
+  		loggedInUsername = ((UserDetails)principal).getUsername();
+  	} else {
+  		loggedInUsername = principal.toString();
+  	}
+  	return loggedInUsername;
+  }
+  
 	protected Specification<ClassType> getRepoSpecification(SearchParameter searchParameter){
   	//return (Specification<EntityType>) DefaultBrilliancePredicator.builder().build().buildSpecification(searchParameter);
   	return null;
@@ -271,5 +284,9 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 		}
 
 		return fetchedBizObject;
+	}
+
+	public String nextSerial(String prefix) throws MspDataException {
+		throw new MspDataException("Not implemented yet!");
 	}
 }

@@ -37,7 +37,7 @@ import net.paramount.framework.validation.StrictlyPositiveNumber;
  */
 
 @Entity
-@Table(name = "product")
+@Table(name = "enterprise_product")
 @NamedQueries({
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM EnterpriseProduct p"),
     @NamedQuery(name = "Product.findById", query = "SELECT p FROM EnterpriseProduct p WHERE p.id = :id"),

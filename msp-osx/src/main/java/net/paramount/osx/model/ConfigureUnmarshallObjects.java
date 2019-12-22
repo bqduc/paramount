@@ -14,7 +14,7 @@ public enum ConfigureUnmarshallObjects {
 	LANGUAGES("languages", ""),
 	INVENTORY_ITEMS("inventory-items", "load-inventory-items"),
 	MEASURE_UNITS("Measure Units", "load-measure-units"),
-	BUSINESS_UNITS("Business Units", "load-business-units"),
+	BUSINESS_UNITS("business-units", "load-business-units"),
 
 	;
 	private String dataSheetId;

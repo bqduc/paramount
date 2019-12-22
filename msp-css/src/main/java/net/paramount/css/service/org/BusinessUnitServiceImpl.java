@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.paramount.css.repository.org.BusinessUnitRepository;
 import net.paramount.css.specification.BusinessUnitSpecification;
@@ -68,5 +70,17 @@ public class BusinessUnitServiceImpl extends GenericServiceImpl<BusinessUnit, Lo
 	@Override
 	public Page<BusinessUnit> getObjects(SearchParameter searchParameter) {
 		return this.repository.findAll(BusinessUnitSpecification.buildSpecification(searchParameter), searchParameter.getPageable());
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public long count(String countByProperty, Object value) {
+		if ("code".equalsIgnoreCase(countByProperty))
+			return this.repository.countByCode(value.toString());
+
+		if ("name".equalsIgnoreCase(countByProperty))
+			return this.repository.countByName((String)value);
+
+		throw new RuntimeException(String.join("Count by property[", countByProperty, "] with value[", (String)value, "] Not implemented yet!"));
 	}
 }

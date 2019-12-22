@@ -15,6 +15,7 @@ import net.paramount.framework.repository.BaseRepository;
 public interface BusinessUnitRepository extends BaseRepository<BusinessUnit, Long>{
 	Optional<BusinessUnit> findByCode(String code);
 	Long countByCode(String code);
+	Long countByName(String name);
 	@Query("SELECT entity FROM #{#entityName} entity WHERE ("
 			+ " LOWER(entity.code) like LOWER(CONCAT('%',:keyword,'%')) or "
 			+ " LOWER(entity.name) like LOWER(CONCAT('%',:keyword,'%')) or "

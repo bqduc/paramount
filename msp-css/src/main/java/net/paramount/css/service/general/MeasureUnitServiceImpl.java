@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.paramount.css.repository.general.MeasureUnitRepository;
+import net.paramount.css.service.system.SequenceManager;
+import net.paramount.css.service.system.SequenceService;
 import net.paramount.css.specification.MeasureUnitSpecification;
 import net.paramount.entity.general.MeasureUnit;
+import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ObjectNotFoundException;
 import net.paramount.framework.model.SearchParameter;
 import net.paramount.framework.repository.BaseRepository;
 import net.paramount.framework.service.GenericServiceImpl;
+import net.paramount.global.GlobalConstants;
 
 @Service
 public class MeasureUnitServiceImpl extends GenericServiceImpl<MeasureUnit, Long> implements MeasureUnitService{
@@ -27,7 +31,13 @@ public class MeasureUnitServiceImpl extends GenericServiceImpl<MeasureUnit, Long
 	private static final long serialVersionUID = 4804189794303411453L;
 	@Inject 
 	private MeasureUnitRepository repository;
-	
+
+	@Inject
+	private SequenceManager sequenceManager;
+
+	@Inject 
+	private SequenceService systemSequenceService;
+
 	protected BaseRepository<MeasureUnit, Long> getRepository() {
 		return this.repository;
 	}
@@ -67,5 +77,12 @@ public class MeasureUnitServiceImpl extends GenericServiceImpl<MeasureUnit, Long
 			return this.repository.countByName((String)value);
 
 		throw new RuntimeException(String.join("Count by property[", countByProperty, "] with value[", (String)value, "] Not implemented yet!"));
+	}
+
+	@Override
+	public String nextSerial(String prefix) throws MspDataException {
+		String newSerialNo = this.sequenceManager.getNewNumber(prefix, Integer.valueOf(GlobalConstants.SIZE_CODE));
+		newSerialNo = prefix + newSerialNo.substring(prefix.length());
+		return newSerialNo;
 	}
 }

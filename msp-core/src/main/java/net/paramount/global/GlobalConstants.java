@@ -3,6 +3,8 @@
  */
 package net.paramount.global;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author bqduc
  *
@@ -26,4 +28,8 @@ public interface GlobalConstants {
 	final static byte		SIZE_BARCODE = 25;
 
 	final static short	SIZE_ADDRESS_DEFAULT = 250;
+	
+	final short	SIZE_COUNTRY = 80;
+
+	final static String SERIAL_PATTERN = StringUtils.repeat("0", GlobalConstants.SIZE_CODE);
 }

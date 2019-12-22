@@ -56,7 +56,7 @@ public class Catalogue extends BizObjectBase {
 	private static final long serialVersionUID = -2698272402571269128L;
 
 	@NotNull
-	@Size(min = 3, max=GlobalConstants.SIZE_SERIAL)
+	@Size(min = 2, max=GlobalConstants.SIZE_SERIAL)
 	@Column(unique = true)
 	private String code;
 

@@ -45,9 +45,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import lombok.Builder;
+import net.paramount.entity.general.BusinessUnit;
 import net.paramount.entity.general.Catalogue;
 import net.paramount.entity.general.Item;
+import net.paramount.entity.general.MeasureUnit;
+import net.paramount.entity.general.Money;
 import net.paramount.entity.general.MoneySet;
+import net.paramount.entity.general.Quantity;
 import net.paramount.entity.trade.DiscountOrExpense;
 import net.paramount.entity.trade.ExpenseType;
 import net.paramount.entity.trade.Foundation;
@@ -62,7 +66,7 @@ import net.paramount.global.GlobalConstants;
 /**
  * Entity class Product
  * 
- * @author haky
+ * @author ducbq
  */
 @Builder
 @Entity
@@ -79,7 +83,7 @@ public class Product extends AuditBase {
 	@Column(name = "CODE", nullable = false, unique = true, length = GlobalConstants.SIZE_CODE)
 	private String code;
 
-	@Size(max = 25, message = "{LongString}")
+	@Size(max = GlobalConstants.SIZE_CODE, message = "{LongString}")
 	@Column(name = "default_code")
 	private String defaultCode;
 
@@ -102,16 +106,16 @@ public class Product extends AuditBase {
 	@Column(name = "SYSTEM")
 	private Boolean system;
 
-	@Column(name = "UNIT", length = 10)
+	@Column(name = "UNIT", length = GlobalConstants.SIZE_BARCODE)
 	private String unit;
 
-	@Column(name = "BARCODE1", length = 80)
+	@Column(name = "BARCODE1", length = GlobalConstants.SIZE_BARCODE)
 	private String barcode1;
 
-	@Column(name = "BARCODE2", length = 80)
+	@Column(name = "BARCODE2", length = GlobalConstants.SIZE_BARCODE)
 	private String barcode2;
 
-	@Column(name = "BARCODE3", length = 80)
+	@Column(name = "BARCODE3", length = GlobalConstants.SIZE_BARCODE)
 	private String barcode3;
 
 	@Basic(fetch = FetchType.LAZY)
@@ -206,11 +210,12 @@ public class Product extends AuditBase {
 	 */
 	@Embedded
 	@Valid
-	@AttributeOverrides({ @AttributeOverride(name = "percentage", column = @Column(name = "DISCOUNT_EXPENSE_PERCENTAGE")),
-			@AttributeOverride(name = "rate", column = @Column(name = "DISCOUNT_EXPENSE_RATE")),
-			@AttributeOverride(name = "currency", column = @Column(name = "DISCOUNT_EXPENSE_CCY")),
-			@AttributeOverride(name = "value", column = @Column(name = "DISCOUNT_EXPENSE_VALUE")),
-			@AttributeOverride(name = "localAmount", column = @Column(name = "DISCOUNT_EXPENSE_LCYVAL")) })
+	@AttributeOverrides({ 
+		@AttributeOverride(name = "percentage", column = @Column(name = "DISCOUNT_EXPENSE_PERCENTAGE")),
+		@AttributeOverride(name = "rate", column = @Column(name = "DISCOUNT_EXPENSE_RATE")),
+		@AttributeOverride(name = "currency", column = @Column(name = "DISCOUNT_EXPENSE_CCY")),
+		@AttributeOverride(name = "value", column = @Column(name = "DISCOUNT_EXPENSE_VALUE")),
+		@AttributeOverride(name = "localAmount", column = @Column(name = "DISCOUNT_EXPENSE_LCYVAL")) })
 	private DiscountOrExpense discountOrExpense;
 
 	/**
@@ -219,9 +224,10 @@ public class Product extends AuditBase {
 	@Builder.Default
 	@Embedded
 	@Valid
-	@AttributeOverrides({ @AttributeOverride(name = "currency", column = @Column(name = "LAST_PURCHASE_PRICE_CCY")),
-			@AttributeOverride(name = "value", column = @Column(name = "LAST_PURCHASE_PRICE_VALUE")),
-			@AttributeOverride(name = "localAmount", column = @Column(name = "LAST_PURCHASE_PRICE_LCYVAL")) })
+	@AttributeOverrides({ 
+		@AttributeOverride(name = "currency", column = @Column(name = "LAST_PURCHASE_PRICE_CCY")),
+		@AttributeOverride(name = "value", column = @Column(name = "LAST_PURCHASE_PRICE_VALUE")),
+		@AttributeOverride(name = "localAmount", column = @Column(name = "LAST_PURCHASE_PRICE_LCYVAL")) })
 	private MoneySet lastPurchasePrice = new UnitPriceMoneySet();
 
 	/**
@@ -230,9 +236,10 @@ public class Product extends AuditBase {
 	@Builder.Default
 	@Embedded
 	@Valid
-	@AttributeOverrides({ @AttributeOverride(name = "currency", column = @Column(name = "LAST_SALE_PRICE_CCY")),
-			@AttributeOverride(name = "value", column = @Column(name = "LAST_SALE_PRICE_VALUE")),
-			@AttributeOverride(name = "localAmount", column = @Column(name = "LAST_SALE_PRICE_LCYVAL")) })
+	@AttributeOverrides({ 
+		@AttributeOverride(name = "currency", column = @Column(name = "LAST_SALE_PRICE_CCY")),
+		@AttributeOverride(name = "value", column = @Column(name = "LAST_SALE_PRICE_VALUE")),
+		@AttributeOverride(name = "localAmount", column = @Column(name = "LAST_SALE_PRICE_LCYVAL")) })
 	private MoneySet lastSalePrice = new UnitPriceMoneySet();
 
 	/**
@@ -276,7 +283,7 @@ public class Product extends AuditBase {
 
 	@ManyToOne
 	@JoinColumn(name = "ref_servicing_business_unit_id", foreignKey = @ForeignKey(name = "fk_servicing_business_unit_id"))
-	private Item servicingBusinessUnit;
+	private BusinessUnit servicingBusinessUnit;
 
 	/**
 	 * Ürün veya hizmetin birim fiyatının scale(virgülden sonrası) bilgisini tutar.
@@ -322,8 +329,11 @@ public class Product extends AuditBase {
 	@Column(name = "vendor_part_number", length = GlobalConstants.SIZE_CODE)
 	private String vendorPartNumber;
 
-	@Column(name = "manufacturer_id")
-	private Long manufacturerId;
+	@Column(name = "manufacturer", length=GlobalConstants.SIZE_NAME)
+	private String manufacturer;
+
+	@Column(name = "manufacturer_country", length=GlobalConstants.SIZE_COUNTRY)
+	private String manufacturerCountry;
 
 	@Column(name = "manufacturer_part_number", length = GlobalConstants.SIZE_CODE)
 	private String manufacturerPartNumber;
@@ -344,8 +354,8 @@ public class Product extends AuditBase {
 	@Column(name = "cross_servicing_code", length = GlobalConstants.SIZE_SERIAL)
 	private String crossServicingCode;
 
-	@Column(name = "govenment_decision_no", length = GlobalConstants.SIZE_SERIAL)
-	private String govenmentDecisionNo;
+	@Column(name = "government_decision_no", length = GlobalConstants.SIZE_SERIAL)
+	private String governmentDecisionNo;
 
 	@Column(name = "published_code", length = GlobalConstants.SIZE_SERIAL)
 	private String publishedCode;
@@ -418,6 +428,98 @@ public class Product extends AuditBase {
 
 	@Column(name = "purchase_ok")
 	private Boolean purchaseOk;
+
+	@Column(name = "registration_no", length=GlobalConstants.SIZE_CODE)
+	private String registrationNo;
+
+	@ManyToOne
+	@JoinColumn(name = "measure_unit_id")
+	private MeasureUnit measureUnit;
+	
+	@Builder.Default
+	@Embedded
+  @Valid
+  @AttributeOverrides( {
+      @AttributeOverride(name="currency", column=@Column(name="unit_price_ccy")),
+      @AttributeOverride(name="value", column=@Column(name="unit_price_value"))
+  })
+  private Money unitPrice = new Money(); 
+
+	@Builder.Default
+  @Embedded
+  @Valid
+  @AttributeOverrides( {
+      @AttributeOverride(name="currency", column=@Column(name="unit_price_market_ccy")),
+      @AttributeOverride(name="value", column=@Column(name="unit_price_market_value"))
+  })
+  private Money unitPriceMarket = new Money(); 
+
+	@Builder.Default
+  @Embedded
+  @Valid
+  @AttributeOverrides( {
+      @AttributeOverride(name="currency", column=@Column(name="cost_price_ccy")),
+      @AttributeOverride(name="value", column=@Column(name="cost_price_value"))
+  })
+  private Money costPrice = new Money(); 
+
+	@Builder.Default
+  @Embedded
+  @Valid
+  @AttributeOverrides( {
+      @AttributeOverride(name="currency", column=@Column(name="selling_price_ccy")),
+      @AttributeOverride(name="value", column=@Column(name="selling_price_value"))
+  })
+  private Money sellingPrice = new Money(); 
+
+	@Builder.Default
+  @Embedded
+  @Valid
+  @AttributeOverrides( {
+      @AttributeOverride(name="currency", column=@Column(name="prog_selling_price_ccy")),
+      @AttributeOverride(name="value", column=@Column(name="prog_selling_price_value"))
+  })
+  private Money progSellingPrice = new Money(); 
+
+	@Builder.Default
+  @Embedded
+  @Valid
+  @AttributeOverrides( {
+    @AttributeOverride(name="unit", column=@Column(name="prog_selling_quantity_unit")),
+    @AttributeOverride(name="value", column=@Column(name="prog_selling_quantity_value"))
+  })
+  private Quantity progSellingQuantity = new Quantity();
+
+	@Builder.Default
+  @Embedded
+  @Valid
+  @AttributeOverrides( {
+    @AttributeOverride(name="unit", column=@Column(name="balance_quantity_unit")),
+    @AttributeOverride(name="value", column=@Column(name="balance_quantity_value"))
+  })
+  private Quantity balanceQuantity = new Quantity();
+
+	@Column(name = "contractor", length=GlobalConstants.SIZE_NAME)
+	private String contractor;
+
+	@Column(name = "contractor_category", length=GlobalConstants.SIZE_NAME_SHORT)
+	private String contracorCategory;
+  
+	@Column(name = "contractor_group", length=GlobalConstants.SIZE_NAME_SHORT)
+	private String contractorGroup;
+
+	@Column(name = "notification_no", length=GlobalConstants.SIZE_SERIAL)
+	private String notificationNo;
+
+	@ManyToOne
+	@JoinColumn(name = "vendor_business_unit_id")
+	private BusinessUnit vendor;
+
+	@Column(name = "external_code", length=GlobalConstants.SIZE_CODE)
+	private String externalCode;
+
+	@Column(name = "external_type", length=GlobalConstants.SIZE_STRING_TINY)
+	private String externalType;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public Tax getOTVTax() {
@@ -1004,14 +1106,6 @@ public class Product extends AuditBase {
 		this.vendorPartNumber = vendorPartNumber;
 	}
 
-	public Long getManufacturerId() {
-		return manufacturerId;
-	}
-
-	public void setManufacturerId(Long manufacturerId) {
-		this.manufacturerId = manufacturerId;
-	}
-
 	public String getManufacturerPartNumber() {
 		return manufacturerPartNumber;
 	}
@@ -1058,14 +1152,6 @@ public class Product extends AuditBase {
 
 	public void setCrossServicingCode(String crossServicingCode) {
 		this.crossServicingCode = crossServicingCode;
-	}
-
-	public String getGovenmentDecisionNo() {
-		return govenmentDecisionNo;
-	}
-
-	public void setGovenmentDecisionNo(String govenmentDecisionNo) {
-		this.govenmentDecisionNo = govenmentDecisionNo;
 	}
 
 	public String getPublishedCode() {
@@ -1228,11 +1314,163 @@ public class Product extends AuditBase {
 		this.usageDirection = usageDirection;
 	}
 
-	public Item getServicingBusinessUnit() {
+	public BusinessUnit getServicingBusinessUnit() {
 		return servicingBusinessUnit;
 	}
 
-	public void setServicingBusinessUnit(Item servicingBusinessUnit) {
+	public void setServicingBusinessUnit(BusinessUnit servicingBusinessUnit) {
 		this.servicingBusinessUnit = servicingBusinessUnit;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getManufacturerCountry() {
+		return manufacturerCountry;
+	}
+
+	public void setManufacturerCountry(String manufacturerCountry) {
+		this.manufacturerCountry = manufacturerCountry;
+	}
+
+	public String getGovernmentDecisionNo() {
+		return governmentDecisionNo;
+	}
+
+	public void setGovernmentDecisionNo(String governmentDecisionNo) {
+		this.governmentDecisionNo = governmentDecisionNo;
+	}
+
+	public String getRegistrationNo() {
+		return registrationNo;
+	}
+
+	public void setRegistrationNo(String registrationNo) {
+		this.registrationNo = registrationNo;
+	}
+
+	public MeasureUnit getMeasureUnit() {
+		return measureUnit;
+	}
+
+	public void setMeasureUnit(MeasureUnit measureUnit) {
+		this.measureUnit = measureUnit;
+	}
+
+	public Money getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(Money unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
+	public Money getUnitPriceMarket() {
+		return unitPriceMarket;
+	}
+
+	public void setUnitPriceMarket(Money unitPriceMarket) {
+		this.unitPriceMarket = unitPriceMarket;
+	}
+
+	public Money getCostPrice() {
+		return costPrice;
+	}
+
+	public void setCostPrice(Money costPrice) {
+		this.costPrice = costPrice;
+	}
+
+	public Money getSellingPrice() {
+		return sellingPrice;
+	}
+
+	public void setSellingPrice(Money sellingPrice) {
+		this.sellingPrice = sellingPrice;
+	}
+
+	public Money getProgSellingPrice() {
+		return progSellingPrice;
+	}
+
+	public void setProgSellingPrice(Money progSellingPrice) {
+		this.progSellingPrice = progSellingPrice;
+	}
+
+	public Quantity getProgSellingQuantity() {
+		return progSellingQuantity;
+	}
+
+	public void setProgSellingQuantity(Quantity progSellingQuantity) {
+		this.progSellingQuantity = progSellingQuantity;
+	}
+
+	public Quantity getBalanceQuantity() {
+		return balanceQuantity;
+	}
+
+	public void setBalanceQuantity(Quantity balanceQuantity) {
+		this.balanceQuantity = balanceQuantity;
+	}
+
+	public String getContractor() {
+		return contractor;
+	}
+
+	public void setContractor(String contractor) {
+		this.contractor = contractor;
+	}
+
+	public String getContracorCategory() {
+		return contracorCategory;
+	}
+
+	public void setContracorCategory(String contracorCategory) {
+		this.contracorCategory = contracorCategory;
+	}
+
+	public String getContractorGroup() {
+		return contractorGroup;
+	}
+
+	public void setContractorGroup(String contractorGroup) {
+		this.contractorGroup = contractorGroup;
+	}
+
+	public String getNotificationNo() {
+		return notificationNo;
+	}
+
+	public void setNotificationNo(String notificationNo) {
+		this.notificationNo = notificationNo;
+	}
+
+	public BusinessUnit getVendor() {
+		return vendor;
+	}
+
+	public void setVendor(BusinessUnit vendor) {
+		this.vendor = vendor;
+	}
+
+	public String getExternalCode() {
+		return externalCode;
+	}
+
+	public void setExternalCode(String externalCode) {
+		this.externalCode = externalCode;
+	}
+
+	public String getExternalType() {
+		return externalType;
+	}
+
+	public void setExternalType(String externalType) {
+		this.externalType = externalType;
 	}
 }
