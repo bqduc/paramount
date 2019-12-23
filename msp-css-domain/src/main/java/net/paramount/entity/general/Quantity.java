@@ -97,4 +97,7 @@ public class Quantity implements java.io.Serializable {
         return result;
     }
     
+    public boolean isZero() {
+    	return this.value == 0d;
+    }
 }

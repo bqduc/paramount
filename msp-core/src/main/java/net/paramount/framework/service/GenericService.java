@@ -26,6 +26,8 @@ public interface GenericService<T extends ObjectBase, K extends Serializable>{
 	long count();
 	long count(String countByProperty, Object value);
 
+	long count(String countMethodName, Map<?, ?> parameters);
+
 	String nextSerial(String prefix) throws MspDataException;
 
   /**

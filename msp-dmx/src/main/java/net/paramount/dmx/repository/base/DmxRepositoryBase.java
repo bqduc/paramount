@@ -3,6 +3,7 @@
  */
 package net.paramount.dmx.repository.base;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import net.paramount.dmx.helper.ResourcesStorageServiceHelper;
 import net.paramount.embeddable.Phone;
 import net.paramount.entity.general.BusinessUnit;
 import net.paramount.entity.general.Item;
+import net.paramount.entity.general.Money;
 import net.paramount.exceptions.DataLoadingException;
 import net.paramount.framework.component.ComponentBase;
 import net.paramount.framework.entity.Entity;
@@ -199,6 +201,13 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		phone.setExtention(extention);
 		phone.setNumber(number);
 		return phone;
+	}
+
+	protected Money parseMoney(String currency, BigDecimal value) {
+		Money parsedObject = new Money();
+		parsedObject.setCurrency(currency);
+		parsedObject.setValue(value);
+		return parsedObject;
 	}
 
 	public ExecutionContext unmarshallBusinessObjects(ExecutionContext executionContext) throws DataLoadingException {

@@ -215,10 +215,10 @@ public class CommonUtility implements CommonConstants {
 		return bigDecimalTotal;
 	}
 
-	public static BigDecimal parseDecimal(String chunk) {
+	public static BigDecimal toBigDecimal(String value) {
 		BigDecimal decimal = null;
 		try {
-			decimal = new BigDecimal(chunk);
+			decimal = new BigDecimal(value);
 		} catch (Exception e) {
 		}
 		return decimal;
@@ -640,9 +640,16 @@ public class CommonUtility implements CommonConstants {
 		if (null==object)
 			return defaultValue;
 
-		Double doubleObj = null;
-		doubleObj = (Double)object;
+		Double doubleObj = (Double)object;
 		return doubleObj.doubleValue();
+	}
+
+	public static Double toDouble(Object object, double defaultValue){
+		if (null==object)
+			return defaultValue;
+
+		Double doubleObj = Double.valueOf(object.toString());
+		return doubleObj;
 	}
 
 	static class Match {

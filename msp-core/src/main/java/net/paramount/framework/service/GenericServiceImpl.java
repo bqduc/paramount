@@ -1,6 +1,7 @@
 package net.paramount.framework.service;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.paramount.common.CommonBeanUtils;
 import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
+import net.paramount.common.ListUtility;
 import net.paramount.exceptions.ExecutionContextException;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ObjectNotFoundException;
@@ -80,7 +82,7 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 		Object operationSpec = contextParams.get(CommonConstants.PARAM_OPERATION);
 		Map<?, ?> operationData = (Map<?, ?>)contextParams.get(CommonConstants.PARAM_DATA);
 		
-		Optional<Object> fetchedObject = null;
+		Object fetchedObject = null;
 		BaseRepository<ClassType, Key> repository = this.getRepository();
 		try {
 			if (operationSpec instanceof String) {
@@ -97,7 +99,7 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 		} catch (Exception e) {
 			throw new ObjectNotFoundException(e);
 		}
-		return (Optional)fetchedObject;
+		return Optional.of((ClassType)fetchedObject);
 	}
 
 	protected Optional<ClassType> getBizObject(String defaultOperationName, Object param) throws ObjectNotFoundException {
@@ -177,6 +179,21 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public long count(String countByProperty, Object value) {
 		throw new RuntimeException("Not implemented yet");
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public long count(String countMethodName, Map<?, ?> parameters) {
+		Object retData = null;
+		long count = 0;
+		try {
+			retData = CommonBeanUtils.invokeOperation(this.getRepository(), countMethodName, parameters);
+			count = (Long)retData;
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| InstantiationException e) {
+			log.error(e);
+		}
+		return count;
 	}
 
 	@Override

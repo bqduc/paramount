@@ -22,11 +22,13 @@ import net.paramount.dmx.helper.DmxCollaborator;
 import net.paramount.dmx.helper.DmxConfigurationHelper;
 import net.paramount.dmx.repository.base.DmxRepositoryBase;
 import net.paramount.entity.config.ConfigurationDetail;
-import net.paramount.entity.contact.Contact;
 import net.paramount.entity.general.BusinessUnit;
 import net.paramount.entity.general.Catalogue;
 import net.paramount.entity.general.Item;
 import net.paramount.entity.general.MeasureUnit;
+import net.paramount.entity.general.Money;
+import net.paramount.entity.general.Quantity;
+import net.paramount.entity.options.SystemOptionKey;
 import net.paramount.entity.stock.InventoryItem;
 import net.paramount.entity.stock.Product;
 import net.paramount.exceptions.DataLoadingException;
@@ -130,106 +132,42 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 				} catch (DataLoadingException e) {
 					e.printStackTrace();
 				}
+
 				if (null != currentBizObject) {
+					this.productService.saveOrUpdate(currentBizObject);
 					results.add(currentBizObject);
 				}
 			}
 		}
-		/*if (null != datasheetIds) {
-			for (DataWorksheet dataWorksheet :dataWorkbook.datasheets()) {
-				if (!datasheetIds.contains(dataWorksheet.getId()))
-					continue;
-
-				System.out.println("Processing sheet: " + dataWorksheet.getId());
-				for (Integer key :dataWorksheet.getKeys()) {
-					try {
-						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
-					} catch (DataLoadingException e) {
-						e.printStackTrace();
-					}
-					if (null != currentContact) {
-						results.add(currentContact);
-					}
-				}
-			}
-		} else {
-			for (DataWorksheet dataWorksheet :dataWorkbook.datasheets()) {
-				System.out.println("Processing sheet: " + dataWorksheet.getId());
-				for (Integer key :dataWorksheet.getKeys()) {
-					try {
-						currentContact = (Contact)marshallBusinessObject(dataWorksheet.getDataRow(key));
-					} catch (DataLoadingException e) {
-						e.printStackTrace();
-					}
-					results.add(currentContact);
-				}
-			}
-		}*/
 		return results;
 	}
 
 	@Override
 	protected Entity doUnmarshallBusinessObject(List<?> marshallingDataRow) throws DataLoadingException {
-		marshallProduct(marshallingDataRow);
-		Item masterUsageDirection = null, masterGenericDrug = null;
-		InventoryItem marshalledObject = null;
-		Catalogue bindingCategory = null;
-		String stringValueOfCode = "";
-		Object dataObject = null;
-		try {
-			dataObject = marshallingDataRow.get(this.configDetailIndexMap.get("idxUsageDirectionCode"));
-			if (null != dataObject) {
-				stringValueOfCode = dataObject.toString();
-			}
-
-			masterUsageDirection = this.marshallItem(stringValueOfCode, (String)marshallingDataRow.get(this.configDetailIndexMap.get("idxUsageDirectionName")), 
-					null, null);
-
-			dataObject = marshallingDataRow.get(this.configDetailIndexMap.get("idxGenericDrugCode"));
-			if (null != dataObject) {
-				stringValueOfCode = dataObject.toString();
-			}
-
-			masterGenericDrug = this.marshallItem(stringValueOfCode, (String)marshallingDataRow.get(this.configDetailIndexMap.get("idxGenericDrugName")), 
-					null, //(String)marshallingDataRow.get(this.configDetailIndexMap.get("idxGenericDrugNameRegistered")), 
-					null);
-
-			bindingCategory = this.marshallingCatalogue((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxGroupPath")));
-	
-			marshalledObject = InventoryItem.builder()
-					.masterCategory(bindingCategory)
-					.code((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))
-					.barcode((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")))
-					.name((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxName")))
-					.composition((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxComposition"))) //Hàm lượng
-					.packaging((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")))
-					.masterGenericDrug(masterGenericDrug)
-					.masterUsageDirection(masterUsageDirection)
-					.build();
-		} catch (Exception e) {
-			log.error(e);
-		}
-
-		return marshalledObject;
+		return unmarshallProduct(marshallingDataRow);
 	}
 
-	protected Entity marshallProduct(List<?> marshallingDataRow) throws DataLoadingException {
+	protected Entity unmarshallProduct(List<?> marshallingDataRow) throws DataLoadingException {
 		Item usageDirection = null, activeIngredient = null;
 		BusinessUnit servicingBusinessUnit = null;
 		Product marshalledObject = null;
 		Catalogue bindingCategory = null;
-		String stringValueOfCode = "";
+		String stringValueOfCode = null;
 		Object dataObject = null;
 		MeasureUnit measureUnit = null;
+		Quantity balanceQuantity = null;
 		try {
+			if (0 < this.productService.count("countByCode", ListUtility.createMap("code", marshallingDataRow.get(this.configDetailIndexMap.get("idxCode"))))) {
+				return null;
+			}
+
 			measureUnit = this.fetchMeasureUnit((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxMeasureUnit")));
 
 			dataObject = marshallingDataRow.get(this.configDetailIndexMap.get("idxUsageDirectionCode"));
 			if (null != dataObject) {
 				stringValueOfCode = dataObject.toString();
 			}
-			usageDirection = this.marshallItem(stringValueOfCode, 
-					(String)marshallingDataRow.get(this.configDetailIndexMap.get("idxUsageDirectionName")), 
+			usageDirection = this.marshallItem(stringValueOfCode, (String)marshallingDataRow.get(this.configDetailIndexMap.get("idxUsageDirectionName")), 
 					null, null);
 
 
@@ -239,32 +177,67 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 			}
 			activeIngredient = this.marshallItem(stringValueOfCode, 
 					(String)marshallingDataRow.get(this.configDetailIndexMap.get("idxActiveIngredientName")), 
-					null, //(String)marshallingDataRow.get(DmxConfigurationHelper.idxGenericDrugNameRegistered), 
+					null, 
 					null);
 
-			servicingBusinessUnit = fetchServicingBusinessUnit((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxBusinessServicingCode")));
+			servicingBusinessUnit = fetchServicingBusinessUnit(marshallingDataRow.get(this.configDetailIndexMap.get("idxBusinessServicingCode")));
 
 			bindingCategory = this.marshallingCatalogue((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxGroupPath")));
 
+			balanceQuantity = buildQuantity(marshallingDataRow.get(this.configDetailIndexMap.get("idxBalanceQuantity")), measureUnit);
+			if (null==balanceQuantity||balanceQuantity.isZero()) {
+				balanceQuantity = buildQuantity(marshallingDataRow.get(this.configDetailIndexMap.get("idxBalance")), measureUnit);
+			}
+
 			marshalledObject = Product.builder()
-					.code((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))
-					.barcode((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")))
-					.servicingBusinessUnit(servicingBusinessUnit)
 					.category(bindingCategory)
-					.name((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxName")))
-					.composition((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxComposition"))) //Hàm lượng
-					.packaging((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")))
+					.barcode((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")))
 					.activeIngredient(activeIngredient)
 					.usageDirection(usageDirection)
-					.registrationNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxRegistrationNo")))
-					.governmentDecisionNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo")))
+					.composition((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxComposition"))) //Hàm lượng
+					.name((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxName")))
+					.code((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))
+					.packaging((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")))
 					.measureUnit(measureUnit)
+					.unitPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxUnitPrice"))))
+					.balanceQuantity(balanceQuantity)
+					.servicingBusinessUnit(servicingBusinessUnit)
+					.registrationNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxRegistrationNo")))
+					.manufacturer((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerName")))
+					.manufacturerCountry((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerCountry")))
+					.contractor((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxContractor")))
+					.contracorCategory((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorCategory")))
+					.contractorGroup((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorGroup")))
+					.governmentDecisionNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo")))
+					.notificationNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo")))
+					.externalCode((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxExternalCode")))
+					.externalType((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxExternalType")))
+					.vendor(fetchServicingBusinessUnit((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxVendorCode"))))
+					.costPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxCostPrice"))))
+					.sellingPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxSellingPrice"))))
+					.progSellingPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxProgSellingPrice"))))
+					.progSellingQuantity(buildQuantity(marshallingDataRow.get(this.configDetailIndexMap.get("idxProgSellingQuantity")), measureUnit))
 					.build();
 		} catch (Exception e) {
 			log.error(e);
 		}
 
 		return marshalledObject;
+	}
+
+	private Money buildPrice(Object priceInfo) {
+		if (null==priceInfo)
+			return null;
+
+		return super.parseMoney(SystemOptionKey.COUNTRY_CODE.getDefaultValue(), CommonUtility.toBigDecimal(priceInfo.toString()));
+	}
+
+	private Quantity buildQuantity(Object quantityInfo, MeasureUnit measureUnit) {
+		if (CommonUtility.isEmpty(quantityInfo))
+			return null;
+
+		Quantity quantity  = new Quantity(CommonUtility.toDouble(quantityInfo, 0), (null!=measureUnit)?measureUnit.getCode():"");
+		return quantity ;
 	}
 
 	/**
@@ -309,16 +282,18 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 		return (null!=currentCatalogue)?currentCatalogue:parentCatalogue;
 	}
 
-	private BusinessUnit fetchServicingBusinessUnit(String code) {
-		if (CommonUtility.isEmpty(code))
+	private BusinessUnit fetchServicingBusinessUnit(Object businessObjectCode) {
+		if (CommonUtility.isEmpty(businessObjectCode))
 			return null;
 
-		if (this.businessUnitMap.containsKey(code)) {
-			return this.businessUnitMap.get(code);
+		if (this.businessUnitMap.containsKey(businessObjectCode.toString())) {
+			return this.businessUnitMap.get(businessObjectCode.toString());
 		}
 
-		BusinessUnit unmarshalledObject = businessUnitService.getOne(code);
-		this.businessUnitMap.put(code, unmarshalledObject);
+		BusinessUnit unmarshalledObject = businessUnitService.getOne(businessObjectCode.toString());
+		if (null != unmarshalledObject) {
+			this.businessUnitMap.put(unmarshalledObject.getCode(), unmarshalledObject);
+		}
 		return unmarshalledObject;
 	}
 

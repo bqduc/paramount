@@ -123,7 +123,7 @@ public class BusinessUnitDataManager extends DmxRepositoryBase {
 				}
 
 				marshalledObject = BusinessUnit.builder()
-						.code((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))
+						.code(String.valueOf(marshallingDataRow.get(this.configDetailIndexMap.get("idxCode"))))
 						.name((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxName")))
 						.supportLevel((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxSupportLevel")))
 						.supportCategory((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxSupportCategory")))

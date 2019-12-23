@@ -353,7 +353,7 @@ public class CommonBeanUtils {
       return resultPropertyDescriptor;
   }
 
-  public static Optional<Object> invokeOperation(Object bean, String methodName, Map<?, ?> params) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+  public static Object invokeOperation(Object bean, String methodName, Map<?, ?> params) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
   	Class<?> beanClass = bean.getClass();
   	//final int paramSize = params.keySet().size();
   	//Class<?> paramClassTypes[] = new Class[paramSize];
@@ -374,6 +374,6 @@ public class CommonBeanUtils {
 			} 
 		}
 
-  	return (Optional<Object>)theMethod.invoke(bean, parameters);
+  	return theMethod.invoke(bean, parameters);
   }
 }
