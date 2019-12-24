@@ -561,6 +561,23 @@ public class CommonUtility implements CommonConstants {
 		return value.toString();
 	}
 
+	public static String getString(Object value, int lengthLimited) {
+		if (null == value)
+			return null;
+
+		String retValue = "";
+		if (value instanceof String) {
+			retValue = (String) value;
+		} else {
+			retValue = value.toString();
+		}
+
+		if (retValue.length() > lengthLimited) {
+			retValue = retValue.substring(0, lengthLimited);
+		}
+		return retValue;
+	}
+
 	public static Long toLong(Object fromValue) {
 		if (CommonUtility.isEmpty(fromValue))
 			return null;

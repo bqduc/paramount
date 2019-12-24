@@ -14,6 +14,7 @@ import net.paramount.framework.repository.CodeNameBaseRepository;
 
 @Repository
 public interface ProductRepository extends CodeNameBaseRepository<Product, Long> {
+	Long countByBarcode(String barcode);
 	Optional<Product> findByBarcode(String barcode);
 
 	@Query(value = "SELECT entity.code FROM #{#entityName} entity ", nativeQuery = true)

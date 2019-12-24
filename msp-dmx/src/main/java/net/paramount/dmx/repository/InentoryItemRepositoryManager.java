@@ -35,6 +35,7 @@ import net.paramount.exceptions.DataLoadingException;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.framework.entity.Entity;
 import net.paramount.framework.model.ExecutionContext;
+import net.paramount.global.GlobalConstants;
 import net.paramount.osx.model.ConfigureMarshallObjects;
 import net.paramount.osx.model.DataWorkbook;
 import net.paramount.osx.model.DataWorksheet;
@@ -134,7 +135,11 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 				}
 
 				if (null != currentBizObject) {
-					this.productService.saveOrUpdate(currentBizObject);
+					try {
+						this.productService.saveOrUpdate(currentBizObject);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					results.add(currentBizObject);
 				}
 			}
@@ -156,10 +161,15 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 		Object dataObject = null;
 		MeasureUnit measureUnit = null;
 		Quantity balanceQuantity = null;
+		long count = 0;
 		try {
-			if (0 < this.productService.count("countByCode", ListUtility.createMap("code", marshallingDataRow.get(this.configDetailIndexMap.get("idxCode"))))) {
-				return null;
+			if (CommonUtility.isNotEmpty(marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))) {
+				count = this.productService.count("countByCode", ListUtility.createMap("code", marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")).toString()));
+			} else if (CommonUtility.isNotEmpty(marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")))) {
+				count = this.productService.count("countByBarcode", ListUtility.createMap("barcode", marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")).toString()));
 			}
+			if (count > 0)
+				return null;
 
 			measureUnit = this.fetchMeasureUnit((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxMeasureUnit")));
 
@@ -188,31 +198,29 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 			if (null==balanceQuantity||balanceQuantity.isZero()) {
 				balanceQuantity = buildQuantity(marshallingDataRow.get(this.configDetailIndexMap.get("idxBalance")), measureUnit);
 			}
-
 			marshalledObject = Product.builder()
 					.category(bindingCategory)
-					.barcode((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")))
+					.barcode(CommonUtility.getString(marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")), GlobalConstants.SIZE_BARCODE))
 					.activeIngredient(activeIngredient)
 					.usageDirection(usageDirection)
 					.composition((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxComposition"))) //Hàm lượng
 					.name((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxName")))
-					.code((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxCode")))
-					.packaging((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")))
+					.code(CommonUtility.getString(marshallingDataRow.get(this.configDetailIndexMap.get("idxRegistrationNo")), GlobalConstants.SIZE_CODE))
+					.packaging(CommonUtility.getString(marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")), 150))
 					.measureUnit(measureUnit)
 					.unitPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxUnitPrice"))))
 					.balanceQuantity(balanceQuantity)
 					.servicingBusinessUnit(servicingBusinessUnit)
-					.registrationNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxRegistrationNo")))
 					.manufacturer((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerName")))
 					.manufacturerCountry((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerCountry")))
 					.contractor((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxContractor")))
-					.contracorCategory((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorCategory")))
-					.contractorGroup((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorGroup")))
-					.governmentDecisionNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo")))
-					.notificationNo((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo")))
-					.externalCode((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxExternalCode")))
-					.externalType((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxExternalType")))
-					.vendor(fetchServicingBusinessUnit((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxVendorCode"))))
+					.contracorCategory(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorCategory"))))
+					.contractorGroup(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorGroup"))))
+					.governmentDecisionNo(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo"))))
+					.notificationNo(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo"))))
+					.externalCode(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxExternalCode"))))
+					.externalType(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxExternalType"))))
+					.vendor(fetchServicingBusinessUnit(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxVendorCode")))))
 					.costPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxCostPrice"))))
 					.sellingPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxSellingPrice"))))
 					.progSellingPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxProgSellingPrice"))))

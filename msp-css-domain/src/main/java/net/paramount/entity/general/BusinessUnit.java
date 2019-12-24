@@ -106,7 +106,6 @@ public class BusinessUnit extends BizObjectBase {
 	@Column(name = "license_no")
 	private String licenseNo;
 
-	@Lob
 	@Column(name = "info", columnDefinition = "TEXT")
 	private String info;
 

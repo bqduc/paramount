@@ -41,6 +41,7 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -80,12 +81,11 @@ public class Product extends AuditBase {
 	@Enumerated(EnumType.ORDINAL)
 	private ProductType productType = ProductType.Product;
 
-	@Column(name = "CODE", nullable = false, unique = true, length = GlobalConstants.SIZE_CODE)
+	@Column(name = "CODE", length = GlobalConstants.SIZE_CODE)
 	private String code;
 
-	@Size(max = GlobalConstants.SIZE_CODE, message = "{LongString}")
-	@Column(name = "default_code")
-	private String defaultCode;
+	@Column(name = "barcode", length = GlobalConstants.SIZE_BARCODE)
+	private String barcode;
 
 	@Column(name = "NAME", length = GlobalConstants.SIZE_NAME)
 	private String name;
@@ -106,27 +106,16 @@ public class Product extends AuditBase {
 	@Column(name = "SYSTEM")
 	private Boolean system;
 
-	@Column(name = "UNIT", length = GlobalConstants.SIZE_BARCODE)
-	private String unit;
-
-	@Column(name = "BARCODE1", length = GlobalConstants.SIZE_BARCODE)
-	private String barcode1;
-
-	@Column(name = "BARCODE2", length = GlobalConstants.SIZE_BARCODE)
-	private String barcode2;
-
-	@Column(name = "BARCODE3", length = GlobalConstants.SIZE_BARCODE)
-	private String barcode3;
-
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	@Column(name = "image_default")
+	@Type(type = "org.hibernate.type.ImageType")
 	private byte[] imageDefault;
 
-	@Basic(fetch = FetchType.LAZY)
+	/*@Basic(fetch = FetchType.LAZY)
 	@Lob
 	@Column(name = "image_medium")
-	private byte[] imageMedium;
+	private byte[] imageMedium;*/
 
 	@ManyToOne
 	@JoinColumn(name = "ExpenseType_ID")
@@ -158,42 +147,6 @@ public class Product extends AuditBase {
 	@Column(name = "TAX2_INCLUDED")
 	private Boolean tax2Included = Boolean.TRUE;
 
-	@ManyToOne
-	@JoinColumn(name = "BUY_TAX3_ID")
-	private Tax buyTax3;
-
-	@ManyToOne
-	@JoinColumn(name = "SELL_TAX3_ID")
-	private Tax sellTax3;
-
-	@Builder.Default
-	@Column(name = "TAX3_INCLUDED")
-	private Boolean tax3Included = Boolean.TRUE;
-
-	@ManyToOne
-	@JoinColumn(name = "BUY_TAX4_ID")
-	private Tax buyTax4;
-
-	@ManyToOne
-	@JoinColumn(name = "SELL_TAX4_ID")
-	private Tax sellTax4;
-
-	@Builder.Default
-	@Column(name = "TAX4_INCLUDED")
-	private Boolean tax4Included = Boolean.TRUE;
-
-	@ManyToOne
-	@JoinColumn(name = "BUY_TAX5_ID")
-	private Tax buyTax5;
-
-	@ManyToOne
-	@JoinColumn(name = "SELL_TAX5_ID")
-	private Tax sellTax5;
-
-	@Builder.Default
-	@Column(name = "TAX5_INCLUDED")
-	private Boolean tax5Included = Boolean.TRUE;
-
 	@Builder.Default
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductUnit> productUnitList = new ArrayList<ProductUnit>();
@@ -201,9 +154,6 @@ public class Product extends AuditBase {
 	@Builder.Default
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductDetail> detailList = new ArrayList<ProductDetail>();
-
-	@Column(name = "SHELF_PLACE")
-	private String shelfPlace;
 
 	/**
 	 * Eğer ürün masraf veya indirim olarak işaretlenmişse indirim/masraf bilgileri tutar.
@@ -294,9 +244,6 @@ public class Product extends AuditBase {
 	private UnitPriceScale unitPriceScale = UnitPriceScale.Low;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	@Column(name = "barcode", length = GlobalConstants.SIZE_BARCODE)
-	private String barcode;
-
 	@Size(max = GlobalConstants.SIZE_NAME)
 	@Column(name = "translated_name")
 	private String translatedName;
@@ -304,16 +251,12 @@ public class Product extends AuditBase {
 	@Column(name = "composition", length = 150)
 	private String composition; // Content also
 
-	@Column(name = "active_principle", length = 150)
-	private String activePrinciple;
-
-	@Column(name = "processing_type", length = 50)
+	@Column(name = "processing_type", length = 100)
 	private String processingType;
 
-	@Column(name = "packaging", length = 50)
+	@Column(name = "packaging", length = 150)
 	private String packaging;
 
-	@Lob
 	@Column(name = "info", columnDefinition = "TEXT")
 	private String info;
 
@@ -337,6 +280,9 @@ public class Product extends AuditBase {
 
 	@Column(name = "manufacturer_part_number", length = GlobalConstants.SIZE_CODE)
 	private String manufacturerPartNumber;
+
+	@Column(name = "manufacturer_address", length = 250)
+	private String manufacturerAddress;
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
@@ -365,15 +311,6 @@ public class Product extends AuditBase {
 
 	@Column(name = "expectation_of_life", length = 50)
 	private String expectationOfLife;
-
-	@Column(name = "production_company", length = 150)
-	private String productionCompany;
-
-	@Column(name = "production_country", length = 50)
-	private String productionCountry;
-
-	@Column(name = "production_address", length = 250)
-	private String productionAddress;
 
 	@Column(name = "registration_company", length = 80)
 	private String registrationCompany;
@@ -428,9 +365,6 @@ public class Product extends AuditBase {
 
 	@Column(name = "purchase_ok")
 	private Boolean purchaseOk;
-
-	@Column(name = "registration_no", length=GlobalConstants.SIZE_CODE)
-	private String registrationNo;
 
 	@ManyToOne
 	@JoinColumn(name = "measure_unit_id")
@@ -567,9 +501,6 @@ public class Product extends AuditBase {
 
 			taxList.add(new ProductTax(getBuyTax1(), getTax1Included()));
 			taxList.add(new ProductTax(getBuyTax2(), getTax2Included()));
-			taxList.add(new ProductTax(getBuyTax3(), getTax3Included()));
-			taxList.add(new ProductTax(getBuyTax4(), getTax4Included()));
-			taxList.add(new ProductTax(getBuyTax5(), getTax5Included()));
 		}
 		return taxList;
 	}
@@ -612,22 +543,6 @@ public class Product extends AuditBase {
 
 	public void setInfo(String info) {
 		this.info = info;
-	}
-
-	public String getDefaultCode() {
-		return defaultCode;
-	}
-
-	public void setDefaultCode(String defaultCode) {
-		this.defaultCode = defaultCode;
-	}
-
-	public byte[] getImageMedium() {
-		return imageMedium;
-	}
-
-	public void setImageMedium(byte[] imageMedium) {
-		this.imageMedium = imageMedium;
 	}
 
 	public Double getSalePrice() {
@@ -694,14 +609,6 @@ public class Product extends AuditBase {
 		this.system = system;
 	}
 
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
-
 	public Tax getBuyTax() {
 		return buyTax;
 	}
@@ -724,14 +631,6 @@ public class Product extends AuditBase {
 
 	public void setSellTax(Tax sellTax) {
 		this.sellTax = sellTax;
-	}
-
-	public String getBarcode1() {
-		return barcode1;
-	}
-
-	public void setBarcode1(String barcode1) {
-		this.barcode1 = barcode1;
 	}
 
 	public Boolean getTaxIncluded() {
@@ -820,108 +719,12 @@ public class Product extends AuditBase {
 		this.tax2Included = tax2Included;
 	}
 
-	public void setBuyTax3(Tax buyTax3) {
-		this.buyTax3 = buyTax3;
-	}
-
-	public Tax getBuyTax3() {
-		return buyTax3;
-	}
-
-	public void setSellTax3(Tax sellTax3) {
-		this.sellTax3 = sellTax3;
-	}
-
-	public Tax getSellTax3() {
-		return sellTax3;
-	}
-
-	public void setTax3Included(Boolean tax3Included) {
-		this.tax3Included = tax3Included;
-	}
-
-	public Boolean getTax3Included() {
-		return tax3Included;
-	}
-
-	public void setBuyTax4(Tax buyTax4) {
-		this.buyTax4 = buyTax4;
-	}
-
-	public Tax getBuyTax4() {
-		return buyTax4;
-	}
-
-	public void setSellTax4(Tax sellTax4) {
-		this.sellTax4 = sellTax4;
-	}
-
-	public Tax getSellTax4() {
-		return sellTax4;
-	}
-
-	public void setTax4Included(Boolean tax4Included) {
-		this.tax4Included = tax4Included;
-	}
-
-	public Boolean getTax4Included() {
-		return tax4Included;
-	}
-
-	public void setBuyTax5(Tax buyTax5) {
-		this.buyTax5 = buyTax5;
-	}
-
-	public Tax getBuyTax5() {
-		return buyTax5;
-	}
-
-	public void setSellTax5(Tax sellTax5) {
-		this.sellTax5 = sellTax5;
-	}
-
-	public Tax getSellTax5() {
-		return sellTax5;
-	}
-
-	public void setTax5Included(Boolean tax5Included) {
-		this.tax5Included = tax5Included;
-	}
-
-	public Boolean getTax5Included() {
-		return tax5Included;
-	}
-
-	public void setBarcode2(String barcode2) {
-		this.barcode2 = barcode2;
-	}
-
-	public String getBarcode2() {
-		return barcode2;
-	}
-
-	public void setBarcode3(String barcode3) {
-		this.barcode3 = barcode3;
-	}
-
-	public String getBarcode3() {
-		return barcode3;
-	}
-
 	public void setProductUnitList(List<ProductUnit> productUnitList) {
 		this.productUnitList = productUnitList;
 	}
 
 	public List<ProductUnit> getProductUnitList() {
 		return productUnitList;
-	}
-
-	public void setShelfPlace(String shelfPlace) {
-		this.shelfPlace = shelfPlace;
-	}
-
-	public String getShelfPlace() {
-		return shelfPlace;
 	}
 
 	public ProductType getProductType() {
@@ -1050,14 +853,6 @@ public class Product extends AuditBase {
 		this.composition = composition;
 	}
 
-	public String getActivePrinciple() {
-		return activePrinciple;
-	}
-
-	public void setActivePrinciple(String activePrinciple) {
-		this.activePrinciple = activePrinciple;
-	}
-
 	public String getProcessingType() {
 		return processingType;
 	}
@@ -1176,30 +971,6 @@ public class Product extends AuditBase {
 
 	public void setExpectationOfLife(String expectationOfLife) {
 		this.expectationOfLife = expectationOfLife;
-	}
-
-	public String getProductionCompany() {
-		return productionCompany;
-	}
-
-	public void setProductionCompany(String productionCompany) {
-		this.productionCompany = productionCompany;
-	}
-
-	public String getProductionCountry() {
-		return productionCountry;
-	}
-
-	public void setProductionCountry(String productionCountry) {
-		this.productionCountry = productionCountry;
-	}
-
-	public String getProductionAddress() {
-		return productionAddress;
-	}
-
-	public void setProductionAddress(String productionAddress) {
-		this.productionAddress = productionAddress;
 	}
 
 	public String getRegistrationCompany() {
@@ -1346,14 +1117,6 @@ public class Product extends AuditBase {
 		this.governmentDecisionNo = governmentDecisionNo;
 	}
 
-	public String getRegistrationNo() {
-		return registrationNo;
-	}
-
-	public void setRegistrationNo(String registrationNo) {
-		this.registrationNo = registrationNo;
-	}
-
 	public MeasureUnit getMeasureUnit() {
 		return measureUnit;
 	}
@@ -1472,5 +1235,13 @@ public class Product extends AuditBase {
 
 	public void setExternalType(String externalType) {
 		this.externalType = externalType;
+	}
+
+	public String getManufacturerAddress() {
+		return manufacturerAddress;
+	}
+
+	public void setManufacturerAddress(String manufacturerAddress) {
+		this.manufacturerAddress = manufacturerAddress;
 	}
 }
