@@ -22,6 +22,15 @@ public interface ItemService extends GenericService<Item, Long>{
    */
 	Item getOne(String code) throws ObjectNotFoundException;
 
+  /**
+   * Get one item with the provided code.
+   * 
+   * @param name The item name
+   * @return The item
+   * @throws ObjectNotFoundException If no such account exists.
+   */
+	Item getByName(String name) throws ObjectNotFoundException;
+
 	Page<LocalizedItem> searchLocalizedItems(String keyword, String languageCode, Pageable pageable);
 
 	LocalizedItem getLocalizedItem(Item item, Language language);

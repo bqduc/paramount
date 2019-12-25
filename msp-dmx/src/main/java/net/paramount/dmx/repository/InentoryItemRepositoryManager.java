@@ -177,18 +177,14 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 			if (null != dataObject) {
 				stringValueOfCode = dataObject.toString();
 			}
-			usageDirection = this.marshallItem(stringValueOfCode, (String)marshallingDataRow.get(this.configDetailIndexMap.get("idxUsageDirectionName")), 
-					null, null);
+			usageDirection = this.unmarshallItem(stringValueOfCode, (String)marshallingDataRow.get(this.configDetailIndexMap.get("idxUsageDirectionName")), null, null);
 
 
 			dataObject = marshallingDataRow.get(this.configDetailIndexMap.get("idxActiveIngredientCode"));
 			if (null != dataObject) {
 				stringValueOfCode = dataObject.toString();
 			}
-			activeIngredient = this.marshallItem(stringValueOfCode, 
-					(String)marshallingDataRow.get(this.configDetailIndexMap.get("idxActiveIngredientName")), 
-					null, 
-					null);
+			activeIngredient = this.unmarshallItem(stringValueOfCode, (String)marshallingDataRow.get(this.configDetailIndexMap.get("idxActiveIngredientName")), null, null);
 
 			servicingBusinessUnit = fetchServicingBusinessUnit(marshallingDataRow.get(this.configDetailIndexMap.get("idxBusinessServicingCode")));
 
@@ -203,17 +199,17 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 					.barcode(CommonUtility.getString(marshallingDataRow.get(this.configDetailIndexMap.get("idxBarcode")), GlobalConstants.SIZE_BARCODE))
 					.activeIngredient(activeIngredient)
 					.usageDirection(usageDirection)
-					.composition((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxComposition"))) //Hàm lượng
-					.name((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxName")))
+					.composition(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxComposition")))) //Hàm lượng
+					.name(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxName"))))
 					.code(CommonUtility.getString(marshallingDataRow.get(this.configDetailIndexMap.get("idxRegistrationNo")), GlobalConstants.SIZE_CODE))
 					.packaging(CommonUtility.getString(marshallingDataRow.get(this.configDetailIndexMap.get("idxPackaging")), 150))
 					.measureUnit(measureUnit)
 					.unitPrice(buildPrice(marshallingDataRow.get(this.configDetailIndexMap.get("idxUnitPrice"))))
 					.balanceQuantity(balanceQuantity)
 					.servicingBusinessUnit(servicingBusinessUnit)
-					.manufacturer((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerName")))
-					.manufacturerCountry((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerCountry")))
-					.contractor((String)marshallingDataRow.get(this.configDetailIndexMap.get("idxContractor")))
+					.manufacturer(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerName"))))
+					.manufacturerCountry(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxManufacturerCountry"))))
+					.contractor(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxContractor"))))
 					.contracorCategory(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorCategory"))))
 					.contractorGroup(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxContractorGroup"))))
 					.governmentDecisionNo(CommonUtility.toString(marshallingDataRow.get(this.configDetailIndexMap.get("idxDecisionNo"))))

@@ -85,6 +85,7 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 	protected Map<String, BusinessUnit> businessUnitMap = ListUtility.createMap();
 
 	protected Map<String, Item> itemMap = ListUtility.createMap();
+	protected Map<String, Item> itemNameMap = ListUtility.createMap();
 
 	protected BusinessUnit getBusinessUnit(List<?> contactDataRow) {
 		if (this.businessUnitMap.containsKey(contactDataRow.get(IDX_BUSINESS_UNIT_CODE))) {
@@ -155,31 +156,30 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 	}
 
 	protected Item parseJobInfo(List<?> contactDataRow) {
-		return marshallItem((String)contactDataRow.get(IDX_JOB_CODE), (String)contactDataRow.get(IDX_JOB_NAME), null, null);
+		return unmarshallItem((String)contactDataRow.get(IDX_JOB_CODE), (String)contactDataRow.get(IDX_JOB_NAME), null, null);
 	}
 
-	protected Item marshallItem(String code, String name, String nameExtend, String subtype) {
+	protected Item unmarshallItem(String code, String name, String nameExtend, String subtype) {
 		if (CommonUtility.isEmpty(code) || CommonUtility.isEmpty(name))
 			return null;
 
 		if (CommonUtility.isNotEmpty(code) && itemMap.containsKey(code))
 			return itemMap.get(code);
 
-		for (Item object :this.itemMap.values()) {
-			if (object.getName().equals(name)) {
-				return object;
-			}
+		Item fetchedObject = this.itemService.getOne(code);
+		if (null != fetchedObject) {
+			this.itemMap.put(fetchedObject.getCode(), fetchedObject);
+			this.itemNameMap.put(fetchedObject.getName(), fetchedObject);
+			return fetchedObject;
 		}
 
-		Item fetchedObject = null;
-		SearchParameter searchParameter = SearchParameter.builder()
-				.pageable(PageRequest.of(CommonConstants.DEFAULT_PAGE_BEGIN, CommonConstants.DEFAULT_PAGE_SIZE, Sort.Direction.ASC, "id"))
-				.build()
-				.put("name", name);
-		Page<Item> fetchedObjects = this.itemService.getObjects(searchParameter);
-		if (fetchedObjects.hasContent()) {
-			fetchedObject = fetchedObjects.getContent().get(0);
+		if (CommonUtility.isNotEmpty(name) && itemNameMap.containsKey(name))
+			return itemNameMap.get(code);
+
+		fetchedObject = this.itemService.getByName(name);
+		if (null != fetchedObject) {
 			this.itemMap.put(fetchedObject.getCode(), fetchedObject);
+			this.itemNameMap.put(fetchedObject.getName(), fetchedObject);
 			return fetchedObject;
 		}
 
@@ -191,6 +191,7 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 				.build();
 		this.itemService.save(fetchedObject);
 		this.itemMap.put(fetchedObject.getCode(), fetchedObject);
+		this.itemNameMap.put(fetchedObject.getName(), fetchedObject);
 		return fetchedObject;
 	}
 

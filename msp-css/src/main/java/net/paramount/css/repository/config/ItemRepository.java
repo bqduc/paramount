@@ -18,4 +18,5 @@ public interface ItemRepository extends BaseRepository<Item, Long>{
 	Page<Item> search(@Param("keyword") String keyword, Pageable pageable);
 
 	Item findByCode(String code);
+	Item findByName(String name);
 }

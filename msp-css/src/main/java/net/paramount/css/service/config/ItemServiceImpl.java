@@ -51,6 +51,11 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
 	}
 
 	@Override
+	public Item getByName(String name) throws ObjectNotFoundException {
+		return this.repository.findByName(name);
+	}
+
+	@Override
 	public LocalizedItem getLocalizedItem(Item item, Language language) {
 		EntityManager em = this.getEntityManager();
 		List results = em.createQuery("select li from LocalizedItem li where li.item = :item and li.language = :language")
