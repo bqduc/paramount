@@ -37,8 +37,10 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.paramount.common.ListUtility;
 import net.paramount.entity.general.Catalogue;
 import net.paramount.entity.general.Item;
@@ -52,6 +54,8 @@ import net.paramount.global.GlobalConstants;
  * 
  * @author bqduc
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "inventory_item")

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.paramount.common.CommonUtility;
 import net.paramount.entity.emx.EnterpriseAccount;
 import net.paramount.framework.controller.BaseRestController;
+import net.paramount.framework.service.IService;
 import net.paramount.repository.AccountFacade;
 
 /**
@@ -27,7 +28,7 @@ import net.paramount.repository.AccountFacade;
  */
 @RestController
 @RequestMapping("/api/account")
-public class AccountRestController extends BaseRestController<EnterpriseAccount> {
+public class AccountRestController extends BaseRestController<EnterpriseAccount, Long> {
 
 	/**
 	 * 
@@ -77,5 +78,9 @@ public class AccountRestController extends BaseRestController<EnterpriseAccount>
 	private void initDummyData() {
 		EnterpriseAccount account = new EnterpriseAccount("DUMMX", "Dummy Account", "Dummy account for testing purpose. ", "DUMMY", Boolean.TRUE);
 		doCreateBusinessObject(account);
+	}
+	@Override
+	protected IService<EnterpriseAccount, Long> getBusinessService() {
+		return this.businessService;
 	}
 }

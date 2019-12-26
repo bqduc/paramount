@@ -15,22 +15,39 @@
 */
 package net.paramount.entity.stock;
 
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import net.paramount.auth.entity.AuthenticateAccount;
+import net.paramount.embeddable.Phone;
+import net.paramount.entity.contact.Contact;
+import net.paramount.entity.contact.ContactAddress;
+import net.paramount.entity.contact.ContactTeam;
+import net.paramount.entity.general.BusinessUnit;
 import net.paramount.entity.general.Catalogue;
+import net.paramount.entity.general.Item;
 import net.paramount.framework.entity.BizObjectBase;
+import net.paramount.model.ContactType;
+import net.paramount.model.GenderType;
 
 /**
  * A user.
  * 
  * @author bqduc
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "inventory_item_catalog")

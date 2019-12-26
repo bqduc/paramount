@@ -32,7 +32,7 @@
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>msp-css-domain</artifactId>
+			<artifactId>msp-css</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 

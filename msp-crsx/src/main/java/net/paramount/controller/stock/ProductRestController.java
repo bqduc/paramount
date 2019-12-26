@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import net.paramount.css.service.stock.ProductService;
 import net.paramount.entity.stock.Product;
 import net.paramount.framework.controller.BaseRestController;
+import net.paramount.framework.service.IService;
 
 /**
  * @author ducbui
@@ -26,7 +27,7 @@ import net.paramount.framework.controller.BaseRestController;
  */
 @RestController
 @RequestMapping("/api/product")
-public class ProductRestController extends BaseRestController<Product> {
+public class ProductRestController extends BaseRestController<Product, Long> {
 	/**
 	 * 
 	 */
@@ -57,5 +58,16 @@ public class ProductRestController extends BaseRestController<Product> {
 		List<Product> objects = businessService.getObjects();
 		System.out.println("COME !");
 		return objects;
+	}
+
+	@Override
+	protected Product doFetchBusinessObject(Long id) {
+		Product fetchedObject = this.businessService.getObject(id);
+		return fetchedObject;
+	}
+
+	@Override
+	protected IService<Product, Long> getBusinessService() {
+		return this.businessService;
 	}
 }

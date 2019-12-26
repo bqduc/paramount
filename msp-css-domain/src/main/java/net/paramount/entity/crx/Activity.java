@@ -31,9 +31,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.paramount.auth.entity.AuthenticateAccount;
 import net.paramount.entity.general.Currency;
 import net.paramount.entity.general.Item;
@@ -44,6 +46,8 @@ import net.paramount.framework.entity.BizObjectBase;
  * 
  * @author bqduc
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Data
 @Entity

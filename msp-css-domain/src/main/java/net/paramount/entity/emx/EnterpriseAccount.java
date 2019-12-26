@@ -1,7 +1,6 @@
 
 package net.paramount.entity.emx;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -20,6 +19,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import net.paramount.framework.entity.ObjectBase;
+
 /**
  * 
  * @author MOHAMMED BOUNAGA
@@ -34,14 +35,8 @@ import org.hibernate.annotations.LazyCollectionOption;
     @NamedQuery(name = "Account.findById", query = "SELECT a FROM EnterpriseAccount a WHERE a.id = :id"),
     @NamedQuery(name = "Account.findByName", query = "SELECT a FROM EnterpriseAccount a WHERE a.title = :name"),
     @NamedQuery(name = "Account.findByActive", query = "SELECT a FROM EnterpriseAccount a WHERE a.active = :active")})
-public class EnterpriseAccount implements Serializable {
+public class EnterpriseAccount extends ObjectBase {
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
 
     @Basic(optional = false)
     @NotNull
@@ -95,24 +90,12 @@ public class EnterpriseAccount implements Serializable {
     public EnterpriseAccount() {
     }
 
-    public EnterpriseAccount(Integer id) {
-        this.id = id;
-    }
-
     public EnterpriseAccount(String code, String name, String title, String type, Boolean active) {
         this.code = code;
         this.type = type;
         this.title = title;
         this.name = name;
         this.active = active;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -196,28 +179,8 @@ public class EnterpriseAccount implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EnterpriseAccount)) {
-            return false;
-        }
-        EnterpriseAccount other = (EnterpriseAccount) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return "Account[ id=" + id + " ]";
+        return "Account[ id=" + getId() + " ]";
     }
     
 }

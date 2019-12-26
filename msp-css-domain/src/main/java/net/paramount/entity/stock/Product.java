@@ -45,7 +45,9 @@ import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import net.paramount.entity.general.BusinessUnit;
 import net.paramount.entity.general.Catalogue;
 import net.paramount.entity.general.Item;
@@ -69,9 +71,12 @@ import net.paramount.global.GlobalConstants;
  * 
  * @author ducbq
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "PRODUCT")
+//@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Product extends AuditBase {
 
 	private static final long serialVersionUID = 1L;

@@ -14,7 +14,7 @@ import net.paramount.framework.entity.ObjectBase;
 import net.paramount.framework.model.ExecutionContext;
 import net.paramount.framework.model.SearchParameter;
 
-public interface GenericService<T extends ObjectBase, K extends Serializable>{
+public interface GenericService<T extends ObjectBase, K extends Serializable> extends IService<T, K> {
 	T save(T entity);
 	T saveOrUpdate(T entity);
 	List<T> saveObjects(List<T> objects);
@@ -30,13 +30,6 @@ public interface GenericService<T extends ObjectBase, K extends Serializable>{
 
 	String nextSerial(String prefix) throws MspDataException;
 
-  /**
-   * Get object with the provided key.
-   * 
-   * @param id The object key
-   * @return The Object
-   */
-	T getObject(K id);
 	Optional<T> getBusinessObject(Object key) throws MspDataException;
 	List<T> getObjects();
 

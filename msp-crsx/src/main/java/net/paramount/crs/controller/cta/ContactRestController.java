@@ -22,6 +22,7 @@ import net.paramount.css.service.contact.ContactService;
 import net.paramount.entity.contact.Contact;
 import net.paramount.entity.contact.ContactProfile;
 import net.paramount.framework.controller.BaseRestController;
+import net.paramount.framework.service.IService;
 
 /**
  * @author ducbui
@@ -29,7 +30,7 @@ import net.paramount.framework.controller.BaseRestController;
  */
 @RestController
 @RequestMapping("/api/contact")
-public class ContactRestController extends BaseRestController<Contact> {
+public class ContactRestController extends BaseRestController<Contact, Long> {
 
 	/**
 	 * 
@@ -98,5 +99,10 @@ public class ContactRestController extends BaseRestController<Contact> {
 		account.setLastName("Bui Quy");
 		account.setTitle("Application Developer");
 		this.businessServiceProfile.saveOrUpdate(account);
+	}
+
+	@Override
+	protected IService<Contact, Long> getBusinessService() {
+		return this.businessService;
 	}
 }

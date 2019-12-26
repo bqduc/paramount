@@ -36,7 +36,7 @@ public class PurchaseOrderFacade extends BaseDAO{
 
         em.persist(entity);
         em.flush();
-        entity.setName(idGeerator.generatePurchaseId(entity.getId()));
+        entity.setName(idGeerator.generatePurchaseId(entity.getId().intValue()));
         return entity;
     }
 

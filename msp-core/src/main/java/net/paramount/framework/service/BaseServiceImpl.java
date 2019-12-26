@@ -16,7 +16,7 @@ import net.paramount.framework.entity.ObjectBase;
 import net.paramount.framework.repository.BaseRepository;
 
 
-public abstract class BaseServiceImpl<T extends ObjectBase, PK extends Serializable> extends ServiceBase <T, PK>{
+public abstract class BaseServiceImpl<T extends ObjectBase, PK extends Serializable> extends ServiceImpl <T, PK>{
 	private static final long serialVersionUID = -1326030262778654331L;
 
 	protected abstract BaseRepository<T, PK> getRepository();

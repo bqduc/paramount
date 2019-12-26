@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import net.paramount.common.CommonBeanUtils;
 import net.paramount.common.CommonConstants;
 import net.paramount.common.CommonUtility;
-import net.paramount.common.ListUtility;
 import net.paramount.exceptions.ExecutionContextException;
 import net.paramount.exceptions.MspDataException;
 import net.paramount.exceptions.ObjectNotFoundException;
@@ -124,19 +123,6 @@ public abstract class GenericServiceImpl<ClassType extends ObjectBase, Key exten
     	return repo.findAll(pageRequest);
 
     return null;
-	}
-
-  /**
-   * Get entity with the provided key.
-   * 
-   * @param id The entity key
-   * @return The entity
-   */
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public ClassType getObject(Key id) {
-		ClassType entity = getRepository().getOne(id);
-		return entity;
 	}
 
   @Override

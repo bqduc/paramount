@@ -3,6 +3,7 @@
  */
 package net.paramount.framework.controller;
 
+import java.io.Serializable;
 import java.util.zip.DataFormatException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,18 +25,22 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import net.paramount.domain.RestErrorInfo;
 import net.paramount.exceptions.ResourceNotFoundException;
+import net.paramount.framework.entity.ObjectBase;
+import net.paramount.framework.service.IService;
 
 /**
  * @author bqduc
  *
  */
-public abstract class BaseRestController<T> extends RootController {
+public abstract class BaseRestController<T extends ObjectBase, PK extends Serializable> extends RootController {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2890610255967939983L;
 	protected static final String DEFAULT_PAGE_SIZE = "100";
 	protected static final String DEFAULT_PAGE_NUM = "0";
+	
+	protected abstract IService<T, PK> getBusinessService();
 
 	@RequestMapping(
 			value = "/create", 
@@ -70,7 +75,7 @@ public abstract class BaseRestController<T> extends RootController {
 	@RequestMapping(value = "/fetch/{id}", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
 	@ApiOperation(value = "Get a single aquafeed.", notes = "You have to provide a valid aquafeed ID.")
-	public @ResponseBody T fetchBusinessObject(@ApiParam(value = "The ID of the aquafeed.", required = true) @PathVariable("id") Long id,
+	public @ResponseBody T fetchBusinessObject(@ApiParam(value = "The ID of the aquafeed.", required = true) @PathVariable("id") PK id,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return this.doFetchBusinessObject(id);
 	}
@@ -131,8 +136,13 @@ public abstract class BaseRestController<T> extends RootController {
 		return null;
 	}
 
-	protected T doFetchBusinessObject(Long id) {
-		return null;
+	protected T doFetchBusinessObject(PK id) {
+		IService<T, PK> service = this.getBusinessService();
+		if (null==service)
+			return null;
+
+		T fetchedBizObject = service.getObject(id);
+		return fetchedBizObject;
 	}
 
 	protected void doDeleteBusinessObject(Long id) {

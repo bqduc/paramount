@@ -83,5 +83,4 @@ public class AccountFacade extends BaseDAO {
 		}
 		return totalDebit;
 	}
-
 }

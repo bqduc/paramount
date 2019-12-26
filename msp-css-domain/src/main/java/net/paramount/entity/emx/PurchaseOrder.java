@@ -26,6 +26,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import net.paramount.framework.entity.ObjectBase;
 import net.paramount.framework.validation.InDateRange;
 
 /**
@@ -52,13 +53,8 @@ import net.paramount.framework.validation.InDateRange;
     @NamedQuery(name = "PurchaseOrder.findByDiscount", query = "SELECT p FROM PurchaseOrder p WHERE p.discount = :discount"),
     @NamedQuery(name = "PurchaseOrder.findByActive", query = "SELECT p FROM PurchaseOrder p WHERE p.active = :active"),
     @NamedQuery(name = "PurchaseOrder.findByName", query = "SELECT p FROM PurchaseOrder p WHERE p.name = :name")})
-public class PurchaseOrder implements Serializable {
+public class PurchaseOrder extends ObjectBase {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
 
     @Basic(optional = false)
     @NotNull
@@ -91,12 +87,7 @@ public class PurchaseOrder implements Serializable {
     
     @Column(name = "unpaid")
     private Double unpaid = 0d;
-    
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "notes")
-    private String notes;
-    
+        
     @Size(max = 64, message = "{LongString}")
     @Column(name = "invoice_method")
     private String invoiceMethod = "Partial";
@@ -133,25 +124,10 @@ public class PurchaseOrder implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Invoice> invoices;
 
+  	@Column(name = "info", columnDefinition = "TEXT")
+  	private String info;
+    
     public PurchaseOrder() {
-    }
-
-    public PurchaseOrder(Integer id) {
-        this.id = id;
-    }
-
-    public PurchaseOrder(Integer id, Date date, Boolean active) {
-        this.id = id;
-        this.date = date;
-        this.active = active;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Date getDate() {
@@ -234,14 +210,6 @@ public class PurchaseOrder implements Serializable {
         this.invoiceMethod = invoiceMethod;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     public Integer getDiscount() {
         return discount;
     }
@@ -310,28 +278,16 @@ public class PurchaseOrder implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PurchaseOrder)) {
-            return false;
-        }
-        PurchaseOrder other = (PurchaseOrder) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return "PurchaseOrder[ id=" + id + " ]";
+        return "PurchaseOrder[ id=" + getId() + " ]";
     }
+
+		public String getInfo() {
+			return info;
+		}
+
+		public void setInfo(String info) {
+			this.info = info;
+		}
     
 }

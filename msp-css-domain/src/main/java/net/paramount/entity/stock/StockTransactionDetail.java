@@ -16,7 +16,9 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import net.paramount.entity.contact.Contact;
 import net.paramount.entity.trade.Tax;
 import net.paramount.framework.entity.ObjectBase;
@@ -27,6 +29,8 @@ import net.paramount.framework.validation.StrictlyPositiveNumber;
  * @author ducbq
  * 
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "stock_transaction_detail")

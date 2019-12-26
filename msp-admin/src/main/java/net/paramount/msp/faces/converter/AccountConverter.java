@@ -54,7 +54,7 @@ public class AccountConverter implements Converter<Object> {
         }
         if (object instanceof EnterpriseAccount) {
             EnterpriseAccount o = (EnterpriseAccount) object;
-            return getStringKey(o.getId());
+            return getStringKey(o.getId().intValue());
         } else {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), EnterpriseAccount.class.getName()});
             return null;

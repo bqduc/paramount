@@ -21,13 +21,13 @@ import net.paramount.utility.JsfUtil;
  */
 
 @FacesConverter(value = "purchaseOrderConverter")
-public class PurchaseOrderConverter implements Converter {
+public class PurchaseOrderConverter implements Converter<PurchaseOrder> {
 
     @Inject
     private PurchaseOrderFacade ejbFacade;
 
     @Override
-    public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
+    public PurchaseOrder getAsObject(FacesContext facesContext, UIComponent component, String value) {
         if (value == null || value.length() == 0 || JsfUtil.isDummySelectItem(component, value)) {
             return null;
         }
@@ -47,14 +47,13 @@ public class PurchaseOrderConverter implements Converter {
     }
 
     @Override
-    public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-        if (object == null
-                || (object instanceof String && ((String) object).length() == 0)) {
+    public String getAsString(FacesContext facesContext, UIComponent component, PurchaseOrder object) {
+        if (object == null) {
             return null;
         }
         if (object instanceof PurchaseOrder) {
             PurchaseOrder o = (PurchaseOrder) object;
-            return getStringKey(o.getId());
+            return getStringKey(o.getId().intValue());
         } else {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), PurchaseOrder.class.getName()});
             return null;
