@@ -24,80 +24,82 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class Quantity implements java.io.Serializable {
-    
-    private static final long serialVersionUID = 1L;
+	/**
+	* 
+	*/
+	private static final long serialVersionUID = 6197188777904513286L;
 
-    @Column(name="UNIT", length=10)
-    private String unit;
-    
-    @Column(name="QUANTITY", precision=5, scale=2)
-    private Double value = 0d;
-    
-    public Quantity() {
-        this.unit = "";
-        this.value = 0d;
-    }
+	@Column(name = "unit_id")
+	private Long unitId;
 
-    public Quantity(Quantity quantity) {
-        this.unit = quantity.getUnit();
-        this.value = new Double( quantity.getValue());
-    }
+	@Column(name = "quantity", precision = 5, scale = 2)
+	private Double value = 0d;
 
-    public Quantity(double value, String unit) {
-        this.value = value;
-        this.unit = unit;
-    }
+	public Quantity() {
+		this.unitId = null;
+		this.value = 0d;
+	}
 
-    public void moveFieldsOf(Quantity anotherQuantity) {
-    	if (anotherQuantity != null) {
-    		this.unit = anotherQuantity.getUnit();
-    		this.value = anotherQuantity.getValue();
-    	}
-    }
-        
-    public String getUnit() {
-        return unit;
-    }
+	public Quantity(Quantity quantity) {
+		this.value = new Double(quantity.getValue());
+		this.unitId = quantity.getUnitId();
+	}
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
+	public Quantity(double value, Long unitId) {
+		this.value = value;
+		this.unitId = unitId;
+	}
 
-    public Double getValue() {
-        return value;
-    }
+	public void moveFieldsOf(Quantity anotherQuantity) {
+		if (anotherQuantity != null) {
+			this.unitId = anotherQuantity.getUnitId();
+			this.value = anotherQuantity.getValue();
+		}
+	}
 
-    public BigDecimal asBigDecimal() {
-    	return BigDecimal.valueOf(value);
-    }
+	public Double getValue() {
+		return value;
+	}
 
-    public void setValue(Double value) {
-        this.value = value;
-    }
-    
-    @Override
-    public String toString() {
+	public BigDecimal asBigDecimal() {
+		return BigDecimal.valueOf(value);
+	}
 
-        NumberFormat f = NumberFormat.getInstance();
-        f.setMaximumFractionDigits(2);
-        f.setMinimumFractionDigits(2);
+	public void setValue(Double value) {
+		this.value = value;
+	}
 
-        return f.format(getValue()) + " " + getUnit();
-    }
+	@Override
+	public String toString() {
 
-    public String toStringInNarrowFormat() {
-        NumberFormat f = NumberFormat.getInstance();
-        f.setMaximumFractionDigits(2);
-        f.setMinimumFractionDigits(2);
+		NumberFormat f = NumberFormat.getInstance();
+		f.setMaximumFractionDigits(2);
+		f.setMinimumFractionDigits(2);
 
-        String result = f.format(getValue()) + " " + getUnit();
-        if (result.length() > 7) {
-        	result = result.substring(0, 7);
-        }
-        return result;
-    }
-    
-    public boolean isZero() {
-    	return this.value == 0d;
-    }
+		return f.format(getValue()) + "#" + getUnitId();
+	}
+
+	public String toStringInNarrowFormat() {
+		NumberFormat f = NumberFormat.getInstance();
+		f.setMaximumFractionDigits(2);
+		f.setMinimumFractionDigits(2);
+
+		String result = f.format(getValue()) + "#" + getUnitId();
+		if (result.length() > 7) {
+			result = result.substring(0, 7);
+		}
+		return result;
+	}
+
+	public boolean isZero() {
+		return this.value == 0d;
+	}
+
+	public Long getUnitId() {
+		return unitId;
+	}
+
+	public void setUnitId(Long unitId) {
+		this.unitId = unitId;
+	}
 }

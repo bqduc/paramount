@@ -233,17 +233,20 @@ public class InentoryItemRepositoryManager extends DmxRepositoryBase {
 		if (null==priceInfo)
 			return null;
 
-		return super.parseMoney(SystemOptionKey.COUNTRY_CODE.getDefaultValue(), CommonUtility.toBigDecimal(priceInfo.toString()));
+		return super.parseMoney(getDefaultCurrency()/*SystemOptionKey.COUNTRY_CODE.getDefaultValue()*/, CommonUtility.toBigDecimal(priceInfo.toString()));
 	}
 
 	private Quantity buildQuantity(Object quantityInfo, MeasureUnit measureUnit) {
 		if (CommonUtility.isEmpty(quantityInfo))
 			return null;
 
-		Quantity quantity  = new Quantity(CommonUtility.toDouble(quantityInfo, 0), (null!=measureUnit)?measureUnit.getCode():"");
+		Quantity quantity  = new Quantity(CommonUtility.toDouble(quantityInfo, 0), (null!=measureUnit)?measureUnit.getId():null);
 		return quantity ;
 	}
 
+	private Long getDefaultCurrency() {
+		return 0l;
+	}
 	/**
 	 * Example data 11.TUOI SONG>111.RAU CU, QUA>11111.RAU AN LA
 	 */

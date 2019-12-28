@@ -424,8 +424,8 @@ public class Product extends AuditBase {
   @Embedded
   @Valid
   @AttributeOverrides( {
-    @AttributeOverride(name="unit", column=@Column(name="prog_selling_quantity_unit")),
-    @AttributeOverride(name="value", column=@Column(name="prog_selling_quantity_value"))
+    @AttributeOverride(name="unitId", column=@Column(name="prog_selling_unit_id")),
+    @AttributeOverride(name="value", column=@Column(name="prog_selling_value"))
   })
   private Quantity progSellingQuantity = new Quantity();
 
@@ -433,8 +433,8 @@ public class Product extends AuditBase {
   @Embedded
   @Valid
   @AttributeOverrides( {
-    @AttributeOverride(name="unit", column=@Column(name="balance_quantity_unit")),
-    @AttributeOverride(name="value", column=@Column(name="balance_quantity_value"))
+    @AttributeOverride(name="unitId", column=@Column(name="balance_unit_id")),
+    @AttributeOverride(name="value", column=@Column(name="balance_value"))
   })
   private Quantity balanceQuantity = new Quantity();
 

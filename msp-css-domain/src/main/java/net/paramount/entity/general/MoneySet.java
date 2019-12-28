@@ -32,6 +32,7 @@ public class MoneySet extends Money implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+  	@Column(name="LCYVAL", precision=19, scale=2)
     private BigDecimal localAmount = BigDecimal.ZERO;
 
     public MoneySet(){
@@ -40,12 +41,12 @@ public class MoneySet extends Money implements Serializable {
         localAmount.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public MoneySet(String currency){
-    	super(currency);
+    public MoneySet(Long currencyId){
+    	super(currencyId);
     }
 
-    public MoneySet( BigDecimal ccyAmt, BigDecimal localAmt, String currency ){
-        super( ccyAmt, currency );
+    public MoneySet(BigDecimal ccyAmt, BigDecimal localAmt, Long currencyId){
+        super(ccyAmt, currencyId);
         this.localAmount = localAmt;
     }
 
@@ -54,9 +55,9 @@ public class MoneySet extends Money implements Serializable {
         this.localAmount = localAmt;
 	}
 
-    public MoneySet(BigDecimal ccyAmt, String currency) {
+    public MoneySet(BigDecimal ccyAmt, Long currencyId) {
     	super( ccyAmt );
-    	setCurrency(currency);
+    	setCurrency(currencyId);
     }
 
     public MoneySet(BigDecimal ccyAmt) {
@@ -64,7 +65,7 @@ public class MoneySet extends Money implements Serializable {
     }
 
     public MoneySet(MoneySet amount) {
-        super( amount.getValue(), amount.getCurrency());
+        super(amount.getValue(), amount.getCurrency());
         localAmount = amount.getLocalAmount();
     }
     
@@ -74,7 +75,6 @@ public class MoneySet extends Money implements Serializable {
     }
 
 
-	@Column(name="LCYVAL", precision=19, scale=2)
     public BigDecimal getLocalAmount() {
         return localAmount;
     }
@@ -111,17 +111,17 @@ public class MoneySet extends Money implements Serializable {
 
     	result.append(getNumberFormat().format(getValue()));
     	
-    	if (!getCurrency().equals(BaseConsts.SYSTEM_CURRENCY_CODE)) {
+    	/*if (!getCurrencyId().equals(BaseConsts.SYSTEM_CURRENCY_CODE)) {
     		result.append("(")
     			  .append(getNumberFormat().format(getLocalAmount()))
     			  .append(")");
-    	} 
+    	} */
     	return result.toString();
     }
 
 
     public void clearMoney() {
-    	setCurrency(BaseConsts.SYSTEM_CURRENCY_CODE);
+    	//setCurrency(BaseConsts.SYSTEM_CURRENCY_CODE);
     	setLocalAmount(BigDecimal.ZERO);
     	setValue(BigDecimal.ZERO);
     }

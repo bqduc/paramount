@@ -204,7 +204,7 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		return phone;
 	}
 
-	protected Money parseMoney(String currency, BigDecimal value) {
+	protected Money parseMoney(Long currency, BigDecimal value) {
 		Money parsedObject = new Money();
 		parsedObject.setCurrency(currency);
 		parsedObject.setValue(value);

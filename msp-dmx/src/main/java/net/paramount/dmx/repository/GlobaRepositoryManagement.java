@@ -33,15 +33,15 @@ public class GlobaRepositoryManagement extends ComponentBase {
 	}
 
 	protected void initInventoryItems() {
-		String logSpec = String.join(this.getClass().getSimpleName(), "::", Thread.currentThread().getStackTrace()[1].getMethodName());
-		log.info(String.join(LOG_ENTRY_ENTER, logSpec));
-		log.info(String.join(LOG_ENTRY_LEAVE, logSpec));
+		//String logSpec = String.join(this.getClass().getSimpleName(), "::", Thread.currentThread().getStackTrace()[1].getMethodName());
+		//log.info(String.join(LOG_ENTRY_ENTER, logSpec));
+		//log.info(String.join(LOG_ENTRY_LEAVE, logSpec));
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void doSomethingAfterStartup() {
-		System.out.println("AsyncExecutor: " + asyncExecutor);
-		System.out.println("hello world, I have just started up");
+		System.out.println("AsyncExecutor: [" + asyncExecutor + "]");
+		System.out.println("Hello world, the application just started up");
 	}
 
 	public void initiateMasterData() {

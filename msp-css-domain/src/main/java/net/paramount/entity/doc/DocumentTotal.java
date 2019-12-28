@@ -14,9 +14,9 @@ package net.paramount.entity.doc;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
+import net.paramount.common.ListUtility;
 import net.paramount.entity.general.MoneySet;
 
 /**
@@ -28,7 +28,7 @@ import net.paramount.entity.general.MoneySet;
  */
 public class DocumentTotal {
 
-	private Map<String, MoneySet> data = new HashMap<String, MoneySet>();
+	private Map<Long, MoneySet> data = ListUtility.createMap();
 	private BigDecimal localTotal = BigDecimal.ZERO;
 
 	public void add(MoneySet amount) {
@@ -50,7 +50,7 @@ public class DocumentTotal {
 		return localTotal;
 	}
 
-	public Map<String, MoneySet> getTotalMap() {
+	public Map<Long, MoneySet> getTotalMap() {
 		return data;
 	}
 

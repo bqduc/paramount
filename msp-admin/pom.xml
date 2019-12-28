@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mojarra.version>2.3.4</mojarra.version>
-	    <joinfaces.version>3.3.0-rc2</joinfaces.version>
+	    <!-- <joinfaces.version>3.3.0-rc2</joinfaces.version> -->
     </properties>
 	<dependencyManagement>
     	<dependencies>

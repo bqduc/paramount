@@ -20,9 +20,6 @@ import java.text.NumberFormat;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.Size;
-
-import net.paramount.entity.base.BaseConsts;
 
 /**
  * Uygulama içerisinde temel para tipi
@@ -37,10 +34,14 @@ public class Money implements Serializable {
    /**
      * 3Char ISO code
      */
-    @Column(name="CCY", length=3)
+    /*@Column(name="CCY", length=3)
     @Size(max=3)
-    private String currency = BaseConsts.SYSTEM_CURRENCY_CODE;
-    
+    private String currency = BaseConsts.SYSTEM_CURRENCY_CODE;*/
+
+    @Column(name="currency_id")
+    private Long currency;
+
+    @Column(name="CCYVAL", precision=19, scale=2)
     private BigDecimal value;
 
     /** Creates a new instance of Money */
@@ -48,20 +49,21 @@ public class Money implements Serializable {
     	value = BigDecimal.ZERO;
     	value.setScale(2, RoundingMode.HALF_UP);
     }
-    
+
+    public Money(Long currencyId) {
+    	this.currency = currencyId;
+    	value = BigDecimal.ZERO;
+    	value.setScale(2, RoundingMode.HALF_UP);
+    }
+
     public Money(Money money) {
         this.currency = money.getCurrency();
         this.value = money.getValue();
     }
 
-    public Money( String currency) {
-        this.value = BigDecimal.ZERO;
-        this.currency = currency;
-    }
-    
-    public Money(BigDecimal value, String currency) {
+    public Money(BigDecimal value, Long currencyId) {
         this.value = value;
-        this.currency = currency;
+        this.currency = currencyId;
     }
 
     public Money(BigDecimal value) {
@@ -69,19 +71,10 @@ public class Money implements Serializable {
     }
 
     public void clearMoney() {
-    	this.currency = BaseConsts.SYSTEM_CURRENCY_CODE;
+    	this.currency = null;
     	this.value = BigDecimal.ZERO;
     }
 
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    @Column(name="CCYVAL", precision=19, scale=2)
     public BigDecimal getValue() {
         return value;
     }
@@ -121,8 +114,16 @@ public class Money implements Serializable {
     }
 
     public void currencyValidation(Money money) {
-    	if (!currency.equals(money.getCurrency())) {
-    		throw new RuntimeException("Döviz tipleri tutmuyor...");
+    	if (!this.currency.equals(money.getCurrency())) {
+    		throw new RuntimeException("Currency types do not match...");
     	}
     }
+
+		public Long getCurrency() {
+			return currency;
+		}
+
+		public void setCurrency(Long currencyId) {
+			this.currency = currencyId;
+		}
 }

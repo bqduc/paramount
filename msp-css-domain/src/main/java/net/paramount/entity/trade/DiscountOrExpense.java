@@ -35,30 +35,29 @@ public class DiscountOrExpense implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="PERCENTAGE")
+	@Column(name = "PERCENTAGE")
 	private Boolean percentage = Boolean.TRUE;
-	
-	@Column(name="RATE")
+
+	@Column(name = "RATE")
 	private BigDecimal rate = BigDecimal.ZERO;
 
-	@Column(name="CCY", length=3)
-    @Size(max=3)
-    private String currency = BaseConsts.SYSTEM_CURRENCY_CODE;
-    
-    @Column(name="CCYVAL", precision=10, scale=2)
-    private BigDecimal value = BigDecimal.ZERO;
+	@Column(name = "CCY")
+	private Long currency;
 
-    @Column(name="LCYVAL", precision=10, scale=2)
-    private BigDecimal localAmount = BigDecimal.ZERO;
+	@Column(name = "CCYVAL", precision = 10, scale = 2)
+	private BigDecimal value = BigDecimal.ZERO;
+
+	@Column(name = "LCYVAL", precision = 10, scale = 2)
+	private BigDecimal localAmount = BigDecimal.ZERO;
 
 	@Override
-    public String toString() {
-        NumberFormat f = NumberFormat.getInstance();
-        f.setMaximumFractionDigits(2);
-        f.setMinimumFractionDigits(2);
+	public String toString() {
+		NumberFormat f = NumberFormat.getInstance();
+		f.setMaximumFractionDigits(2);
+		f.setMinimumFractionDigits(2);
 
-        return f.format(value) + " " + getCurrency();
-    }
+		return f.format(value) + " " + getCurrency();
+	}
 
 	public String getAsCaption() {
 		StringBuilder result = new StringBuilder();
@@ -100,7 +99,7 @@ public class DiscountOrExpense implements Serializable {
 	public void clear() {
 		this.percentage = Boolean.TRUE;
 		this.rate = BigDecimal.ZERO;
-		this.currency = BaseConsts.SYSTEM_CURRENCY_CODE;
+		this.currency = null;//BaseConsts.SYSTEM_CURRENCY_CODE;
 		this.value = BigDecimal.ZERO;
 		this.localAmount = BigDecimal.ZERO;
 	}
@@ -116,11 +115,11 @@ public class DiscountOrExpense implements Serializable {
 		this.percentage = percentage;
 	}
 	
-	public String getCurrency() {
+	public Long getCurrency() {
 		return currency;
 	}
 
-	public void setCurrency(String currency) {
+	public void setCurrency(Long currency) {
 		this.currency = currency;
 	}
 

@@ -53,13 +53,16 @@ public class Currency extends BizObjectBase {
 
 	@NotNull
 	@Size(min = 3, max=GlobalConstants.SIZE_CURRENCY_CODE)
-	@Column(unique = true)
-	private String code;
+	@Column(name="alphabetic_code", unique = true)
+	private String alphabeticCode;
 
-	@Size(max = 80)
-	@Column(name="name")
-	private String name;
-	
+	@Size(max = GlobalConstants.SIZE_CURRENCY_CODE)
+	@Column(name="numeric_code")
+	private String numericCode;
+
+	@Column(name="decimal_digits")
+	private Byte decimalDigits; //The number of digits after the decimal separator. 
+
 	@Lob
 	@Column(name = "info", columnDefinition = "TEXT")
 	@Type(type = "org.hibernate.type.TextType")
