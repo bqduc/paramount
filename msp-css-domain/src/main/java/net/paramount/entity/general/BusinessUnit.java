@@ -4,9 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -50,11 +48,8 @@ public class BusinessUnit extends BizObjectBase {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "issue_user_id")
-	private UserAccount publisheruserAccount;
-
-	@Column(name = "publisher_id")
-	private String publisherId;
+	@JoinColumn(name = "publish_user_id")//issue_user_id
+	private UserAccount publishUserAccount;
 
 	@ManyToOne
 	@JoinColumn(name = "issued_user_id")
@@ -111,8 +106,7 @@ public class BusinessUnit extends BizObjectBase {
 
 	@Override
 	public String toString() {
-		return "Business unit {" + "id:" + getId() + ", version: " + version + ", name: " + name + ", local name: " + nameLocal + ", publisher: " + publisherId
-				+ ", published date: " + publishedDate + ", issued date: " + issuedDate + '}';
+		return "Business unit {" + "id:" + getId() + '}';
 	}
 
 	public Integer getVersion() {
@@ -169,14 +163,6 @@ public class BusinessUnit extends BizObjectBase {
 
 	public void setPublishedDate(Date publishedDate) {
 		this.publishedDate = publishedDate;
-	}
-
-	public String getPublisherId() {
-		return publisherId;
-	}
-
-	public void setPublisherId(String publisherId) {
-		this.publisherId = publisherId;
 	}
 
 	public Item getLevel() {
@@ -259,14 +245,6 @@ public class BusinessUnit extends BizObjectBase {
 		this.supportCategory = supportCategory;
 	}
 
-	public UserAccount getPublisheruserAccount() {
-		return publisheruserAccount;
-	}
-
-	public void setPublisheruserAccount(UserAccount publisheruserAccount) {
-		this.publisheruserAccount = publisheruserAccount;
-	}
-
 	public UserAccount getIssuedUser() {
 		return issuedUser;
 	}
@@ -289,5 +267,13 @@ public class BusinessUnit extends BizObjectBase {
 
 	public void setManagerUser(UserAccount managerUser) {
 		this.managerUser = managerUser;
+	}
+
+	public UserAccount getPublishUserAccount() {
+		return publishUserAccount;
+	}
+
+	public void setPublishUserAccount(UserAccount publishUserAccount) {
+		this.publishUserAccount = publishUserAccount;
 	}
 }

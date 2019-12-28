@@ -42,7 +42,7 @@ public class ProductBrowse extends BaseController {
 	private ProductService businessService;
 
 	private List<Product> businessObjects;
-	private List<Product> selectedBusinessObjects;
+	private List<Product> selectedObjects;
 
 	@Override
 	public void doPostConstruct() {
@@ -150,11 +150,11 @@ public class ProductBrowse extends BaseController {
 		this.businessObjects = businessObjects;
 	}
 
-	public List<Product> getSelectedBusinessObjects() {
-		return selectedBusinessObjects;
+	public List<Product> getSelectedObjects() {
+		return selectedObjects;
 	}
 
-	public void setSelectedBusinessObjects(List<Product> selectedBusinessObjects) {
-		this.selectedBusinessObjects = selectedBusinessObjects;
+	public void setSelectedObjects(List<Product> selectedObjects) {
+		this.selectedObjects = selectedObjects;
 	}
 }

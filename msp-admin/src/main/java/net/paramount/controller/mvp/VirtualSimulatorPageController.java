@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.util.Messages;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -66,7 +67,8 @@ public class VirtualSimulatorPageController extends BaseController {
   	private ApplicationContext applicationContext;
 
   	@Inject
-  	private TaskExecutor asyncExecutor;
+  	@Qualifier("taskExecutor")
+  	private TaskExecutor taskExecutor;
     
   	@Inject
   	private GlobalDmxRepositoryManager globalDmxRepository;
@@ -214,7 +216,7 @@ public class VirtualSimulatorPageController extends BaseController {
   			executionContext.context("AA", "xx").context("DD", "ss");
 
   			asyncExtendedDataLoader = applicationContext.getBean(AsyncExtendedDataLoader.class, executionContext);
-  			this.asyncExecutor.execute(asyncExtendedDataLoader);
+  			this.taskExecutor.execute(asyncExtendedDataLoader);
   		} catch (Exception e) {
   			//log.error(e.getMessage());
   		}

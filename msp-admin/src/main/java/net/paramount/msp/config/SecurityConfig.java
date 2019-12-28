@@ -93,12 +93,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return unauthorizedPatterns;
 	}
 
-	private String[] buildRestAPIsMatchers() {
+	/*private String[] buildRestAPIsMatchers() {
 		String[] unauthorizedPatterns = new String[] { 
 				"/api/**"
 		};
 		return unauthorizedPatterns;
-	}
+	}*/
 
 	/*@Override
 	protected UserDetailsService userDetailsService() {

@@ -75,11 +75,12 @@ import net.paramount.global.GlobalConstants;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "PRODUCT")
-//@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@Table(name = "product")
 public class Product extends AuditBase {
-
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2929178651788000055L;
 
 	@Builder.Default
 	@Column(name = "PRODUCT_TYPE")
@@ -291,7 +292,7 @@ public class Product extends AuditBase {
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
-	private InventoryItem parent;
+	private Product parent;
 
 	@Column(name = "minimum_options")
 	private Integer minimumOptions;
@@ -914,14 +915,6 @@ public class Product extends AuditBase {
 		this.manufacturerPartNumber = manufacturerPartNumber;
 	}
 
-	public InventoryItem getParent() {
-		return parent;
-	}
-
-	public void setParent(InventoryItem parent) {
-		this.parent = parent;
-	}
-
 	public Integer getMinimumOptions() {
 		return minimumOptions;
 	}
@@ -1248,5 +1241,13 @@ public class Product extends AuditBase {
 
 	public void setManufacturerAddress(String manufacturerAddress) {
 		this.manufacturerAddress = manufacturerAddress;
+	}
+
+	public Product getParent() {
+		return parent;
+	}
+
+	public void setParent(Product parent) {
+		this.parent = parent;
 	}
 }
