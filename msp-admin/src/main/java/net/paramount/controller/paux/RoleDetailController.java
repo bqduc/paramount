@@ -17,17 +17,14 @@ import org.omnifaces.util.Faces;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
-import net.paramount.auth.service.UserAuthenticationService;
-import net.paramount.css.service.contact.ContactService;
-import net.paramount.entity.contact.Contact;
-import net.paramount.msp.model.Car;
-import net.paramount.msp.service.CarService;
+import net.paramount.auth.entity.Authority;
+import net.paramount.auth.service.AuthorityService;
 import net.paramount.msp.util.Utils;
 
 /**
  * @author ducbq
  */
-@Named(value="roleDetail")
+@Named(value = "roleDetail")
 @ViewScoped
 public class RoleDetailController implements Serializable {
 	/**
@@ -35,68 +32,62 @@ public class RoleDetailController implements Serializable {
 	 */
 	private static final long serialVersionUID = -8331499270487789202L;
 
-  @Inject
-  private UserAuthenticationService userAuthenticationService;
-
-  @Inject
-	CarService carService;
-
 	@Inject
-	private ContactService contactService;
+	private AuthorityService businessService;
 
 	@Inject
 	private Utils utils;
 
-    private Long id;
-    private Car car;
-    
-    private Contact contact;
+	private Long id;
 
-    public void init() {
-        if (Faces.isAjaxRequest()) {
-            return;
-        }
-        if (has(id)) {
-        	this.contact = contactService.getObject(Long.valueOf(id));
-        } else {
-        	this.contact = Contact.builder().build();
-        }
-    }
+	private Authority businessObject;
 
-    public void remove() throws IOException {
-        if (!utils.isUserInRole("ROLE_ADMIN")) {
-            throw new AccessDeniedException("User not authorized! Only role <b>admin</b> can remove cars.");
-        }
-        if (has(car) && has(car.getId())) {
-            carService.remove(car);
-            utils.addDetailMessage("Car " + car.getModel()
-                    + " removed successfully");
-            Faces.getFlash().setKeepMessages(true);
-            Faces.redirect("user/car-list.jsf");
-        }
-    }
+	public void init() {
+		if (Faces.isAjaxRequest()) {
+			return;
+		}
 
-    public void save() {
-        contactService.saveOrUpdate(this.contact);
-        String msg = "Contact " + this.contact.getCode() + " created successfully";
-        utils.addDetailMessage(msg);
-    }
-
-    public void clear() {
-        this.contact = Contact.builder().build();
-        id = null;
-    }
-
-    public boolean isNew() {
-        return this.contact == null || this.contact.getId() == null;
-    }
-
-	public Contact getContact() {
-		return contact;
+		if (has(id)) {
+			this.businessObject = businessService.getObject(Long.valueOf(id));
+		} else {
+			this.businessObject = Authority.builder().build();
+		}
 	}
 
-	public void setContact(Contact contact) {
-		this.contact = contact;
+	public void remove() throws IOException {
+		if (!utils.isUserInRole("ROLE_ADMIN")) {
+			throw new AccessDeniedException("User not authorized! Only role <b>admin</b> can remove businessObjects.");
+		}
+
+		if (has(businessObject) && has(businessObject.getId())) {
+			businessService.remove(businessObject);
+			utils.addDetailMessage("Authority " + businessObject.getDisplayName() + " removed successfully");
+			Faces.getFlash().setKeepMessages(true);
+			Faces.redirect("user/car-list.jsf");
+		}
+	}
+
+	public void save() {
+		businessService.saveOrUpdate(this.businessObject);
+		String msg = "Authority " + this.businessObject.getName() + " created successfully";
+		utils.addDetailMessage(msg);
+	}
+
+	public void clear() {
+		this.businessObject = Authority.builder().build();
+		id = null;
+	}
+
+	public boolean isNew() {
+		return this.businessObject == null || this.businessObject.getId() == null;
+	}
+
+	public Authority getBusinessObject() {
+		return businessObject;
+	}
+
+	public void setBusinessObject(Authority BusinessObject) {
+		this.businessObject = BusinessObject;
 	}
 
 	public Long getId() {
@@ -106,6 +97,4 @@ public class RoleDetailController implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 }

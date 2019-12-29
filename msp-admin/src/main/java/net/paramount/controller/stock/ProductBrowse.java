@@ -27,8 +27,6 @@ public class ProductBrowse extends BaseController {
 	*/
 	private static final long serialVersionUID = 2662262440970210081L;
 	private List<FacesTeamFacade> teams;
-	private List<FacesCar> cars;
-	private FacesCar selectedCar;
 	private List<String> selectedColors;
 
 	private List<FacesCar> filteredCars;
@@ -41,12 +39,13 @@ public class ProductBrowse extends BaseController {
 	@Inject
 	private ProductService businessService;
 
-	private List<Product> businessObjects;
-	private List<Product> selectedObjects;
+	private List<Product> businessBizObjects;
+	private List<Product> selectedBizObjects;
+	private Product selectedBizObject;
 
 	@Override
 	public void doPostConstruct() {
-		this.businessObjects = businessService.getObjects();
+		this.businessBizObjects = businessService.getObjects();
 	}
 
 	protected void initData() {
@@ -102,13 +101,13 @@ public class ProductBrowse extends BaseController {
 		return carService.getColors();
 	}
 
-	public List<FacesCar> getCars() {
+	/*public List<FacesCar> getCars() {
 		return cars;
 	}
 
 	public List<FacesCar> getCarsCarousel() {
 		return cars.subList(0, 8);
-	}
+	}*/
 
 	public List<FacesCar> getFilteredCars() {
 		return filteredCars;
@@ -126,12 +125,20 @@ public class ProductBrowse extends BaseController {
 		this.selectedColors = selectedColors;
 	}
 
-	public FacesCar getSelectedCar() {
+	/*public FacesCar getSelectedCar() {
 		return selectedCar;
 	}
 
 	public void setSelectedCar(FacesCar selectedCar) {
 		this.selectedCar = selectedCar;
+	}*/
+
+	public Product getSelectedObject() {
+		return selectedBizObject;
+	}
+
+	public void setSelectedObject(Product selectedObject) {
+		this.selectedBizObject = selectedObject;
 	}
 
 	public List<Car> getSelectedCars() {
@@ -143,18 +150,18 @@ public class ProductBrowse extends BaseController {
 	}
 
 	public List<Product> getBusinessObjects() {
-		return businessObjects;
+		return businessBizObjects;
 	}
 
 	public void setBusinessObjects(List<Product> businessObjects) {
-		this.businessObjects = businessObjects;
+		this.businessBizObjects = businessObjects;
 	}
 
 	public List<Product> getSelectedObjects() {
-		return selectedObjects;
+		return selectedBizObjects;
 	}
 
 	public void setSelectedObjects(List<Product> selectedObjects) {
-		this.selectedObjects = selectedObjects;
+		this.selectedBizObjects = selectedObjects;
 	}
 }

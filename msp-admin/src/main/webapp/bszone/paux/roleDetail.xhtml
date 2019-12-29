@@ -10,28 +10,28 @@
 
     <ui:define name="body">
         <f:metadata>
-            <f:viewParam name="id" value="#{contactDetail.id}" converter="javax.faces.Long"/>
-            <!-- use view action if you are in a Java EE 7 server: <f:viewAction action="#{contactDetail.init()}"/>-->
-            <f:event type="preRenderView" listener="#{contactDetail.init}"/>
+            <f:viewParam name="id" value="#{roleDetail.id}" converter="javax.faces.Long"/>
+            <!-- use view action if you are in a Java EE 7 server: <f:viewAction action="#{roleDetail.init()}"/>-->
+            <f:event type="preRenderView" listener="#{roleDetail.init}"/>
         </f:metadata>
 
-        <adm:breadcrumb title="#{empty contactDetail.id ? 'New Car' : 'Car '.concat(contactDetail.id)}" link="car-form.jsf?id=#{contactDetail.id}"/>
+        <adm:breadcrumb title="#{empty roleDetail.id ? 'New Car' : 'Car '.concat(roleDetail.id)}" link="car-form.jsf?id=#{roleDetail.id}"/>
         <h:form id="form" prependId="false">
-            <p:focus rendered="#{empty contactDetail.id}"/>
+            <p:focus rendered="#{empty roleDetail.id}"/>
 
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="Save" action="#{contactDetail.save}" update="@form"
+                        <p:commandButton value="Save" action="#{roleDetail.save}" update="@form"
                                          icon="fa fa-check" styleClass="btn-primary"/>
-                        <p:spacer width="5" rendered="#{contactDetail.isNew()}"/>
-                        <p:commandButton value="Clear" action="#{contactDetail.clear}" process="@this"
+                        <p:spacer width="5" rendered="#{roleDetail.isNew()}"/>
+                        <p:commandButton value="Clear" action="#{roleDetail.clear}" process="@this"
                                          icon="fa fa-refresh" styleClass="btn-success"
-                                         update="@form" rendered="#{contactDetail.isNew()}" resetValues="true"/>
-                        <p:spacer width="5" rendered="#{not contactDetail.isNew()}"/>
+                                         update="@form" rendered="#{roleDetail.isNew()}" resetValues="true"/>
+                        <p:spacer width="5" rendered="#{not roleDetail.isNew()}"/>
 
-                        <p:commandButton value="Delete" action="#{contactDetail.remove}" process="@this"
-                                         rendered="#{not contactDetail.isNew()}" icon="fa fa-trash"
+                        <p:commandButton value="Delete" action="#{roleDetail.remove}" process="@this"
+                                         rendered="#{not roleDetail.isNew()}" icon="fa fa-trash"
                                          styleClass="btn-danger">
                             <f:setPropertyActionListener value="true"
                                                          target="#{facesContext.externalContext.flash.keepMessages}"/>
@@ -39,18 +39,18 @@
                         </p:commandButton>
                         <p:spacer width="5"/>
                         <p:commandButton value="Back" immediate="true"
-                                         action="contactBrowse?faces-redirect=true"
+                                         action="roleBrowse?faces-redirect=true"
                                          process="@this"
                                          icon="fa fa-reply"/>
                     </div>
-                    <p:splitButton value="Save" action="#{contactDetail.save}" update="@form"
+                    <p:splitButton value="Save" action="#{roleDetail.save}" update="@form"
                                    icon="fa fa-check"
                                    styleClass="hidden-md hidden-lg btn-primary">
-                        <p:menuitem value="Reset" action="#{contactDetail.clear}"
-                                    process="@this" update="@form" rendered="#{contactDetail.isNew()}"
+                        <p:menuitem value="Reset" action="#{roleDetail.clear}"
+                                    process="@this" update="@form" rendered="#{roleDetail.isNew()}"
                                     resetValues="true" icon="fa fa-refresh"/>
-                        <p:menuitem value="Delete" action="#{contactDetail.remove}" process="@this"
-                                    rendered="#{not contactDetail.isNew()}" icon="fa fa-trash"
+                        <p:menuitem value="Delete" action="#{roleDetail.remove}" process="@this"
+                                    rendered="#{not roleDetail.isNew()}" icon="fa fa-trash"
                                  >
                             <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
                         </p:menuitem>
@@ -67,26 +67,25 @@
                             <p:outputLabel for="id" value="ID"/>
                         </div>
                         <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputText id="id" value="#{contactDetail.contact.id}" size="4"
-                                         readonly="true" styleClass="form-control" style="width: 100%"/>
-                        </div>
-                        <div class="ui-sm-12 ui-md-2 ui-lg-1">
-                            <p:outputLabel value="Model" for="inptModel"/>
-                        </div>
-                        <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputText id="inptModel" value="#{contactDetail.contact.firstName}"/>
+                            <p:inputText id="id" value="#{roleDetail.businessObject.id}" size="4" readonly="true" styleClass="form-control" style="width: 100%"/>
                         </div>
                         <div class="ui-sm-12 ui-md-2 ui-lg-1">
                             <p:outputLabel value="Name" for="inptName"/>
                         </div>
                         <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputText id="inptName" value="#{contactDetail.contact.lastName}"/>
+                            <p:inputText id="inptName" value="#{roleDetail.businessObject.name}"/>
                         </div>
                         <div class="ui-sm-12 ui-md-2 ui-lg-1">
-                            <p:outputLabel value="Price" for="inptPrice"/>
+                            <p:outputLabel value="Name" for="inptDisplayName"/>
                         </div>
                         <div class="ui-sm-12 ui-md-4 ui-lg-5" >
-                            <p:inputNumber id="inptPrice" value="#{contactDetail.contact.code}"/>
+                            <p:inputText id="inptDisplayName" value="#{roleDetail.businessObject.displayName}"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-1">
+                            <p:outputLabel value="Price" for="inptInfo"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-4 ui-lg-5" >
+                            <p:inputTextarea id="inptInfo" value="#{roleDetail.businessObject.info}"/>
                         </div>
                     </div>
                 </div>

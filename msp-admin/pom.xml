@@ -33,17 +33,17 @@
             <dependency>
                 <groupId>com.github.adminfaces</groupId>
                 <artifactId>admin-template</artifactId>
-                <version>1.0.2</version>
+                <version>${version.admin-template}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.adminfaces</groupId>
                 <artifactId>admin-theme</artifactId>
-                <version>1.0.2</version>
+                <version>${version.admin-theme}</version>
             </dependency>
             <dependency>
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces</artifactId>
-                <version>7.0</version>
+                <version>${version.primefaces}</version>
             </dependency>
 	  
     </dependencies>

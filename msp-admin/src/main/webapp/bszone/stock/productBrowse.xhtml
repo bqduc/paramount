@@ -29,7 +29,7 @@
                         <p:spacer width="5"/>
                         <p:commandButton value="View selected" update="@(.ui-dialog)" styleClass="btn-info"
                                          disabled="#{empty productBrowse.businessObjects or productBrowse.businessObjects.size() == 0}"
-                                         oncomplete="PF('selectedContact').show()" icon="fa fa-search"/>
+                                         oncomplete="PF('selectedProduct').show()" icon="fa fa-search"/>
                     </div>
 
                     <p:splitButton value="New" action="car-form?faces-redirect=true"
@@ -42,7 +42,7 @@
                             <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
                         </p:menuitem>
                         <p:menuitem value="View selected" update="@(.ui-dialog)"
-                                    oncomplete="PF('selectedContact').show()"
+                                    oncomplete="PF('selectedProduct').show()"
                                     disabled="#{empty productBrowse.businessObjects or productBrowse.businessObjects.size() == 0}"
                                     icon="fa fa-search"
                         />
@@ -51,7 +51,7 @@
                     <p:dataTable var="bizObject" value="#{productBrowse.businessObjects}" widgetVar="bizObjectTable" paginator="true" styleClass="header-right #{customLayoutMB.borderless ? 'no-border':''}"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,15,20,50,100,250" rows="50" rowKey="#{bizObject.id}"
-                                 emptyMessage="No product objects found with given criteria" stickyHeader="true" selection="#{productBrowse.businessObjects}"
+                                 emptyMessage="No product objects found with given criteria" stickyHeader="true" selection="#{productBrowse.selectedObjects}"
                                  filteredValue="#{productBrowse.filteredCars}">
 
                         <p:ajax event="rowSelectCheckbox" update="@(.ui-button, .ui-confirm-dialog)"/>
@@ -63,17 +63,13 @@
                             <p:outputPanel>
                                 <h:outputText value="Search all fields:"/>
                                 <p:spacer height="10"/>
-                                <p:inputText id="globalFilter" onkeyup="PF('bizObjectTable').filter()" style="width:150px"
-                                             placeholder="Enter keyword"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('bizObjectTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column width="5%" selectionMode="multiple"
-                                  styleClass="align-center"
-                                  priority="1"/>
+                        <p:column width="5%" selectionMode="multiple" styleClass="align-center" priority="1" headerText="Selection" />
 
-                        <p:column filterBy="#{bizObject.id}" sortBy="#{bizObject.id}" headerText="Id" footerText="contains"
-                                  filterMatchMode="contains" priority="1">
+                        <p:column filterBy="#{bizObject.id}" sortBy="#{bizObject.id}" headerText="Id" footerText="contains" filterMatchMode="contains" priority="1">
                             <p:link value="#{bizObject.id}" outcome="/bszone/stock/productDetail.jsf">
                                 <f:param name="id" value="#{bizObject.id}"/>
                             </p:link>
@@ -102,8 +98,7 @@
 
                         <p:column filterBy="#{bizObject.code}" headerText="Color" footerText="in" filterMatchMode="in" priority="3">
                             <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Colors" onchange="PF('bizObjectTable').filter()"
-                                                      panelStyle="width:125px" scrollHeight="150">
+                                <p:selectCheckboxMenu label="Colors" onchange="PF('bizObjectTable').filter()" panelStyle="width:125px" scrollHeight="150">
                                     <f:selectItems value="#{productBrowse.colors}"/>
                                 </p:selectCheckboxMenu>
                             </f:facet>
@@ -118,56 +113,13 @@
                 <p:spacer/>
             </h:form>
 
-	        <p:dialog header="Selected contact" widgetVar="selectedContact" height="250"
+	        <p:dialog header="Selected product" widgetVar="selectedProduct" height="250"
 	                  width="400" responsive="true" styleClass="box-success">
-	            <p:dataList id="selectedCarsList" value="#{productBrowse.businessObjects}" var="car"
-	                        type="definition">
+	            <p:dataList id="selectedCarsList" value="#{productBrowse.businessObjects}" var="car" type="definition">
 	                ID: #{bizObject.id} - Barcode: #{bizObject.barcode} - Name: #{bizObject.name} - Price: #{bizObject.id}
 	            </p:dataList>
 	        </p:dialog>
         </p:panel>
         <p:separator/>
-    </ui:define>
-
-    <ui:define name="code">
-        <p:tabView styleClass="hidden-sm hidden-xs">
-            <p:tab title="datatable">
-                <pre>
-               <code class="language-html"><h:outputText
-                       value="Table of contacts" escape="true"/>
-               </code>
-                </pre>
-            </p:tab>
-
-            <p:tab title="DatatableMB">
-                <pre>
-               <code class="language-java">
-                   <h:outputText
-                           value="Related information"
-                           escape="false"/>
-               </code>
-                </pre>
-            </p:tab>
-        </p:tabView>
-
-        <p:accordionPanel styleClass="hidden-md hidden-lg no-icon">
-            <p:tab title="datatable">
-                <pre>
-               <code class="language-html"><h:outputText
-                       value="#{sourceCodeMB.getPageSource()}" escape="true"/>
-               </code>
-                </pre>
-            </p:tab>
-
-            <p:tab title="DatatableMB">
-                <pre>
-               <code class="language-java">
-                   <h:outputText
-                           value="#{sourceCodeMB.getJavaSource('com.github.adminfaces.showcase.bean.DatatableMB')}"
-                           escape="false"/>
-               </code>
-                </pre>
-            </p:tab>
-        </p:accordionPanel>
     </ui:define>
 </ui:composition>

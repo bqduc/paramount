@@ -43,15 +43,18 @@
         <version.lombok>1.18.6</version.lombok>
         <version.javax.validation>2.0.1.Final</version.javax.validation>
         <version.joda-time>2.9.2</version.joda-time>
-		<joinfaces.version>4.1.1</joinfaces.version>
 		
-		<version.primefaces>7.0</version.primefaces>
 		<version.jackson-jaxrs-base>2.4.2</version.jackson-jaxrs-base>
 		<version.xlsx-streamer>2.1.0</version.xlsx-streamer>
 		<version.javafaker>0.17.2</version.javafaker>
 		<version.tika>1.22</version.tika>
 		
 		<version.commons-io>2.6</version.commons-io>
+		
+		<joinfaces.version>4.1.1</joinfaces.version>
+		<version.admin-template>1.1.0</version.admin-template><!-- 1.0.2 -->
+		<version.admin-theme>1.1.0</version.admin-theme>
+		<version.primefaces>7.0</version.primefaces>
 	</properties>
  
     <modules>

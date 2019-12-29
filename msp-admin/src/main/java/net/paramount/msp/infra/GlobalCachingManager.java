@@ -30,7 +30,7 @@ public class GlobalCachingManager extends ComponentBase {
 
 	@Scheduled(cron = "0/30 * * * * ?") // execute after every 3 minutes
 	public void clearCacheSchedule() {
-		log.info("Clear cache manager fired at: " + Calendar.getInstance().getTime());
+		//log.info("Clear cache manager fired at: " + Calendar.getInstance().getTime());
 		for (String name : cacheManager.getCacheNames()) {
 			log.info("It's about to clear cache: " + name);
 			//cacheManager.getCache(name).clear(); // clear cache by name
