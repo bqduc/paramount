@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,7 @@ import net.paramount.framework.service.GenericServiceImpl;
 
 
 @Service
-public class UserAuthenticationServiceImpl extends GenericServiceImpl<UserAccount, Long> implements UserAuthenticationService, UserDetailsService {
+public class UserAuthenticationServiceImpl extends GenericServiceImpl<UserAccount, Long> implements UserAuthenticationService {
     /**
 	 * 
 	 */
@@ -99,14 +98,15 @@ public class UserAuthenticationServiceImpl extends GenericServiceImpl<UserAccoun
 
 	@Override
 	public void updateUser(UserAccount user) {
-		// TODO Auto-generated method stub
-		
+		this.repository.saveAndFlush(user);
 	}
 
 	@Override
 	public void deleteUser(String username) {
-		// TODO Auto-generated method stub
-		
+		UserAccount removedObject = this.repository.findBySsoId(username);
+		if (null != removedObject) {
+			this.repository.delete(removedObject);
+		}
 	}
 
 	@Override
@@ -117,8 +117,8 @@ public class UserAuthenticationServiceImpl extends GenericServiceImpl<UserAccoun
 
 	@Override
 	public boolean userExists(String username) {
-		// TODO Auto-generated method stub
-		return false;
+		UserAccount removedObject = this.repository.findBySsoId(username);
+		return (null != removedObject);
 	}
 
 	@Override

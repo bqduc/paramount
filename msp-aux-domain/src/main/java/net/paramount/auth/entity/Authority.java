@@ -4,6 +4,8 @@ package net.paramount.auth.entity;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -52,6 +54,13 @@ public class Authority extends ObjectBase {
 	@Column(name = "info")
 	private String info;
 
+	@ManyToOne
+	@JoinColumn(name = "parent_id")
+	private Authority parent;
+
+	@Column(name = "category_id")
+	private Long categoryId;
+	
 	public String getName() {
 		return name;
 	}
@@ -87,6 +96,22 @@ public class Authority extends ObjectBase {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public Authority getParent() {
+		return parent;
+	}
+
+	public void setParent(Authority parent) {
+		this.parent = parent;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 }

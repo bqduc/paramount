@@ -73,27 +73,22 @@
                                   styleClass="align-center"
                                   priority="1"/>
 
-                        <p:column filterBy="#{bizObject.id}" sortBy="#{bizObject.id}" headerText="Id" footerText="contains"
-                                  filterMatchMode="contains" priority="1">
-                            <p:link value="#{bizObject.id}" outcome="/bszone/paux/roleDetail.jsf">
+                        <p:column filterBy="#{bizObject.name}" headerText="Name" footerText="exact" filterMatchMode="exact" priority="2">
+                            <p:link value="#{bizObject.name}" outcome="/bszone/paux/roleDetail.jsf">
                                 <f:param name="id" value="#{bizObject.id}"/>
                             </p:link>
-                        </p:column>
-
-                        <p:column filterBy="#{bizObject.name}" headerText="Name" footerText="exact" filterMatchMode="exact" priority="2">
                             <f:facet name="filter">
                                 <p:selectOneMenu onchange="PF('bizObjectTable').filter()">
                                     <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
                                     <f:selectItems value="#{roleBrowse.brands}"/>
                                 </p:selectOneMenu>
                             </f:facet>
-                            <h:outputText value="#{bizObject.name}"/>
+                            <!-- <h:outputText value="#{bizObject.name}"/> -->
                         </p:column>
 
                         <p:column filterBy="#{bizObject.dislayName}" headerText="Color" footerText="in" filterMatchMode="in" priority="3">
                             <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Colors" onchange="PF('bizObjectTable').filter()"
-                                                      panelStyle="width:125px" scrollHeight="150">
+                                <p:selectCheckboxMenu label="Colors" onchange="PF('bizObjectTable').filter()" panelStyle="width:125px" scrollHeight="150">
                                     <f:selectItems value="#{roleBrowse.colors}"/>
                                 </p:selectCheckboxMenu>
                             </f:facet>
@@ -110,7 +105,7 @@
 
 	        <p:dialog header="Selected role" widgetVar="wdgSelectedBizObjectDialog" height="350" width="600" responsive="true" styleClass="box-success">
 	            <p:dataList id="selectedBizObjectsList" value="#{roleBrowse.selectedObjects}" var="bizObject" type="definition">
-	                ID: #{bizObject.id} - Brand: #{bizObject.name} - Color: #{bizObject.displayName} - Price: #{bizObject.info}<br/><br/>
+	                ID: #{bizObject.id} - Brand: #{bizObject.name} - Display: #{bizObject.displayName} - Price: #{bizObject.info}<br/><br/>
 	            </p:dataList>
 	        </p:dialog>
         </p:panel>

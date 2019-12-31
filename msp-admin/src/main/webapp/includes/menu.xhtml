@@ -5,6 +5,84 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ul class="sidebar-menu tree" data-widget="tree">
+        <li class="header">
+        	<i class="fa fa-book"></i>
+            #{messages['lbl.menu.applicationAdministration']}
+        </li>
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-files-o"></i>
+                <span>#{messages['lbl.menu.systemAdministration']}</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-level-down"></i>
+                        <span>#{messages['lbl.menu.userManagement']}</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <p:link outcome="/pages/components/multilevel">
+                                <i class="fa fa-reply-all"></i>
+                                <span>#{messages['lbl.menu.roleManagement']}</span>
+                            </p:link>
+                        </li> 
+                        <li>
+                            <p:link outcome="/pages/components/multilevel">
+                                <i class="fa fa-reply-all"></i>
+                                <span>#{messages['lbl.menu.roleManagement']}</span>
+                            </p:link>
+                        </li> 
+                        <li>
+                            <p:link outcome="/bszone/general/itemBrowse">
+                                <i class="fa fa-reply-all"></i>
+                                <span>#{messages['lbl.menu.applicationAdministration']}</span>
+                            </p:link>
+                        </li> 
+                    </ul>
+                </li>
+							<li class="treeview">
+			            <a href="#">
+			                <i class="fa fa-files-o"></i>
+			                <span>#{messages['lbl.menu.roleManagement']}</span>
+			                <span class="pull-right-container">
+			                    <i class="fa fa-angle-left pull-right"></i>
+			                </span>
+			            </a>
+	            		<ul class="treeview-menu">
+		                <li>
+		                    <p:link outcome="/bszone/paux/roleBrowse.xhtml" title="#{messages['lbl.menu.roleBrowse']}">
+		                        <i class="fa fa-users"></i>
+		                        <span>#{messages['lbl.menu.roleBrowse']}</span>
+		                    </p:link>
+		                </li>
+	            		</ul>
+                </li>
+                <li class="treeview">
+			            <a href="#">
+			                <i class="fa fa-files-o"></i>
+			                <span>#{messages['lbl.menu.userManagement']}</span>
+			                <span class="pull-right-container">
+			                    <i class="fa fa-angle-left pull-right"></i>
+			                </span>
+			            </a>
+	            		<ul class="treeview-menu">
+		                <li>
+		                    <p:link outcome="/pages/mvp/virtualSimulator.xhtml" title="Logon page">
+		                        <i class="fa fa-users"></i>
+		                        <span>#{messages['lbl.menu.logon']}</span>
+		                    </p:link>
+		                </li>
+	            		</ul>
+                </li>
+							</ul>
+						</li>
         <li>
             <p:link outcome="/index.xhtml">
                 <i class="fa fa-home"></i>
@@ -77,40 +155,6 @@
 			            <a href="#">
 			                <i class="fa fa-files-o"></i>
 			                <span>#{messages['lbl.menu.moduleManagement']}</span>
-			                <span class="pull-right-container">
-			                    <i class="fa fa-angle-left pull-right"></i>
-			                </span>
-			            </a>
-	            		<ul class="treeview-menu">
-		                <li>
-		                    <p:link outcome="/pages/mvp/virtualSimulator.xhtml" title="Logon page">
-		                        <i class="fa fa-users"></i>
-		                        <span>#{messages['lbl.menu.logon']}</span>
-		                    </p:link>
-		                </li>
-	            		</ul>
-                </li>
-                <li class="treeview">
-			            <a href="#">
-			                <i class="fa fa-files-o"></i>
-			                <span>#{messages['lbl.menu.roleManagement']}</span>
-			                <span class="pull-right-container">
-			                    <i class="fa fa-angle-left pull-right"></i>
-			                </span>
-			            </a>
-	            		<ul class="treeview-menu">
-		                <li>
-		                    <p:link outcome="/bszone/paux/roleBrowse.xhtml" title="#{messages['lbl.menu.roleBrowse']}">
-		                        <i class="fa fa-users"></i>
-		                        <span>#{messages['lbl.menu.roleBrowse']}</span>
-		                    </p:link>
-		                </li>
-	            		</ul>
-                </li>
-                <li class="treeview">
-			            <a href="#">
-			                <i class="fa fa-files-o"></i>
-			                <span>#{messages['lbl.menu.userManagement']}</span>
 			                <span class="pull-right-container">
 			                    <i class="fa fa-angle-left pull-right"></i>
 			                </span>
