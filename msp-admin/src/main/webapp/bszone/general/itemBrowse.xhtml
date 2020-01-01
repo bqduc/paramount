@@ -6,7 +6,7 @@
                 template="#{layoutMB.template}">
 
     <ui:define name="metadata">
-        <ui:param name="title" value="Car listing"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+        <ui:param name="title" value="#{messages['lbl.item.objects']}"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
         <style type="text/css">
             .ui-datatable .ui-datatable-header {
                 text-align: right !important;
@@ -16,7 +16,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Find cars by name, price and model
+        #{messages['lbl.item.searchDescription']}
     </ui:define>
 
     <ui:define name="body">
@@ -103,8 +103,6 @@
                                  icon="fa fa-close"/>
             </p:confirmDialog>
         </h:form>
-
-
 
         <p:dialog header="#{messages['lbl.general.selectedObjects']}" widgetVar="uiSelectedObjects" height="250"
                   width="400" responsive="true" styleClass="box-success">
