@@ -17,6 +17,9 @@ package net.paramount.entity.general;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -58,10 +61,18 @@ public class Item extends BizObjectBase {
 	private String name;
 
 	@Size(min = 3, max = GlobalConstants.SIZE_NAME_MEDIUM)
-	@Column(name="name_extend")
-	private String nameExtend;
+	@Column(name="name_local")
+	private String nameLocal;
 
 	@Size(max = GlobalConstants.SIZE_NAME_TINY)
 	@Column(name="subtype")
 	private String subtype;
+
+	@ManyToOne
+	@JoinColumn(name = "parent_id")
+	private Item parent;
+
+	@Lob
+	@Column(name="info", columnDefinition="TEXT")
+	private String info;
 }

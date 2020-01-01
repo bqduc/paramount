@@ -186,7 +186,7 @@ public abstract class DmxRepositoryBase extends ComponentBase {
 		fetchedObject = Item.builder()
 				.code(code)
 				.name(name)
-				.nameExtend(nameExtend)
+				.nameLocal(nameExtend)
 				.subtype(subtype)
 				.build();
 		this.itemService.save(fetchedObject);

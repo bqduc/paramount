@@ -25,7 +25,7 @@
                                          process="@this" update="@form"
                         ><f:setPropertyActionListener value="true"
                                                          target="#{facesContext.externalContext.flash.keepMessages}"/>
-                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
+                            <p:confirm header="Confirmation" message="#{messages['lbl.general.areYouSure']}" icon="ui-icon-danger"/>
                         </p:commandButton>
                         <p:spacer width="5"/>
                         <p:commandButton value="View selected" update="@(.ui-dialog)" styleClass="btn-info"

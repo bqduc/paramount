@@ -17,92 +17,88 @@ import org.omnifaces.util.Faces;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
-import net.paramount.msp.model.Car;
-import net.paramount.msp.service.CarService;
+import net.paramount.css.service.config.ItemService;
+import net.paramount.entity.general.Item;
 import net.paramount.msp.util.Utils;
 
 /**
  * @author ducbq
  */
-@Named(value="itemDetailController")
+@Named(value = "itemDetailController")
 @ViewScoped
 public class ItemDetailController implements Serializable {
-    /**
-	 * 
-	 */
+	/**
+	* 
+	*/
 	private static final long serialVersionUID = 1951559129683497779L;
 
-		@Inject
-    CarService carService;
+	@Inject
+	private ItemService businessService;
 
-    @Inject
-    private Utils utils;
+	@Inject
+	private Utils utils;
 
-    private Integer id;
-    private Car car;
+	private Long id;
+	private Item businessObject;
 
+	public void init() {
+		if (Faces.isAjaxRequest()) {
+			return;
+		}
+		if (has(id)) {
+			businessObject = businessService.getObject(id);
+		} else {
+			businessObject = new Item();
+		}
+	}
 
-    public void init() {
-        if (Faces.isAjaxRequest()) {
-            return;
-        }
-        if (has(id)) {
-            car = carService.findById(id);
-        } else {
-            car = new Car();
-        }
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Item getBusinessObject() {
+		return businessObject;
+	}
 
-    public Car getCar() {
-        return car;
-    }
+	public void setBusinessObject(Item businessObject) {
+		this.businessObject = businessObject;
+	}
 
-    public void setCar(Car car) {
-        this.car = car;
-    }
+	public void remove() throws IOException {
+		if (!utils.isUserInRole("ROLE_ADMIN")) {
+			throw new AccessDeniedException("User not authorized! Only role <b>admin</b> can remove cars.");
+		}
+		if (has(businessObject) && has(businessObject.getId())) {
+			businessService.remove(businessObject);
+			utils.addDetailMessage("Business object " + businessObject.getName() + " removed successfully");
+			Faces.getFlash().setKeepMessages(true);
+			Faces.redirect("user/car-list.jsf");
+		}
+	}
 
+	public void save() {
+		String msg;
+		if (businessObject.getId() == null) {
+			businessService.saveOrUpdate(businessObject);
+			msg = "Business object " + businessObject.getName() + " created successfully";
+		} else {
+			businessService.saveOrUpdate(businessObject);
+			msg = "Business object " + businessObject.getName() + " updated successfully";
+		}
+		utils.addDetailMessage(msg);
+	}
 
-    public void remove() throws IOException {
-        if (!utils.isUserInRole("ROLE_ADMIN")) {
-            throw new AccessDeniedException("User not authorized! Only role <b>admin</b> can remove cars.");
-        }
-        if (has(car) && has(car.getId())) {
-            carService.remove(car);
-            utils.addDetailMessage("Car " + car.getModel()
-                    + " removed successfully");
-            Faces.getFlash().setKeepMessages(true);
-            Faces.redirect("user/car-list.jsf");
-        }
-    }
+	public void clear() {
+		businessObject = new Item();
+		id = null;
+	}
 
-    public void save() {
-        String msg;
-        if (car.getId() == null) {
-            carService.insert(car);
-            msg = "Car " + car.getModel() + " created successfully";
-        } else {
-            carService.update(car);
-            msg = "Car " + car.getModel() + " updated successfully";
-        }
-        utils.addDetailMessage(msg);
-    }
-
-    public void clear() {
-        car = new Car();
-        id = null;
-    }
-
-    public boolean isNew() {
-        return car == null || car.getId() == null;
-    }
-
+	public boolean isNew() {
+		return businessObject == null || businessObject.getId() == null;
+	}
 
 }

@@ -2,23 +2,18 @@ package net.paramount.controller.general;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
-
-import com.github.adminfaces.template.exception.BusinessException;
-
+import net.paramount.common.CommonUtility;
+import net.paramount.common.ListUtility;
 import net.paramount.css.service.config.ItemService;
 import net.paramount.entity.general.Item;
 import net.paramount.msp.infra.model.Filter;
-import net.paramount.msp.model.Car;
-import net.paramount.msp.service.CarService;
 import net.paramount.msp.util.Utils;
 
 /**
@@ -36,24 +31,18 @@ public class ItemBrowseController implements Serializable {
   private ItemService businessService;
 	private List<Item> selectedObjects; 
 	private List<Item> businessObjects; 
-	private Filter<Car> bizFilter = new Filter<>(new Car());
+	private Filter<Item> bizFilter = new Filter<>(new Item());
 	private List<Item> filteredObjects;// datatable filteredValue attribute (column filters)
-
-	@Inject
-    CarService carService;
 
     @Inject
     private Utils utils;
 
-    Integer id;
+    private String instantSearch;
+    Long id;
 
-    LazyDataModel<Car> cars;
+    Filter<Item> filter = new Filter<>(new Item());
 
-    Filter<Car> filter = new Filter<>(new Car());
-
-    List<Car> selectedCars; //cars selected in checkbox column
-
-    List<Car> filteredValue;// datatable filteredValue attribute (column filters)
+    List<Item> filteredValue;// datatable filteredValue attribute (column filters)
 
     @PostConstruct
     public void initDataModel() {
@@ -62,100 +51,57 @@ public class ItemBrowseController implements Serializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-        cars = new LazyDataModel<Car>() {
-            @Override
-            public List<Car> load(int first, int pageSize,
-                                  String sortField, SortOrder sortOrder,
-                                  Map<String, Object> filters) {
-                net.paramount.msp.infra.model.SortOrder order = null;
-                if (sortOrder != null) {
-                    order = sortOrder.equals(SortOrder.ASCENDING) ? net.paramount.msp.infra.model.SortOrder.ASCENDING
-                            : sortOrder.equals(SortOrder.DESCENDING) ? net.paramount.msp.infra.model.SortOrder.DESCENDING
-                            : net.paramount.msp.infra.model.SortOrder.UNSORTED;
-                }
-                filter.setFirst(first).setPageSize(pageSize)
-                        .setSortField(sortField).setSortOrder(order)
-                        .setParams(filters);
-                List<Car> list = carService.paginate(filter);
-                setRowCount((int) carService.count(filter));
-                return list;
-            }
-
-            @Override
-            public int getRowCount() {
-                return super.getRowCount();
-            }
-
-            @Override
-            public Car getRowData(String key) {
-                return carService.findById(new Integer(key));
-            }
-        };
     }
 
     public void clear() {
-        filter = new Filter<Car>(new Car());
+        filter = new Filter<Item>(new Item());
     }
 
     public List<String> completeModel(String query) {
-        List<String> result = carService.getModels(query);
+        List<String> result = ListUtility.createDataList();//carService.getModels(query);
         return result;
     }
 
-    public void findCarById(Integer id) {
-        if (id == null) {
+    public void search(String parameter) {
+    	System.out.println("Searching parameter: " + parameter);
+    	/*if (id == null) {
             throw new BusinessException("Provide Car ID to load");
         }
-        selectedCars.add(carService.findById(id));
+        selectedCars.add(carService.findById(id));*/
     }
 
     public void delete() {
-        int numCars = 0;
-        for (Car selectedCar : selectedCars) {
-            numCars++;
-            //carService.remove(selectedCar);
-        }
-        selectedCars.clear();
-        utils.addDetailMessage(numCars + " cars deleted successfully!");
+    	if (CommonUtility.isNotEmpty(this.selectedObjects)) {
+      	for (Item removalItem :this.selectedObjects) {
+      		System.out.println("#" + removalItem.getCode());
+      		this.businessObjects.remove(removalItem);
+      	}
+        utils.addDetailMessage("Objects deleted successfully!");
+        this.selectedObjects.clear();
+    	}
     }
 
-    public List<Car> getSelectedCars() {
-        return selectedCars;
-    }
-
-    public List<Car> getFilteredValue() {
+    public List<Item> getFilteredValue() {
         return filteredValue;
     }
 
-    public void setFilteredValue(List<Car> filteredValue) {
+    public void setFilteredValue(List<Item> filteredValue) {
         this.filteredValue = filteredValue;
     }
 
-    public void setSelectedCars(List<Car> selectedCars) {
-        this.selectedCars = selectedCars;
-    }
-
-    public LazyDataModel<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(LazyDataModel<Car> cars) {
-        this.cars = cars;
-    }
-
-    public Filter<Car> getFilter() {
+    public Filter<Item> getFilter() {
         return filter;
     }
 
-    public void setFilter(Filter<Car> filter) {
+    public void setFilter(Filter<Item> filter) {
         this.filter = filter;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -175,11 +121,11 @@ public class ItemBrowseController implements Serializable {
 			this.selectedObjects = selectedObjects;
 		}
 
-		public Filter<Car> getBizFilter() {
+		public Filter<Item> getBizFilter() {
 			return bizFilter;
 		}
 
-		public void setBizFilter(Filter<Car> bizFilter) {
+		public void setBizFilter(Filter<Item> bizFilter) {
 			this.bizFilter = bizFilter;
 		}
 
@@ -189,5 +135,17 @@ public class ItemBrowseController implements Serializable {
 
 		public void setFilteredObjects(List<Item> filteredObjects) {
 			this.filteredObjects = filteredObjects;
+		}
+
+		public String getInstantSearch() {
+			return instantSearch;
+		}
+
+		public void setInstantSearch(String instantSearch) {
+			this.instantSearch = instantSearch;
+		}
+
+		public void recordsRowSelected(AjaxBehaviorEvent e) {
+			System.out.println("recordsRowSelected");
 		}
 }
