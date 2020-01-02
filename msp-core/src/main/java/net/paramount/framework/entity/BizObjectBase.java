@@ -31,17 +31,11 @@ public abstract class BizObjectBase extends ObjectBase implements BizEntity {
 		this.visible = visible;
 	}
 
-	public int compareTo(Object obj) {
-		if (obj.hashCode() > hashCode())
-			return 1;
-		else if (obj.hashCode() < hashCode())
-			return -1;
-		else
-			return 0;
-	}
-
 	public String toString() {
-		return super.toString();
+		return new StringBuilder(super.toString())
+				.append(". Visible: ").append(this.visible)
+				.append(". Activated: ").append(this.activated)
+				.toString();
 	}
 
 	public Boolean isActivated() {

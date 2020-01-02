@@ -84,7 +84,7 @@ public abstract class ObjectBase implements Entity {
 	}
 
 	public String toString() {
-		return super.toString();
+		return new StringBuilder("Id: ").append(this.id).toString();
 	}
 
 	@Transient
