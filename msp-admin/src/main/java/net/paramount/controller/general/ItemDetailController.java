@@ -9,11 +9,13 @@ import static com.github.adminfaces.template.util.Assert.has;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.util.Faces;
+import org.primefaces.event.SelectEvent;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
@@ -40,6 +42,7 @@ public class ItemDetailController implements Serializable {
 
 	private Long id;
 	private Item businessObject;
+	private Item parent;
 
 	public void init() {
 		if (Faces.isAjaxRequest()) {
@@ -82,6 +85,7 @@ public class ItemDetailController implements Serializable {
 
 	public void save() {
 		String msg;
+		businessObject.setParent(parent);
 		if (businessObject.getId() == null) {
 			businessService.saveOrUpdate(businessObject);
 			msg = "Business object " + businessObject.getName() + " created successfully";
@@ -99,6 +103,14 @@ public class ItemDetailController implements Serializable {
 
 	public boolean isNew() {
 		return businessObject == null || businessObject.getId() == null;
+	}
+
+	public void handleParentSelect(SelectEvent event) { 
+		Object item = event.getObject(); 
+		if (item instanceof Item) {
+			this.parent = (Item)item;
+		}
+		//FacesMessage msg = new FacesMessage("Selected", "Item:" + item); 
 	}
 
 }

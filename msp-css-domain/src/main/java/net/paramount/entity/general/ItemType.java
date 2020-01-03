@@ -26,29 +26,27 @@ import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.paramount.framework.entity.BizObjectBase;
 import net.paramount.global.GlobalConstants;
 
 /**
- * An item.
+ * An item type.
  * 
  * @author bqduc
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
 @Entity
-@Table(name = "general_item")
+@Table(name = "general_item_type")
 @EqualsAndHashCode(callSuper = true)
-public class Item extends BizObjectBase {
+public class ItemType extends BizObjectBase {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3725780457128265336L;
+	private static final long serialVersionUID = -2906868555464751018L;
 
 	@NotNull
 	@Size(min = 3, max = GlobalConstants.SIZE_CODE)
@@ -64,15 +62,51 @@ public class Item extends BizObjectBase {
 	@Column(name="name_local")
 	private String nameLocal;
 
-	@Size(max = GlobalConstants.SIZE_NAME_TINY)
-	@Column(name="subtype")
-	private String subtype;
-
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
-	private Item parent;
+	private ItemType parent;
 
 	@Lob
 	@Column(name="info", columnDefinition="TEXT")
 	private String info;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNameLocal() {
+		return nameLocal;
+	}
+
+	public void setNameLocal(String nameLocal) {
+		this.nameLocal = nameLocal;
+	}
+
+	public ItemType getParent() {
+		return parent;
+	}
+
+	public void setParent(ItemType parent) {
+		this.parent = parent;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
 }

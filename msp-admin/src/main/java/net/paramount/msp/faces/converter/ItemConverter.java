@@ -20,13 +20,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
 
 import net.paramount.css.service.config.ItemService;
 import net.paramount.entity.general.Item;
 
-@FacesConverter("itemConverter")
+//@FacesConverter("itemConverter")
+@Service(value="itemConverter")
 public class ItemConverter implements Converter<Item> {
 	@Inject
 	private ItemService service;
@@ -45,7 +47,7 @@ public class ItemConverter implements Converter<Item> {
 
 	public String getAsString(FacesContext fc, UIComponent uic, Item object) {
 		if (object != null) {
-			return object.toString();
+			return String.valueOf(object.getId());//object.toString();
 		} else {
 			return null;
 		}

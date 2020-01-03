@@ -11,11 +11,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.beanutils.BeanUtils;
+
+import com.sun.javafx.fxml.PropertyNotFoundException;
+
+import net.paramount.exceptions.ExecutionContextException;
 
 /**
  * @author bqduc
@@ -375,5 +378,14 @@ public class CommonBeanUtils {
 		}
 
   	return theMethod.invoke(bean, parameters);
+  }
+
+  public static Object callMethod(Object bean, String methodName, Map<?, ?> params) throws ExecutionContextException {
+  	try {
+			return invokeOperation(bean, methodName, params);
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| InstantiationException e) {
+			throw new ExecutionContextException(e);
+		}
   }
 }

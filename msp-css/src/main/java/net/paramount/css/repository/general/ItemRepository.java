@@ -1,4 +1,4 @@
-package net.paramount.css.repository.config;
+package net.paramount.css.repository.general;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

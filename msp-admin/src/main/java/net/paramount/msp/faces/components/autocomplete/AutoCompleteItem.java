@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.paramount.msp.faces.components;
+package net.paramount.msp.faces.components.autocomplete;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,9 +27,9 @@ import javax.inject.Named;
 
 import org.primefaces.event.SelectEvent;
 
+import net.paramount.common.ListUtility;
+import net.paramount.css.service.config.ItemService;
 import net.paramount.entity.general.Item;
-import net.paramount.msp.faces.model.Theme;
-import net.paramount.msp.faces.service.ThemeService;
 
 @Named(value="autoCompleteItem")
 @ViewScoped
@@ -40,12 +40,10 @@ public class AutoCompleteItem implements Serializable {
 	private static final long serialVersionUID = 1180855013001665329L;
 
 	private Item item;
-	private Theme theme;
-	private Theme theme2;
-	private List<Theme> selectedThemes;
+	private List<Item> selectedItems;
 
 	@Inject
-	private ThemeService businessService;
+	private ItemService businessService;
 
 	public List<String> completeText(String query) {
 		List<String> results = new ArrayList<String>();
@@ -56,68 +54,48 @@ public class AutoCompleteItem implements Serializable {
 		return results;
 	}
 
-	public List<Theme> completeTheme(String query) {
-		List<Theme> allThemes = businessService.getThemes();
-		List<Theme> filteredThemes = new ArrayList<Theme>();
+	public List<Item> completeItem(String query) {
+		List<Item> allItems = businessService.getObjects();
+		List<Item> filteredItems = ListUtility.createDataList();
 
-		for (int i = 0; i < allThemes.size(); i++) {
-			Theme skin = allThemes.get(i);
+		for (int i = 0; i < allItems.size(); i++) {
+			Item skin = allItems.get(i);
 			if (skin.getName().toLowerCase().contains(query.toLowerCase())) {
-				filteredThemes.add(skin);
+				filteredItems.add(skin);
 			}
 		}
 
-		return filteredThemes;
+		return filteredItems;
 	}
 
-	public List<Theme> completeThemeContains(String query) {
-		List<Theme> allThemes = businessService.getThemes();
-		List<Theme> filteredThemes = new ArrayList<Theme>();
+	public List<Item> completeItemContains(String query) {
+		List<Item> allItems = businessService.getObjects();
+		List<Item> filteredItems = ListUtility.createDataList();
 
-		for (int i = 0; i < allThemes.size(); i++) {
-			Theme skin = allThemes.get(i);
+		for (int i = 0; i < allItems.size(); i++) {
+			Item skin = allItems.get(i);
 			if (skin.getName().toLowerCase().contains(query.toLowerCase())) {
-				filteredThemes.add(skin);
+				filteredItems.add(skin);
 			}
 		}
 
-		return filteredThemes;
+		return filteredItems;
 	}
 
 	public void onItemSelect(SelectEvent event) {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item Selected", event.getObject().toString()));
 	}
 
-	public Theme getTheme() {
-		return theme;
+	public List<Item> getSelectedItems() {
+		return selectedItems;
 	}
 
-	public void setTheme(Theme theme1) {
-		this.theme = theme1;
+	public void setSelectedItems(List<Item> selectedItems) {
+		this.selectedItems = selectedItems;
 	}
 
-	public Theme getTheme2() {
-		return theme2;
-	}
-
-	public void setTheme2(Theme theme2) {
-		this.theme2 = theme2;
-	}
-
-	public List<Theme> getSelectedThemes() {
-		return selectedThemes;
-	}
-
-	public void setSelectedThemes(List<Theme> selectedThemes) {
-		this.selectedThemes = selectedThemes;
-	}
-
-	public void setService(ThemeService service) {
-		this.businessService = service;
-	}
-
-	public char getThemeGroup(Theme theme) {
-		return theme.getDisplayName().charAt(0);
+	public char getItemGroup(Item item) {
+		return item.getName().charAt(0);
 	}
 
 	public Item getItem() {
@@ -128,11 +106,11 @@ public class AutoCompleteItem implements Serializable {
 		this.item = item;
 	}
 
-	public ThemeService getBusinessService() {
+	public ItemService getBusinessService() {
 		return businessService;
 	}
 
-	public void setBusinessService(ThemeService businessService) {
+	public void setBusinessService(ItemService businessService) {
 		this.businessService = businessService;
 	}
 

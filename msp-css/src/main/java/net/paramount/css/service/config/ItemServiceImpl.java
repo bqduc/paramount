@@ -12,8 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.paramount.common.CommonUtility;
-import net.paramount.css.repository.config.ItemRepository;
 import net.paramount.css.repository.config.LocalizedItemRepository;
+import net.paramount.css.repository.general.ItemRepository;
 import net.paramount.entity.general.Item;
 import net.paramount.entity.general.Language;
 import net.paramount.entity.general.LocalizedItem;
