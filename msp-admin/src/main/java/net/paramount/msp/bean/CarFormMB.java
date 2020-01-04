@@ -19,7 +19,7 @@ import com.github.adminfaces.template.exception.AccessDeniedException;
 
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;
-import net.paramount.msp.util.Utils;
+import net.paramount.msp.util.FacesUtilities;
 
 /**
  * @author rmpestano
@@ -32,7 +32,7 @@ public class CarFormMB implements Serializable {
     CarService carService;
 
     @Inject
-    private Utils utils;
+    private FacesUtilities utils;
 
     private Integer id;
     private Car car;

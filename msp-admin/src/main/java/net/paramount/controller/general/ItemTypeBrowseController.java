@@ -11,38 +11,38 @@ import javax.inject.Named;
 
 import net.paramount.common.CommonUtility;
 import net.paramount.common.ListUtility;
-import net.paramount.css.service.config.ItemService;
-import net.paramount.entity.general.Item;
-import net.paramount.msp.infra.model.Filter;
+import net.paramount.css.service.general.ItemTypeService;
+import net.paramount.entity.general.ItemType;
+import net.paramount.model.Filter;
 import net.paramount.msp.util.FacesUtilities;
 
 /**
- * Created by rmpestano on 12/02/17.
+ * @author ducbq
  */
-@Named(value = "itemBrowser")
+@Named(value = "itemTypeBrowser")
 @ViewScoped
-public class ItemBrowseController implements Serializable {
+public class ItemTypeBrowseController implements Serializable {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -6412581743995405359L;
 
 	@Inject
-  private ItemService businessService;
-	private List<Item> selectedObjects; 
-	private List<Item> businessObjects; 
-	private Filter<Item> bizFilter = new Filter<>(new Item());
-	private List<Item> filteredObjects;// datatable filteredValue attribute (column filters)
+  private ItemTypeService businessService;
+	private List<ItemType> selectedObjects; 
+	private List<ItemType> businessObjects; 
+	private Filter<ItemType> bizFilter = new Filter<>(new ItemType());
+	private List<ItemType> filteredObjects;// datatable filteredValue attribute (column filters)
 
     @Inject
-    private FacesUtilities utils;
+    private FacesUtilities facesUtilities;
 
     private String instantSearch;
     Long id;
 
-    Filter<Item> filter = new Filter<>(new Item());
+    Filter<ItemType> filter = new Filter<>(new ItemType());
 
-    List<Item> filteredValue;// datatable filteredValue attribute (column filters)
+    List<ItemType> filteredValue;// datatable filteredValue attribute (column filters)
 
     @PostConstruct
     public void initDataModel() {
@@ -54,7 +54,7 @@ public class ItemBrowseController implements Serializable {
     }
 
     public void clear() {
-        filter = new Filter<Item>(new Item());
+        filter = new Filter<ItemType>(new ItemType());
     }
 
     public List<String> completeModel(String query) {
@@ -72,28 +72,28 @@ public class ItemBrowseController implements Serializable {
 
     public void delete() {
     	if (CommonUtility.isNotEmpty(this.selectedObjects)) {
-      	for (Item removalItem :this.selectedObjects) {
+      	for (ItemType removalItem :this.selectedObjects) {
       		System.out.println("#" + removalItem.getCode());
       		this.businessObjects.remove(removalItem);
       	}
-        utils.addDetailMessage("Objects deleted successfully!");
+        facesUtilities.addDetailMessage("Objects deleted successfully!");
         this.selectedObjects.clear();
     	}
     }
 
-    public List<Item> getFilteredValue() {
+    public List<ItemType> getFilteredValue() {
         return filteredValue;
     }
 
-    public void setFilteredValue(List<Item> filteredValue) {
+    public void setFilteredValue(List<ItemType> filteredValue) {
         this.filteredValue = filteredValue;
     }
 
-    public Filter<Item> getFilter() {
+    public Filter<ItemType> getFilter() {
         return filter;
     }
 
-    public void setFilter(Filter<Item> filter) {
+    public void setFilter(Filter<ItemType> filter) {
         this.filter = filter;
     }
 
@@ -105,35 +105,35 @@ public class ItemBrowseController implements Serializable {
         this.id = id;
     }
 
-  	public List<Item> getBusinessObjects() {
+  	public List<ItemType> getBusinessObjects() {
   		return businessObjects;
   	}
 
-  	public void setBusinessObjects(List<Item> businessObjects) {
+  	public void setBusinessObjects(List<ItemType> businessObjects) {
   		this.businessObjects = businessObjects;
   	}
 
-		public List<Item> getSelectedObjects() {
+		public List<ItemType> getSelectedObjects() {
 			return selectedObjects;
 		}
 
-		public void setSelectedObjects(List<Item> selectedObjects) {
+		public void setSelectedObjects(List<ItemType> selectedObjects) {
 			this.selectedObjects = selectedObjects;
 		}
 
-		public Filter<Item> getBizFilter() {
+		public Filter<ItemType> getBizFilter() {
 			return bizFilter;
 		}
 
-		public void setBizFilter(Filter<Item> bizFilter) {
+		public void setBizFilter(Filter<ItemType> bizFilter) {
 			this.bizFilter = bizFilter;
 		}
 
-		public List<Item> getFilteredObjects() {
+		public List<ItemType> getFilteredObjects() {
 			return filteredObjects;
 		}
 
-		public void setFilteredObjects(List<Item> filteredObjects) {
+		public void setFilteredObjects(List<ItemType> filteredObjects) {
 			this.filteredObjects = filteredObjects;
 		}
 

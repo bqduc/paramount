@@ -19,7 +19,7 @@ import com.github.adminfaces.template.exception.AccessDeniedException;
 
 import net.paramount.auth.entity.Authority;
 import net.paramount.auth.service.AuthorityService;
-import net.paramount.msp.util.Utils;
+import net.paramount.msp.util.FacesUtilities;
 
 /**
  * @author ducbq
@@ -36,7 +36,7 @@ public class RoleDetailController implements Serializable {
 	private AuthorityService businessService;
 
 	@Inject
-	private Utils utils;
+	private FacesUtilities utils;
 
 	private Long id;
 

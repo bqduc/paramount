@@ -32,18 +32,18 @@ import net.paramount.ase.config.MspQuartzConfig;
 import net.paramount.msp.config.BaseConfiguration;
 import net.paramount.msp.config.SecurityConfig;
 import net.paramount.msp.model.Car;
-import net.paramount.msp.util.Utils;
+import net.paramount.msp.util.FacesUtilities;
 
 /**
  * @author ducbq
  */
 @Slf4j
 @Import(value = { BaseConfiguration.class, SecurityConfig.class, MspQuartzConfig.class })
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages={"net.paramount"})
 @EnableAsync
 public class AdminStarterApplication {
 	@Inject
-	private Utils utils;
+	private FacesUtilities utils;
 
 	@Bean
 	public List<Car> getCars() {

@@ -9,7 +9,6 @@ import static com.github.adminfaces.template.util.Assert.has;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,30 +18,30 @@ import org.primefaces.event.SelectEvent;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
-import net.paramount.css.service.config.ItemService;
-import net.paramount.entity.general.Item;
+import net.paramount.css.service.general.ItemTypeService;
+import net.paramount.entity.general.ItemType;
 import net.paramount.msp.util.FacesUtilities;
 
 /**
  * @author ducbq
  */
-@Named(value = "itemDetailController")
+@Named(value = "itemTypeDetailController")
 @ViewScoped
-public class ItemDetailController implements Serializable {
+public class ItemTypeDetailController implements Serializable {
 	/**
 	* 
 	*/
 	private static final long serialVersionUID = 1951559129683497779L;
 
 	@Inject
-	private ItemService businessService;
+	private ItemTypeService businessService;
 
 	@Inject
-	private FacesUtilities utils;
+	private FacesUtilities facesUtilities;
 
 	private Long id;
-	private Item businessObject;
-	private Item parent;
+	private ItemType businessObject;
+	private ItemType parent;
 
 	public void init() {
 		if (Faces.isAjaxRequest()) {
@@ -51,7 +50,7 @@ public class ItemDetailController implements Serializable {
 		if (has(id)) {
 			businessObject = businessService.getObject(id);
 		} else {
-			businessObject = new Item();
+			businessObject = new ItemType();
 		}
 	}
 
@@ -63,21 +62,21 @@ public class ItemDetailController implements Serializable {
 		this.id = id;
 	}
 
-	public Item getBusinessObject() {
+	public ItemType getBusinessObject() {
 		return businessObject;
 	}
 
-	public void setBusinessObject(Item businessObject) {
+	public void setBusinessObject(ItemType businessObject) {
 		this.businessObject = businessObject;
 	}
 
 	public void remove() throws IOException {
-		if (!utils.isUserInRole("ROLE_ADMIN")) {
+		if (!facesUtilities.isUserInRole("ROLE_ADMIN")) {
 			throw new AccessDeniedException("User not authorized! Only role <b>admin</b> can remove cars.");
 		}
 		if (has(businessObject) && has(businessObject.getId())) {
 			businessService.remove(businessObject);
-			utils.addDetailMessage("Business object " + businessObject.getName() + " removed successfully");
+			facesUtilities.addDetailMessage("Business object " + businessObject.getName() + " removed successfully");
 			Faces.getFlash().setKeepMessages(true);
 			Faces.redirect("user/car-list.jsf");
 		}
@@ -93,11 +92,11 @@ public class ItemDetailController implements Serializable {
 			businessService.saveOrUpdate(businessObject);
 			msg = "Business object " + businessObject.getName() + " updated successfully";
 		}
-		utils.addDetailMessage(msg);
+		facesUtilities.addDetailMessage(msg);
 	}
 
 	public void clear() {
-		businessObject = new Item();
+		businessObject = new ItemType();
 		id = null;
 	}
 
@@ -107,8 +106,8 @@ public class ItemDetailController implements Serializable {
 
 	public void handleParentSelect(SelectEvent event) { 
 		Object item = event.getObject(); 
-		if (item instanceof Item) {
-			this.parent = (Item)item;
+		if (item instanceof ItemType) {
+			this.parent = (ItemType)item;
 		}
 		//FacesMessage msg = new FacesMessage("Selected", "Item:" + item); 
 	}

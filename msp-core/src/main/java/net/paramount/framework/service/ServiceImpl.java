@@ -24,13 +24,13 @@ import net.paramount.framework.repository.BaseRepository;
 
 
 @Service
-public abstract class ServiceImpl<ClassType extends ObjectBase, Key extends Serializable> extends ComponentBase implements IService<ClassType, Key>{
+public abstract class ServiceImpl<EntityType extends ObjectBase, Key extends Serializable> extends ComponentBase implements IService<EntityType, Key>{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7920908481607510076L;
 
-	protected abstract BaseRepository<ClassType, Key> getRepository();
+	protected abstract BaseRepository<EntityType, Key> getRepository();
 
   /**
    * Get entity with the provided key.
@@ -40,12 +40,12 @@ public abstract class ServiceImpl<ClassType extends ObjectBase, Key extends Seri
    */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public ClassType getObject(Key id) {
-		ClassType entity = getRepository().getOne(id);
+	public EntityType getObject(Key id) {
+		EntityType entity = getRepository().getOne(id);
 		return entity;
 	}
 
-	protected ClassType getOptionalObject(Optional<ClassType> optObject) {
+	protected EntityType getOptionalObject(Optional<EntityType> optObject) {
 		if (optObject.isPresent())
 			return optObject.get();
 
@@ -53,41 +53,41 @@ public abstract class ServiceImpl<ClassType extends ObjectBase, Key extends Seri
 	}
 
 	//////////////////////////Revise and exclude as soon as possible
-	protected final Page<ClassType> DUMMY_PAGEABLE = new PageImpl<ClassType>(new ArrayList<ClassType>());
-	protected final List<ClassType> DUMMY_LIST = ListUtility.createDataList();
+	protected final Page<EntityType> DUMMY_PAGEABLE = new PageImpl<EntityType>(new ArrayList<EntityType>());
+	protected final List<EntityType> DUMMY_LIST = ListUtility.createDataList();
 
 	//protected abstract Page<ClassType> performSearch(String keyword, Pageable pageable);
 
-	public Page<ClassType> search(String keyword, Pageable pageable){
+	public Page<EntityType> search(String keyword, Pageable pageable){
 		return performSearch(keyword, pageable);
 	}
 
-	public Page<ClassType> search(Map<String, Object> parameters) {
+	public Page<EntityType> search(Map<String, Object> parameters) {
 		String keyword = (String)parameters.get(CommonConstants.PARAM_KEYWORD);
 		Pageable pageable = (Pageable)parameters.get(CommonConstants.PARAM_PAGEABLE);
 		return performSearch(keyword, pageable);
 	}
 
-	protected Page<ClassType> performSearch(String keyword, Pageable pageable){
+	protected Page<EntityType> performSearch(String keyword, Pageable pageable){
 		throw new MspRuntimeException("Not implemented yet!!!");//DUMMY_PAGEABLE;
 	}
 
-	protected List<ClassType> performSearch(Object parameter){
+	protected List<EntityType> performSearch(Object parameter){
 		Object findingResult = null;
-		List<ClassType> searchResult = null;
+		List<EntityType> searchResult = null;
 		try {
 			findingResult = CommonBeanUtils.callMethod(this.getRepository(), "find", ListUtility.createMap("keyword", parameter));
 			if (findingResult instanceof List) {
-				searchResult = (List<ClassType>)findingResult;
+				searchResult = (List<EntityType>)findingResult;
 			}
 		} catch (ExecutionContextException e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 		return (null==searchResult)?DUMMY_LIST:searchResult;
 	}
 
 	@Override
-	public List<ClassType> search(Object searchParam) {
+	public List<EntityType> search(Object searchParam) {
 		return performSearch(searchParam);
 	}
 }

@@ -21,7 +21,7 @@ import net.paramount.css.service.contact.ContactService;
 import net.paramount.entity.contact.Contact;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;
-import net.paramount.msp.util.Utils;
+import net.paramount.msp.util.FacesUtilities;
 
 /**
  * @author ducbq
@@ -42,7 +42,7 @@ public class BusinessUnitDetailController implements Serializable {
 	private ContactService contactService;
 
 	@Inject
-	private Utils utils;
+	private FacesUtilities utils;
 
     private Long id;
     private Car car;

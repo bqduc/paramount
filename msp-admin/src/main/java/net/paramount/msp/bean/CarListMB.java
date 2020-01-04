@@ -17,7 +17,7 @@ import com.github.adminfaces.template.exception.BusinessException;
 import net.paramount.msp.infra.model.Filter;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.service.CarService;
-import net.paramount.msp.util.Utils;
+import net.paramount.msp.util.FacesUtilities;
 
 /**
  * Created by rmpestano on 12/02/17.
@@ -30,7 +30,7 @@ public class CarListMB implements Serializable {
     CarService carService;
 
     @Inject
-    private Utils utils;
+    private FacesUtilities utils;
 
     Integer id;
 

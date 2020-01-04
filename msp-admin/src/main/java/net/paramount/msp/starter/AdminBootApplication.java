@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ 
 
 package net.paramount.msp.starter;
 
@@ -20,7 +20,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -31,11 +30,11 @@ import net.paramount.msp.config.SecurityConfig;
 import net.paramount.msp.model.Car;
 import net.paramount.msp.util.Utils;
 
-/**
+*//**
  * @author rmpestano
- */
+ *//*
 @Import(value = { BaseConfiguration.class, SecurityConfig.class, MspQuartzConfig.class })
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages={"net.paramount"})
 public class AdminBootApplication {
 	@Inject
 	private Utils utils;
@@ -50,3 +49,4 @@ public class AdminBootApplication {
 		//SpringApplication.run(AdminBootApplication.class, args);
 	}
 }
+*/
